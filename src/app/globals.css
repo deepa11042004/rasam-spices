@@ -21,6 +21,9 @@
   --brand-gold-text: #8a6420;    /* gold for text on light surfaces (AA) */
   --brand-earth: #2b251d;        /* Body text and headings on light */
   --brand-earth-muted: #5e5448;
+  --brand-botanical-green: #2e4433; /* Deep botanical/spice green: product card surface */
+  --brand-cacao: #5a3822;        /* Warm dark brown: card border, navbar hairline */
+  --brand-chilli: #8c2f22;       /* Muted Kashmiri chilli red: subtle heading backdrops */
 
   /* Radii, shadows and motion (use these instead of one-off values) */
   --rasam-radius-card: 0.875rem;
@@ -51,6 +54,9 @@
   --color-ivory-deep: var(--brand-ivory-deep);
   --color-earth: var(--brand-earth);
   --color-earth-muted: var(--brand-earth-muted);
+  --color-botanical-green: var(--brand-botanical-green);
+  --color-cacao: var(--brand-cacao);
+  --color-chilli: var(--brand-chilli);
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -693,8 +699,10 @@
 }
 
 /*
- * Product / inventory card: same language as the homepage hero card (charcoal surface, fine gold
- * border, hairline gold inset, warm glow behind the product). Used by ProductCard.tsx.
+ * Product / inventory card: deep botanical green surface, warm dark brown border, a faint
+ * coriander-sprig pattern (public/patterns/coriander-sprig.svg) masked in as a low-opacity
+ * repeat, and the same warm gold glow behind the product. Used by ProductCard.tsx; one rule
+ * covers all three variants (compact, detailed, carousel) since they share this class.
  */
 .rasam-card {
   position: relative;
@@ -702,27 +710,46 @@
   flex-direction: column;
   overflow: hidden;
   border-radius: var(--rasam-radius-card);
-  border: 1px solid rgb(200 154 69 / 0.6);
-  background: var(--brand-charcoal);
+  border: 1px solid rgb(90 56 34 / 0.7);
+  background: var(--brand-botanical-green);
   color: var(--brand-parchment);
   box-shadow: var(--rasam-shadow-card);
   transition: transform 0.3s var(--rasam-ease-premium), box-shadow 0.3s var(--rasam-ease-premium),
     border-color 0.3s var(--rasam-ease-premium);
+}
+/* Faint botanical pattern: the sprig's linework becomes the visible part of a lighter-green
+   tint, tiled low and behind everything else so it never competes with the product or text. */
+.rasam-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: rgb(150 184 150 / 0.22);
+  -webkit-mask-image: url("/patterns/coriander-sprig.svg");
+  mask-image: url("/patterns/coriander-sprig.svg");
+  -webkit-mask-repeat: repeat;
+  mask-repeat: repeat;
+  -webkit-mask-size: 86px 172px;
+  mask-size: 86px 172px;
+  -webkit-mask-position: top left;
+  mask-position: top left;
+  opacity: 0.5;
+  pointer-events: none;
 }
 .rasam-card::after {
   content: "";
   position: absolute;
   inset: 5px;
   border-radius: calc(var(--rasam-radius-card) - 5px);
-  border: 1px solid rgb(200 154 69 / 0.2);
+  border: 1px solid rgb(90 56 34 / 0.25);
   pointer-events: none;
 }
 .rasam-card:hover {
   transform: translateY(-4px);
-  border-color: rgb(200 154 69 / 0.95);
+  border-color: rgb(90 56 34 / 0.95);
   box-shadow: var(--rasam-shadow-lift);
 }
 .rasam-card-media {
+  position: relative;
   background: radial-gradient(70% 60% at 50% 55%, rgb(200 154 69 / 0.16), transparent 72%);
 }
 @media (prefers-reduced-motion: reduce) {

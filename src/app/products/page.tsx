@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import ProductCard from "@/components/ProductCard";
 import ProductCarousel from "@/components/ProductCarousel";
@@ -16,12 +17,26 @@ export default function ProductsPage() {
   return (
     <>
       <section className="relative overflow-hidden border-b border-turmeric/40">
-        {/* Slider on top, same width as the framed hero box on the home page. Slides: src/data/productHeroSlides.ts */}
-        <div className="relative z-10 mx-auto max-w-7xl px-6 pt-8 lg:px-10 lg:pt-10">
-          <ProductHeroSlider slides={heroSlides} aspectClassName="aspect-[4/3] sm:aspect-[16/10] lg:aspect-[2/1]" />
+        {/* Same blurred spice-photo backdrop as the homepage hero, fading to parchment before
+            the heading below so its existing dark text keeps its contrast untouched. */}
+        <div className="relative isolate overflow-hidden">
+          <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 scale-110 blur-sm">
+            <Image src="/images/hero-background.png" alt="" fill sizes="100vw" quality={75} className="object-cover object-center" />
+          </div>
+          <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 bg-charcoal/30" />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-16 bg-linear-to-b from-transparent to-parchment lg:h-24"
+          />
+
+          {/* Slider on top, same width as the framed hero box on the home page. Slides: src/data/productHeroSlides.ts */}
+          <div className="relative z-10 mx-auto max-w-7xl px-6 pt-8 lg:px-10 lg:pt-10">
+            <ProductHeroSlider slides={heroSlides} aspectClassName="aspect-[4/3] sm:aspect-[16/10] lg:aspect-[2/1]" />
+          </div>
         </div>
 
-        <div className="relative z-10 mx-auto max-w-7xl px-6 pb-12 pt-10 lg:px-10 lg:pb-16 lg:pt-14">
+        {/* Subtle, translucent Kashmiri-chilli backdrop behind the heading only (not the page). */}
+        <div className="relative z-10 mx-auto max-w-7xl bg-chilli/10 px-6 pb-12 pt-10 lg:px-10 lg:pb-16 lg:pt-14">
           <p className="eyebrow">The catalogue</p>
           <h1 className="display-heading mt-4 text-5xl text-earth sm:text-7xl">Our products</h1>
           <p className="mt-5 max-w-2xl text-lg leading-8 text-earth-muted">

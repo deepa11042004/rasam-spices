@@ -37,7 +37,7 @@ export default function ProductCard({
     return (
       <article className={`${card} ${className}`}>
         <Link href={`/products/${product.id}`} className={`flex h-full flex-col focus-visible:rounded-card ${focusRing}`}>
-          <div className={`flex w-full items-center justify-center p-5 ${imagePanel}`}>
+          <div className={`flex w-full items-center justify-center py-5 ${imagePanel}`}>
             <ProductImage
           onDark
               product={product}
@@ -69,7 +69,7 @@ export default function ProductCard({
   // Standard and detailed product cards
   return (
     <article id={detailed ? product.id : undefined} className={`${card} ${className}`}>
-      <div className={`p-6 ${imagePanel}`}>
+      <div className={`py-6 ${imagePanel}`}>
         <ProductImage
           onDark
           product={product}

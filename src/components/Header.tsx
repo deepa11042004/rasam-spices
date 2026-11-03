@@ -5,7 +5,7 @@ import Image from "next/image";
 
 export default function Header() {
   return (
-    <header className="sticky top-0 z-50 border-b border-turmeric/40 bg-parchment/95">
+    <header className="sticky top-0 z-50 border-b border-cacao/30 bg-turmeric">
       <nav
         aria-label="Main navigation"
         className="relative mx-auto flex min-h-[80px] max-w-7xl items-center justify-between gap-6 px-6 lg:px-10"

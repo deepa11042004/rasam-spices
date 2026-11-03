@@ -79,7 +79,7 @@ export default function HeaderNav({ links }: { links: readonly NavLink[] }) {
       <div
         id={menuId}
         hidden={!open}
-        className="absolute inset-x-0 top-full border-b border-turmeric/40 bg-parchment shadow-card md:hidden"
+        className="absolute inset-x-0 top-full border-b border-cacao/30 bg-turmeric shadow-card md:hidden"
       >
         <ul className="mx-auto flex max-w-7xl flex-col px-6 py-2">
           {links.map((link) => (
