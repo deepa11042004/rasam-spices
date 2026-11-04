@@ -760,6 +760,57 @@
   }
 }
 
+/*
+ * Expanding product inventory showcase (Products page, ProductInventoryShowcase.tsx): the
+ * same botanical-green surface and coriander-sprig pattern as .rasam-card for the collapsed
+ * state, switching to a Kashmiri-chilli-red/brown surface for whichever single card is active
+ * (hovered, focused, or tapped). Only `flex-grow` is set from React (inline style, so the
+ * transition below picks it up); border, background and pattern stay in CSS exactly like
+ * every other card on the site.
+ */
+.showcase-card {
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  border: 1px solid rgb(90 56 34 / 0.7);
+  background: var(--brand-botanical-green);
+  color: var(--brand-parchment);
+  box-shadow: var(--rasam-shadow-card);
+  transition: flex-grow 0.55s var(--rasam-ease-premium), background-color 0.4s var(--rasam-ease-premium),
+    border-color 0.4s var(--rasam-ease-premium);
+}
+.showcase-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: rgb(150 184 150 / 0.22);
+  -webkit-mask-image: url("/patterns/coriander-sprig.svg");
+  mask-image: url("/patterns/coriander-sprig.svg");
+  -webkit-mask-repeat: repeat;
+  mask-repeat: repeat;
+  -webkit-mask-size: 86px 172px;
+  mask-size: 86px 172px;
+  -webkit-mask-position: top left;
+  mask-position: top left;
+  opacity: 0.5;
+  pointer-events: none;
+  transition: opacity 0.4s var(--rasam-ease-premium), background-color 0.4s var(--rasam-ease-premium);
+}
+.showcase-card--active {
+  border-color: rgb(245 236 221 / 0.4);
+  background: var(--brand-chilli);
+  box-shadow: var(--rasam-shadow-lift);
+}
+.showcase-card--active::before {
+  opacity: 0.14;
+  background-color: rgb(245 236 221 / 0.35);
+}
+@media (prefers-reduced-motion: reduce) {
+  .showcase-card {
+    transition: background-color 0.01ms, border-color 0.01ms;
+  }
+}
+
 /* Floating star-anise link: gentle bob; still for reduced-motion visitors */
 @keyframes star-float {
   0%,

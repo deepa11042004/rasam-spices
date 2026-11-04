@@ -4,8 +4,21 @@ import Link from "next/link";
 import ProductCard from "@/components/ProductCard";
 import ProductCarousel from "@/components/ProductCarousel";
 import ProductHeroSlider from "@/components/ProductHeroSlider";
+import ProductInventoryShowcase, { type ShowcaseItem } from "@/components/ProductInventoryShowcase";
+import { dishes } from "@/data/dishes";
 import { heroSlides } from "@/data/productHeroSlides";
-import { categories, featuredProducts, getProductsByCategory, products } from "@/data/products";
+import { categories, featuredProducts, getProduct, getProductsByCategory, products } from "@/data/products";
+
+// Every dish in src/data/dishes.ts is already paired with a real product and a real food
+// photograph (the only place those pairings are made), so the showcase reuses that mapping
+// instead of inventing a new one.
+const showcaseItems: ShowcaseItem[] = dishes
+  .map((dish): ShowcaseItem | null => {
+    const product = getProduct(dish.productId);
+    if (!product) return null;
+    return { product, dish: { src: dish.src, alt: dish.alt, focus: dish.focus, zoom: dish.zoom } };
+  })
+  .filter((item): item is ShowcaseItem => item !== null);
 
 export const metadata: Metadata = {
   title: "Products",
@@ -72,6 +85,22 @@ export default function ProductsPage() {
           </nav>
         </div>
       </section>
+
+      {/* Inventory showcase: hover/focus/tap-expanding cards, reusing the real product +
+          dish pairings from src/data/dishes.ts. See ProductInventoryShowcase.tsx. */}
+      {showcaseItems.length > 0 && (
+        <section aria-label="Product inventory showcase" className="border-b border-turmeric/40 bg-parchment">
+          <div className="mx-auto max-w-7xl px-6 py-14 lg:px-10 lg:py-20">
+            <div className="text-center">
+              <p className="eyebrow justify-center">Our products</p>
+              <h2 className="display-heading mt-4 text-4xl text-earth sm:text-5xl">
+                Spices for Every Kitchen
+              </h2>
+            </div>
+            <ProductInventoryShowcase items={showcaseItems} />
+          </div>
+        </section>
+      )}
 
       {/* Featured slider: real products flagged `featured` in src/data/products.ts */}
       {featuredProducts.length > 0 && (
