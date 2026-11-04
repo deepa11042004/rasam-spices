@@ -817,6 +817,21 @@
     transition: background-color 0.01ms, border-color 0.01ms;
   }
 }
+/* Desktop row: cards never shrink below a readable minimum (180px each). A category with more
+   cards than fit scrolls sideways inside this container instead of crushing the cards, so the
+   page itself never overflows. --showcase-count is set per row from React. */
+@media (min-width: 1024px) {
+  .showcase-scroller {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    padding-bottom: 0.75rem;
+    scrollbar-width: thin;
+    scrollbar-color: rgb(90 56 34 / 0.55) transparent;
+  }
+  .showcase-row {
+    min-width: calc(var(--showcase-count, 1) * 180px + (var(--showcase-count, 1) - 1) * 1rem);
+  }
+}
 
 /* Floating star-anise link: gentle bob; still for reduced-motion visitors */
 @keyframes star-float {

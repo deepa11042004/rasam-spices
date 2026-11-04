@@ -1,22 +1,30 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import ProductCard from "@/components/ProductCard";
 import ProductCarousel from "@/components/ProductCarousel";
 import ProductHeroSlider from "@/components/ProductHeroSlider";
 import ProductInventoryShowcase, { type ShowcaseItem } from "@/components/ProductInventoryShowcase";
 import { heroSlides } from "@/data/productHeroSlides";
-import { categories, featuredProducts, getProductsByCategory, products } from "@/data/products";
+import {
+  featuredProducts,
+  getCategory,
+  getProductsByCategory,
+  products,
+  type CategoryId,
+} from "@/data/products";
 import { productDishPhotos } from "@/data/productDishPhotos";
 
-// All 9 blended masalas are shown regardless of whether a dish photo exists for each one yet
-// (src/data/productDishPhotos.ts is the only place that pairing is made for this showcase --
-// separate from src/data/dishes.ts, which drives the homepage's 6-slice rotating dish platter
-// and must not be resized). A product without a photo still appears, with a clearly labelled
-// placeholder instead of an invented or reused image.
-const showcaseItems: ShowcaseItem[] = getProductsByCategory("blended-masalas").map((product) => ({
-  product,
-  dish: productDishPhotos[product.id],
+// Display order of the three category showcases (and of the category links in the hero).
+const CATEGORY_ORDER: CategoryId[] = ["ground-spices", "spices-seasonings", "blended-masalas"];
+
+// Every product in each category is listed, whether or not a verified dish / usage photo exists
+// for it (src/data/productDishPhotos.ts is the only place that pairing is made). A product
+// without one still appears; its pinned panel just shows the pack and details.
+const showcases = CATEGORY_ORDER.map((id) => ({
+  category: getCategory(id),
+  items: getProductsByCategory(id).map(
+    (product): ShowcaseItem => ({ product, dish: productDishPhotos[product.id] }),
+  ),
 }));
 
 export const metadata: Metadata = {
@@ -70,7 +78,7 @@ export default function ProductsPage() {
 
           <nav aria-label="Product categories" className="mt-8">
             <ul className="flex flex-wrap gap-3">
-              {categories.map((category) => (
+              {showcases.map(({ category }) => (
                 <li key={category.id}>
                   <a
                     href={`#${category.id}`}
@@ -85,22 +93,6 @@ export default function ProductsPage() {
         </div>
       </section>
 
-      {/* Inventory showcase: hover/focus/tap-expanding cards, reusing the real product +
-          dish pairings from src/data/dishes.ts. See ProductInventoryShowcase.tsx. */}
-      {showcaseItems.length > 0 && (
-        <section aria-label="Product inventory showcase" className="border-b border-turmeric/40 bg-parchment">
-          <div className="mx-auto max-w-7xl px-6 py-14 lg:px-10 lg:py-20">
-            <div className="text-center">
-              <p className="eyebrow justify-center">Our products</p>
-              <h2 className="display-heading mt-4 text-4xl text-earth sm:text-5xl">
-                Spices for Every Kitchen
-              </h2>
-            </div>
-            <ProductInventoryShowcase items={showcaseItems} />
-          </div>
-        </section>
-      )}
-
       {/* Featured slider: real products flagged `featured` in src/data/products.ts */}
       {featuredProducts.length > 0 && (
         <section id="featured" aria-label="Featured products" className="border-b border-turmeric/40 bg-parchment">
@@ -113,30 +105,39 @@ export default function ProductsPage() {
         </section>
       )}
 
-      {categories.map((category, index) => {
-        const items = getProductsByCategory(category.id);
-        return (
+      {/* Product inventory: one interactive showcase per category, in a wide container that uses
+          ~92% of the viewport on desktop. See ProductInventoryShowcase.tsx. */}
+      <section aria-labelledby="inventory-heading" className="bg-parchment">
+        <div className="mx-auto w-full px-4 pt-14 text-center sm:px-6 lg:w-[92%] lg:px-0 lg:pt-20">
+          <p className="eyebrow">Our products</p>
+          <h2 id="inventory-heading" className="display-heading mt-4 text-4xl text-earth sm:text-5xl">
+            Spices for Every Kitchen
+          </h2>
+        </div>
+
+        {showcases.map(({ category, items }, index) => (
           <section
             key={category.id}
             id={category.id}
             aria-labelledby={`${category.id}-heading`}
-            className={`relative overflow-hidden ${index % 2 === 1 ? "bg-ivory-deep/50" : ""}`}
+            className={`scroll-mt-24 ${index % 2 === 1 ? "bg-ivory-deep/50" : ""} ${
+              index < showcases.length - 1 ? "" : "border-b border-turmeric/40"
+            }`}
           >
-            <div className="relative z-10 mx-auto max-w-7xl px-6 py-14 lg:px-10 lg:py-20">
-              <h2 id={`${category.id}-heading`} className="display-heading text-5xl text-earth">
-                {category.name}
-              </h2>
-              <p className="mt-3 text-lg text-earth-muted">{category.summary}</p>
-
-              <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {items.map((product) => (
-                  <ProductCard key={product.id} product={product} variant="detailed" />
-                ))}
+            <div className="mx-auto w-full px-4 py-12 sm:px-6 lg:w-[92%] lg:px-0 lg:py-16">
+              <div className="text-center">
+                <h3 id={`${category.id}-heading`} className="display-heading text-4xl text-earth sm:text-5xl">
+                  {category.name}
+                </h3>
+                <p className="mt-3 text-lg text-earth-muted">
+                  {category.summary} <span className="whitespace-nowrap">({items.length} products)</span>
+                </p>
               </div>
+              <ProductInventoryShowcase items={items} label={`${category.name} products`} />
             </div>
           </section>
-        );
-      })}
+        ))}
+      </section>
     </>
   );
 }
