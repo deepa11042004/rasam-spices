@@ -150,6 +150,7 @@ export const products: Product[] = [
     id: "hing-powder",
     name: "Hing Powder",
     category: "ground-spices",
+    image: { src: "/images/dishes/spices/Hing.png", alt: "Hing (asafoetida) powder" },
     packSizes: ["25 g", "50 g", "100 g"],
     tagline: "Distinctive Aroma. Rich Flavour. Traditional Goodness.",
     description:
@@ -267,6 +268,7 @@ export const products: Product[] = [
     id: "jeera",
     name: "Jeera",
     category: "spices-seasonings",
+    image: { src: "/images/dishes/spices/Jeer.png", alt: "Jeera (cumin seeds)" },
     tagline: "Earthy Aroma. Authentic Taste. Everyday Goodness.",
     description:
       "Bring out the authentic taste of Indian cooking with Jeera. Known for its warm aroma and distinctive earthy flavour, cumin adds a delicious touch to curries, dals, vegetables, rice, and everyday dishes, making every meal more flavourful.",
