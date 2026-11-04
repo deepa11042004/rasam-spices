@@ -1,29 +1,51 @@
 
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Geist, Great_Vibes } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FloatingStarAnise from "@/components/FloatingStarAnise";
 
-const geistSans = Geist({
+// All three faces below are self-hosted locally (next/font/local) instead of fetched from Google
+// Fonts at build time (next/font/google), to avoid a Turbopack font-loader network-resolution
+// failure in some environments. Same families, same weights, same visual appearance -- just
+// bundled from disk instead of downloaded. See src/fonts/ (the variable-weight file is the exact
+// same file the "geist" npm package ships internally; vendoring it here means the build no longer
+// depends on that package's internal file layout surviving every future `npm install`).
+const geistSans = localFont({
+  src: "../fonts/geist-sans/Geist-Variable.woff2",
   variable: "--font-geist-sans",
-  subsets: ["latin"],
+  weight: "100 900",
 });
 
-// Editorial display face for headings (loaded by next/font: self-hosted, no extra package).
-const display = Cormorant_Garamond({
+// Editorial display face for headings.
+const display = localFont({
+  src: [
+    {
+      path: "../fonts/cormorant-garamond/cormorant-garamond-latin-500-normal.woff2",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../fonts/cormorant-garamond/cormorant-garamond-latin-600-normal.woff2",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "../fonts/cormorant-garamond/cormorant-garamond-latin-700-normal.woff2",
+      weight: "700",
+      style: "normal",
+    },
+  ],
   variable: "--font-display",
-  weight: ["500", "600", "700"],
-  subsets: ["latin"],
   display: "swap",
 });
 
 // Script face for the tagline (was a render-blocking @import from fonts.googleapis.com in globals.css).
-const script = Great_Vibes({
+const script = localFont({
+  src: "../fonts/great-vibes/great-vibes-latin-400-normal.woff2",
   variable: "--font-script",
   weight: "400",
-  subsets: ["latin"],
   display: "swap",
 });
 

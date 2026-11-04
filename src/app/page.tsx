@@ -136,30 +136,6 @@ export default function Home() {
         <RotatingDishSection />
       </div>
 
-      {/* OUR RANGE: quiet ivory */}
-      <section id="our-range" className="bg-parchment py-20 lg:py-28">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10">
-          <div className="max-w-2xl">
-            <p className="eyebrow">The collection</p>
-            <h2 className="display-heading mt-4 text-5xl text-earth sm:text-6xl">Our range</h2>
-            <p className="mt-5 text-lg leading-8 text-earth-muted">
-              Three families of spices, from single-spice powders to ready
-              blends for classic dishes.
-            </p>
-          </div>
-
-          <div className="mt-16 space-y-20 lg:space-y-24">
-            {categories.map((category) => (
-              <ProductCarousel
-                key={category.id}
-                category={category}
-                products={getProductsByCategory(category.id)}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ABOUT: image-led panel beside the story */}
       <section className="bg-ivory-deep/60 py-20 lg:py-28">
         <div className="mx-auto grid max-w-7xl items-center gap-12 px-6 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20 lg:px-10">
