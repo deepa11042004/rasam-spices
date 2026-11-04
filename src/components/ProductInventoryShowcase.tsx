@@ -16,8 +16,10 @@ export type ShowcaseDish = {
 
 export type ShowcaseItem = {
   product: Product;
-  /** The real dish photo already paired with this product in src/data/dishes.ts. */
-  dish: ShowcaseDish;
+  /** The real dish photo paired with this product in src/data/productDishPhotos.ts, when one
+   *  has been supplied yet. A product with none still appears, with a clearly labelled
+   *  placeholder in place of the photo -- never an invented path or a reused, unrelated image. */
+  dish?: ShowcaseDish;
 };
 
 type ProductInventoryShowcaseProps = {
@@ -36,12 +38,15 @@ function packLine(product: Product): string {
 // How much of the row's free space each tier claims. Basis is fixed at 0% in CSS (.showcase-card),
 // so these ratios are the ONLY thing driving each card's width -- without that fixed basis, cards
 // size to their content first and leave almost no free space for these ratios to redistribute.
+// Tuned for the 9 blended masalas: the previewed / pinned card needs enough room for a readable
+// description column (and, once pinned, the dish photo), so neighbours shrink to a slim strip
+// that shows the pack and a vertical name label instead of a squeezed horizontal one.
 const FLEX_GROW: Record<Tier, number> = {
   base: 1,
-  preview: 3,
-  pinned: 6,
-  "dimmed-preview": 0.85,
-  "dimmed-pinned": 0.75,
+  preview: 5,
+  pinned: 7,
+  "dimmed-preview": 0.5,
+  "dimmed-pinned": 0.4,
 };
 
 /**
@@ -89,7 +94,7 @@ export default function ProductInventoryShowcase({ items }: ProductInventoryShow
       ref={rowRef}
       onMouseLeave={clearPreview}
       onBlur={handleRowBlur}
-      className="mt-10 flex flex-col gap-4 overflow-hidden lg:flex-row"
+      className="mt-10 flex flex-col gap-4 overflow-hidden lg:flex-row lg:gap-3"
     >
       {items.map(({ product, dish }) => {
         const isPinned = pinnedId === product.id;
@@ -104,6 +109,7 @@ export default function ProductInventoryShowcase({ items }: ProductInventoryShow
                 ? "dimmed-preview"
                 : "base";
         const expanded = isPinned || isPreview;
+        const dimmed = tier === "dimmed-preview" || tier === "dimmed-pinned";
         const pack = packLine(product);
 
         return (
@@ -125,19 +131,31 @@ export default function ProductInventoryShowcase({ items }: ProductInventoryShow
               onFocus={() => preview(product.id)}
               onClick={() => togglePin(product.id)}
               onKeyDown={(event) => handleKeyDown(event, product.id)}
-              className="flex h-full min-h-[300px] cursor-pointer flex-col focus-visible:outline-2 focus-visible:outline-offset-[-3px] focus-visible:outline-turmeric lg:min-h-[420px] lg:flex-row lg:items-stretch"
+              className="flex h-full min-h-[300px] w-full min-w-0 cursor-pointer flex-col focus-visible:outline-2 focus-visible:outline-offset-[-3px] focus-visible:outline-turmeric lg:min-h-[420px] lg:flex-row lg:items-stretch"
             >
               {/* Always-visible core: pack photo, name, and (collapsed) the tagline as the
-                  card's short description. */}
-              <div className="flex min-w-0 shrink-0 flex-col items-center justify-center p-5 text-center lg:basis-[160px]">
+                  card's short description. Names wrap only between whole words and are never
+                  line-clamped; on desktop a slim neighbour strip turns the name into a vertical
+                  label so it stays fully readable without breaking a word. */}
+              <div
+                className={`flex min-w-0 flex-col items-center justify-center p-5 text-center lg:basis-[160px] ${
+                  dimmed ? "lg:px-1.5" : "lg:px-3"
+                }`}
+              >
                 <div className="w-full max-w-[140px]">
                   <ProductImage onDark product={product} sizes="140px" />
                 </div>
-                <h3 className="mt-3 line-clamp-2 break-words font-serif text-lg font-semibold text-parchment">
+                <h3
+                  className={`mt-3 font-serif text-lg font-semibold leading-snug text-parchment lg:text-[15px] ${
+                    dimmed ? "lg:rotate-180 lg:whitespace-nowrap lg:text-sm lg:[writing-mode:vertical-rl]" : ""
+                  }`}
+                >
                   {product.name}
                 </h3>
                 {!expanded && product.tagline && (
-                  <p className="mt-1 line-clamp-2 text-xs text-parchment/70">{product.tagline}</p>
+                  <p className={`mt-1 line-clamp-2 text-xs text-parchment/70 ${dimmed ? "lg:hidden" : ""}`}>
+                    {product.tagline}
+                  </p>
                 )}
               </div>
 
@@ -149,10 +167,10 @@ export default function ProductInventoryShowcase({ items }: ProductInventoryShow
                   it never reserves space on a card that is neither previewed nor pinned. */}
               <div
                 aria-hidden={!expanded}
-                className={`showcase-card__expanded flex min-w-0 flex-1 flex-col justify-center gap-4 overflow-hidden px-5 transition-[max-height,opacity] duration-300 motion-reduce:transition-none lg:flex-row lg:items-center lg:gap-6 lg:px-6 ${
+                className={`showcase-card__expanded flex min-w-0 flex-col justify-center gap-4 overflow-hidden transition-[max-height,opacity] duration-300 motion-reduce:transition-none lg:flex-row lg:items-center lg:gap-6 ${
                   expanded
-                    ? "max-h-[640px] pb-5 opacity-100 delay-150 lg:py-6"
-                    : "pointer-events-none max-h-0 pb-0 opacity-0"
+                    ? "max-h-[640px] flex-1 px-5 pb-5 opacity-100 delay-150 lg:px-6 lg:py-6"
+                    : "pointer-events-none max-h-0 flex-none p-0 opacity-0 lg:w-0"
                 }`}
               >
                 <div className="min-w-0 flex-1">
@@ -197,19 +215,25 @@ export default function ProductInventoryShowcase({ items }: ProductInventoryShow
                 </div>
 
                 {isPinned && (
-                  <div className="relative h-40 w-full shrink-0 overflow-hidden rounded-[0.6rem] border border-parchment/25 sm:h-48 lg:h-full lg:w-56">
-                    <Image
-                      src={dish.src}
-                      alt={dish.alt}
-                      fill
-                      sizes="(min-width: 1024px) 224px, 100vw"
-                      quality={90}
-                      className="object-cover"
-                      style={{
-                        objectPosition: dish.focus ?? "50% 50%",
-                        transform: dish.zoom ? `scale(${dish.zoom})` : undefined,
-                      }}
-                    />
+                  <div className="relative flex h-40 w-full shrink-0 items-center justify-center overflow-hidden rounded-[0.6rem] border border-parchment/25 bg-charcoal/20 sm:h-48 lg:h-full lg:w-[36%]">
+                    {dish ? (
+                      <Image
+                        src={dish.src}
+                        alt={dish.alt}
+                        fill
+                        sizes="(min-width: 1024px) 320px, 100vw"
+                        quality={90}
+                        className="object-cover"
+                        style={{
+                          objectPosition: dish.focus ?? "50% 50%",
+                          transform: dish.zoom ? `scale(${dish.zoom})` : undefined,
+                        }}
+                      />
+                    ) : (
+                      <p className="px-4 text-center text-xs font-medium text-parchment/60">
+                        [Dish photo to be added]
+                      </p>
+                    )}
                   </div>
                 )}
               </div>

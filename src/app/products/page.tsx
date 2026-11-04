@@ -5,20 +5,19 @@ import ProductCard from "@/components/ProductCard";
 import ProductCarousel from "@/components/ProductCarousel";
 import ProductHeroSlider from "@/components/ProductHeroSlider";
 import ProductInventoryShowcase, { type ShowcaseItem } from "@/components/ProductInventoryShowcase";
-import { dishes } from "@/data/dishes";
 import { heroSlides } from "@/data/productHeroSlides";
-import { categories, featuredProducts, getProduct, getProductsByCategory, products } from "@/data/products";
+import { categories, featuredProducts, getProductsByCategory, products } from "@/data/products";
+import { productDishPhotos } from "@/data/productDishPhotos";
 
-// Every dish in src/data/dishes.ts is already paired with a real product and a real food
-// photograph (the only place those pairings are made), so the showcase reuses that mapping
-// instead of inventing a new one.
-const showcaseItems: ShowcaseItem[] = dishes
-  .map((dish): ShowcaseItem | null => {
-    const product = getProduct(dish.productId);
-    if (!product) return null;
-    return { product, dish: { src: dish.src, alt: dish.alt, focus: dish.focus, zoom: dish.zoom } };
-  })
-  .filter((item): item is ShowcaseItem => item !== null);
+// All 9 blended masalas are shown regardless of whether a dish photo exists for each one yet
+// (src/data/productDishPhotos.ts is the only place that pairing is made for this showcase --
+// separate from src/data/dishes.ts, which drives the homepage's 6-slice rotating dish platter
+// and must not be resized). A product without a photo still appears, with a clearly labelled
+// placeholder instead of an invented or reused image.
+const showcaseItems: ShowcaseItem[] = getProductsByCategory("blended-masalas").map((product) => ({
+  product,
+  dish: productDishPhotos[product.id],
+}));
 
 export const metadata: Metadata = {
   title: "Products",

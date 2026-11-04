@@ -773,8 +773,11 @@
   display: flex;
   /* flex-basis must be 0 (not the "auto"/content-sized default), otherwise there is almost no
      free space left over for flex-grow to redistribute and hovering barely changes the width.
-     flex-grow itself is set from React (inline style), which overrides just that sub-value. */
-  flex: 1 1 0%;
+     Longhand on purpose (not the `flex` shorthand) -- flex-grow is set from React as an inline
+     style, and inline longhand only reliably overrides a stylesheet longhand of the same name. */
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 0%;
   overflow: hidden;
   border: 1px solid rgb(90 56 34 / 0.7);
   background: var(--brand-botanical-green);
