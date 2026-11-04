@@ -68,4 +68,54 @@ export const productDishPhotos: Partial<Record<string, ProductDishPhoto>> = {
     alt: "Pav bhaji: buttered bread rolls with a mashed vegetable curry",
     focus: "50% 55%",
   },
+
+  // ----------------------------------------------- Ground spices / Individual spices & seasonings
+  // Raw-spice photos from public/images/dishes/spices/, shown on the right once a card is pinned
+  // open (same mechanism as the dish photos above). Red Chilli Powder has no matching file in that
+  // folder, so it keeps showing no right-side photo.
+  "turmeric-powder": {
+    src: "/images/dishes/spices/Turmeric.png",
+    alt: "Turmeric powder",
+    focus: "50% 50%",
+  },
+  "coriander-powder": {
+    src: "/images/dishes/spices/Coriander.png",
+    alt: "Coriander powder",
+    focus: "50% 50%",
+  },
+  "pili-mirch-powder": {
+    src: "/images/dishes/spices/Pilli mirch.png",
+    alt: "Pili mirch (yellow chilli) powder",
+    focus: "50% 50%",
+  },
+  "sonth-powder": {
+    src: "/images/dishes/spices/Sonth.png",
+    alt: "Sonth (dry ginger) powder",
+    focus: "50% 50%",
+  },
+  "kashmiri-mirch": {
+    src: "/images/dishes/spices/Kashmiri mirch.png",
+    alt: "Kashmiri mirch (chilli) powder",
+    focus: "50% 50%",
+  },
+  "hing-powder": {
+    src: "/images/dishes/spices/Hing.png",
+    alt: "Hing (asafoetida) powder",
+    focus: "50% 50%",
+  },
+  jeera: {
+    src: "/images/dishes/spices/Jeer.png",
+    alt: "Jeera (cumin seeds)",
+    focus: "50% 50%",
+  },
+  "kasuri-methi": {
+    src: "/images/dishes/spices/kasuri methi.png",
+    alt: "Kasuri methi (dried fenugreek leaves)",
+    focus: "50% 50%",
+  },
+  "pink-salt": {
+    src: "/images/dishes/spices/pink salt.png",
+    alt: "Pink salt",
+    focus: "50% 50%",
+  },
 };
