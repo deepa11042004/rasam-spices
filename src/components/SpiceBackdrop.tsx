@@ -3,6 +3,8 @@ import Image from "next/image";
 type SpiceBackdropProps = {
   /** "light": translucent photo over warm ivory. "dark": photo sunk into charcoal. */
   tone?: "light" | "dark";
+  /** Overrides the default backdrop photo for this usage only. Defaults to spice-background.jpg. */
+  imageSrc?: string;
 };
 
 /**
@@ -15,7 +17,7 @@ type SpiceBackdropProps = {
  * Photo: supplied by the site owner, stored locally at public/images/spice-background.jpg and
  * optimised by next/image.
  */
-export default function SpiceBackdrop({ tone = "light" }: SpiceBackdropProps) {
+export default function SpiceBackdrop({ tone = "light", imageSrc = "/images/spice-background.jpg" }: SpiceBackdropProps) {
   const dark = tone === "dark";
   return (
     <div
@@ -23,7 +25,7 @@ export default function SpiceBackdrop({ tone = "light" }: SpiceBackdropProps) {
       className={`pointer-events-none absolute inset-0 -z-10 overflow-hidden ${dark ? "bg-charcoal" : "bg-parchment"}`}
     >
       <Image
-        src="/images/spice-background.jpg"
+        src={imageSrc}
         alt=""
         aria-hidden="true"
         fill

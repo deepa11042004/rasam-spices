@@ -39,8 +39,8 @@ export default function HeaderNav({ links }: { links: readonly NavLink[] }) {
 
   const linkClass = (href: string) =>
     isActive(pathname, href)
-      ? "text-green underline decoration-turmeric decoration-[1.5px] underline-offset-[10px]"
-      : "text-earth/80 hover:text-spice";
+      ? "text-[#24543A] underline decoration-[#24543A] decoration-[1.5px] underline-offset-[10px]"
+      : "text-[#30231D]/85 hover:text-[#24543A]";
 
   return (
     <>
@@ -62,7 +62,7 @@ export default function HeaderNav({ links }: { links: readonly NavLink[] }) {
       {/* Mobile toggle */}
       <button
         type="button"
-        className="inline-flex h-11 items-center gap-2 rounded-full border border-earth/25 px-4 text-xs font-semibold uppercase tracking-[0.14em] text-earth md:hidden"
+        className="inline-flex h-11 items-center gap-2 rounded-full border border-[#30231D]/25 px-4 text-xs font-semibold uppercase tracking-[0.14em] text-[#30231D] md:hidden"
         aria-expanded={open}
         aria-controls={menuId}
         onClick={() => setOpen((value) => !value)}
@@ -79,11 +79,11 @@ export default function HeaderNav({ links }: { links: readonly NavLink[] }) {
       <div
         id={menuId}
         hidden={!open}
-        className="absolute inset-x-0 top-full border-b border-cacao/30 bg-turmeric shadow-card md:hidden"
+        className="absolute inset-x-0 top-full border-b border-[#80613A]/30 bg-[#C99A45] shadow-card md:hidden"
       >
         <ul className="mx-auto flex max-w-7xl flex-col px-6 py-2">
           {links.map((link) => (
-            <li key={link.href} className="border-b border-earth/10 last:border-b-0">
+            <li key={link.href} className="border-b border-[#30231D]/10 last:border-b-0">
               <Link
                 href={link.href}
                 aria-current={isActive(pathname, link.href) ? "page" : undefined}

@@ -16,12 +16,12 @@ export default function AboutPage() {
         <div className="mx-auto grid max-w-7xl items-center gap-12 px-6 py-16 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20 lg:px-10 lg:py-24">
           <div className="image-frame relative mx-auto aspect-[4/5] w-full max-w-md lg:max-w-none">
             <Image
-              src="/images/spice-background.jpg"
-              alt="Whole spices: turmeric, star anise and chillies"
+              src="/images/about.png"
+              alt="Glass jars of ground turmeric, Kashmiri chilli, black pepper and whole spices"
               fill
               sizes="(min-width: 1024px) 40vw, 90vw"
               quality={90}
-              className="object-cover object-[50%_35%]"
+              className="object-cover object-center"
             />
           </div>
 
@@ -72,7 +72,7 @@ export default function AboutPage() {
       {/* SMALL BEGINNINGS. BIG AMBITIONS: deep botanical-green band, same dark-panel language as
           the homepage's business-enquiries section, with a faint mandala-corner ornament. */}
       <section className="relative isolate overflow-hidden border-y border-cacao/40 bg-botanical-green text-ivory">
-        <SpiceBackdrop tone="dark" />
+        <SpiceBackdrop tone="dark" imageSrc="/images/about.png" />
         <div
           aria-hidden="true"
           className="pointer-events-none absolute -right-16 -top-16 h-72 w-72 bg-[url('/patterns/mandala-corner.svg')] bg-contain bg-no-repeat opacity-[0.08] sm:h-96 sm:w-96"
