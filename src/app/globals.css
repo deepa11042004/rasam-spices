@@ -771,6 +771,10 @@
 .showcase-card {
   position: relative;
   display: flex;
+  /* flex-basis must be 0 (not the "auto"/content-sized default), otherwise there is almost no
+     free space left over for flex-grow to redistribute and hovering barely changes the width.
+     flex-grow itself is set from React (inline style), which overrides just that sub-value. */
+  flex: 1 1 0%;
   overflow: hidden;
   border: 1px solid rgb(90 56 34 / 0.7);
   background: var(--brand-botanical-green);

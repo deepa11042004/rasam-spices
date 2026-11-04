@@ -1,6 +1,6 @@
 "use client";
 
-import type { FocusEvent, MouseEvent } from "react";
+import type { FocusEvent, KeyboardEvent, MouseEvent } from "react";
 import { useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -24,6 +24,8 @@ type ProductInventoryShowcaseProps = {
   items: ShowcaseItem[];
 };
 
+type Tier = "base" | "preview" | "pinned" | "dimmed-preview" | "dimmed-pinned";
+
 function packLine(product: Product): string {
   const sizes = product.packSizes?.join(", ");
   const format = product.packFormat;
@@ -31,96 +33,124 @@ function packLine(product: Product): string {
   return sizes ?? format ?? "";
 }
 
+// How much of the row's free space each tier claims. Basis is fixed at 0% in CSS (.showcase-card),
+// so these ratios are the ONLY thing driving each card's width -- without that fixed basis, cards
+// size to their content first and leave almost no free space for these ratios to redistribute.
+const FLEX_GROW: Record<Tier, number> = {
+  base: 1,
+  preview: 3,
+  pinned: 6,
+  "dimmed-preview": 0.85,
+  "dimmed-pinned": 0.75,
+};
+
 /**
- * Horizontal inventory showcase for the Products page, built after the client's reference
- * design: equal-width cards that redistribute with a single expanded "inventory card" on
- * hover / keyboard focus / tap. Only `flex-grow` is transitioned on desktop (basis and shrink
- * stay constant), so the row's own width never changes -- cards resize into each other rather
- * than causing horizontal overflow or a page reflow. `min-width: 0` on every card lets them
- * shrink past their content's natural size instead of forcing the row wider than its container.
+ * Horizontal inventory showcase for the Products page: equal-width cards by default, a medium
+ * hover/focus "preview" (tagline, description, highlights -- no dish photo yet), and a larger
+ * click/tap "pinned" showcase (adds the matching dish photo and a link to the full product
+ * page) that stays open until another card is picked or it is explicitly closed.
  *
- * Exactly one card is ever expanded: a single `activeId` is the source of truth for every
- * trigger (mouse, keyboard focus, touch), so hover and keyboard can never leave two cards
- * expanded at once.
+ * A click or tap always means "toggle this card's pinned state" -- it never navigates by
+ * itself, on desktop or mobile alike, so the same handler covers both. Real navigation to
+ * `/products/[id]` only happens through the explicit "View full product details" link that
+ * appears once a card is pinned, which is why the card's own wrapper is a `role="button"` div
+ * rather than a `<Link>`: a real `<a>` cannot contain another interactive `<a>` or `<button>`.
  */
 export default function ProductInventoryShowcase({ items }: ProductInventoryShowcaseProps) {
-  const [activeId, setActiveId] = useState<string | null>(null);
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [pinnedId, setPinnedId] = useState<string | null>(null);
   const rowRef = useRef<HTMLDivElement>(null);
 
-  const activate = (id: string) => setActiveId(id);
-  const deactivate = () => setActiveId(null);
+  const preview = (id: string) => {
+    if (!pinnedId) setHoveredId(id);
+  };
+  const clearPreview = () => setHoveredId(null);
 
-  // Tabbing between cards shouldn't flicker the expanded state closed and open again; only
-  // collapse once focus has actually left the whole row.
+  const togglePin = (id: string) => setPinnedId((current) => (current === id ? null : id));
+  const closePin = () => setPinnedId(null);
+
+  // Tabbing between cards shouldn't flicker the preview closed and open again; only clear it
+  // once focus has actually left the whole row. A pinned card is never cleared by blur -- only
+  // picking another card or the explicit close button changes it.
   const handleRowBlur = (event: FocusEvent<HTMLDivElement>) => {
     const next = event.relatedTarget as Node | null;
-    if (!next || !rowRef.current?.contains(next)) deactivate();
+    if (!next || !rowRef.current?.contains(next)) clearPreview();
   };
 
-  // On touch devices there is no hover to expand a card first, so the first tap on an
-  // inactive card previews it instead of immediately navigating away; tapping it again (now
-  // active) or tapping a different card follows the link / switches the preview as normal.
-  // Devices that do support hover already have the card expanded before the click lands, so
-  // this never intercepts a genuine desktop click.
-  const handleCardClick = (event: MouseEvent<HTMLAnchorElement>, id: string) => {
-    const supportsHover =
-      typeof window !== "undefined" &&
-      window.matchMedia("(hover: hover) and (pointer: fine)").matches;
-    if (supportsHover) return;
-    if (activeId !== id) {
+  const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>, id: string) => {
+    if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
-      activate(id);
+      togglePin(id);
     }
   };
 
   return (
     <div
       ref={rowRef}
-      onMouseLeave={deactivate}
+      onMouseLeave={clearPreview}
       onBlur={handleRowBlur}
       className="mt-10 flex flex-col gap-4 overflow-hidden lg:flex-row"
     >
       {items.map(({ product, dish }) => {
-        const isActive = activeId === product.id;
-        const dimmed = activeId !== null && !isActive;
+        const isPinned = pinnedId === product.id;
+        const isPreview = !pinnedId && hoveredId === product.id;
+        const tier: Tier = isPinned
+          ? "pinned"
+          : pinnedId
+            ? "dimmed-pinned"
+            : isPreview
+              ? "preview"
+              : hoveredId
+                ? "dimmed-preview"
+                : "base";
+        const expanded = isPinned || isPreview;
         const pack = packLine(product);
 
         return (
           <article
             key={product.id}
-            className={`showcase-card min-w-0 rounded-card ${isActive ? "showcase-card--active" : ""}`}
-            style={{ flexGrow: isActive ? 5 : dimmed ? 0.65 : 1 }}
-            onMouseEnter={() => activate(product.id)}
+            className={`showcase-card min-w-0 rounded-card ${isPinned ? "showcase-card--active" : ""}`}
+            style={{ flexGrow: FLEX_GROW[tier] }}
+            onMouseEnter={() => preview(product.id)}
           >
-            <Link
-              href={`/products/${product.id}`}
-              onFocus={() => activate(product.id)}
-              onClick={(event) => handleCardClick(event, product.id)}
-              aria-expanded={isActive}
-              className="flex h-full min-h-[300px] flex-col focus-visible:outline-2 focus-visible:outline-offset-[-3px] focus-visible:outline-turmeric lg:min-h-[420px] lg:flex-row lg:items-stretch"
+            {/* The whole card is the toggle target (click/tap/Enter pins or unpins it); it is a
+                div, not a button or link, so it can legally contain the real link and close
+                button that appear once pinned. */}
+            <div
+              role="button"
+              tabIndex={0}
+              aria-expanded={expanded}
+              aria-pressed={isPinned}
+              aria-label={`${product.name}: ${isPinned ? "expanded, press to collapse" : "press to expand"}`}
+              onFocus={() => preview(product.id)}
+              onClick={() => togglePin(product.id)}
+              onKeyDown={(event) => handleKeyDown(event, product.id)}
+              className="flex h-full min-h-[300px] cursor-pointer flex-col focus-visible:outline-2 focus-visible:outline-offset-[-3px] focus-visible:outline-turmeric lg:min-h-[420px] lg:flex-row lg:items-stretch"
             >
               {/* Always-visible core: pack photo, name, and (collapsed) the tagline as the
                   card's short description. */}
-              <div className="flex min-w-0 flex-col items-center justify-center p-5 text-center lg:basis-[160px]">
+              <div className="flex min-w-0 shrink-0 flex-col items-center justify-center p-5 text-center lg:basis-[160px]">
                 <div className="w-full max-w-[140px]">
                   <ProductImage onDark product={product} sizes="140px" />
                 </div>
-                <h3 className="mt-3 line-clamp-2 font-serif text-lg font-semibold text-parchment">
+                <h3 className="mt-3 line-clamp-2 break-words font-serif text-lg font-semibold text-parchment">
                   {product.name}
                 </h3>
-                {!isActive && product.tagline && (
+                {!expanded && product.tagline && (
                   <p className="mt-1 line-clamp-2 text-xs text-parchment/70">{product.tagline}</p>
                 )}
               </div>
 
-              {/* Expanded showcase: full tagline + description, real pack/category facts, and
-                  the matching dish photo. Kept in the DOM (not conditionally rendered) so the
-                  transition has real content to reveal instead of popping in; collapsed to
-                  zero height so it never reserves space on a card that isn't active. */}
+              {/* Preview + pinned showcase: full tagline, description and real pack/category
+                  facts appear from the "preview" tier up; the dish photo, the explicit link to
+                  the full product page and the close control only appear once pinned. Kept in
+                  the DOM throughout (not conditionally rendered) so the width/height transition
+                  has real content to reveal instead of popping in; collapsed to zero height so
+                  it never reserves space on a card that is neither previewed nor pinned. */}
               <div
-                aria-hidden={!isActive}
+                aria-hidden={!expanded}
                 className={`showcase-card__expanded flex min-w-0 flex-1 flex-col justify-center gap-4 overflow-hidden px-5 transition-[max-height,opacity] duration-300 motion-reduce:transition-none lg:flex-row lg:items-center lg:gap-6 lg:px-6 ${
-                  isActive
+                  expanded
                     ? "max-h-[640px] pb-5 opacity-100 delay-150 lg:py-6"
                     : "pointer-events-none max-h-0 pb-0 opacity-0"
                 }`}
@@ -147,24 +177,57 @@ export default function ProductInventoryShowcase({ items }: ProductInventoryShow
                       </>
                     )}
                   </div>
+
+                  {isPinned ? (
+                    <Link
+                      href={`/products/${product.id}`}
+                      onClick={(event) => event.stopPropagation()}
+                      className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-parchment underline decoration-turmeric/50 underline-offset-4 transition-colors hover:text-turmeric hover:decoration-turmeric focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-turmeric"
+                    >
+                      View full product details
+                      <span aria-hidden="true">&rarr;</span>
+                    </Link>
+                  ) : (
+                    isPreview && (
+                      <p className="mt-4 text-xs font-semibold uppercase tracking-[0.14em] text-parchment/60">
+                        Click to see more
+                      </p>
+                    )
+                  )}
                 </div>
 
-                <div className="relative h-40 w-full shrink-0 overflow-hidden rounded-[0.6rem] border border-parchment/25 sm:h-48 lg:h-full lg:w-56">
-                  <Image
-                    src={dish.src}
-                    alt={dish.alt}
-                    fill
-                    sizes="(min-width: 1024px) 224px, 100vw"
-                    quality={85}
-                    className="object-cover"
-                    style={{
-                      objectPosition: dish.focus ?? "50% 50%",
-                      transform: dish.zoom ? `scale(${dish.zoom})` : undefined,
-                    }}
-                  />
-                </div>
+                {isPinned && (
+                  <div className="relative h-40 w-full shrink-0 overflow-hidden rounded-[0.6rem] border border-parchment/25 sm:h-48 lg:h-full lg:w-56">
+                    <Image
+                      src={dish.src}
+                      alt={dish.alt}
+                      fill
+                      sizes="(min-width: 1024px) 224px, 100vw"
+                      quality={90}
+                      className="object-cover"
+                      style={{
+                        objectPosition: dish.focus ?? "50% 50%",
+                        transform: dish.zoom ? `scale(${dish.zoom})` : undefined,
+                      }}
+                    />
+                  </div>
+                )}
               </div>
-            </Link>
+            </div>
+
+            {isPinned && (
+              <button
+                type="button"
+                onClick={(event: MouseEvent<HTMLButtonElement>) => {
+                  event.stopPropagation();
+                  closePin();
+                }}
+                aria-label={`Close ${product.name} details`}
+                className="absolute right-3 top-3 z-10 inline-flex h-8 w-8 items-center justify-center rounded-full border border-parchment/40 bg-charcoal/40 text-parchment transition-colors hover:border-turmeric hover:text-turmeric focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-turmeric"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            )}
           </article>
         );
       })}
