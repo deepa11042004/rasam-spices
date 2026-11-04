@@ -452,38 +452,22 @@
   opacity: 0;
 }
 
-/* Small screens: the plate shrinks above the masala (no sideways move) */
+/* Small screens: the plate shrinks above the masala once a dish is picked (no sideways move).
+   Unselected, the panel now holds the permanent "Blended Masale" intro, so the plate stays full
+   size and the text follows underneath in normal flow. */
 .dish-stage[data-sel="true"] .dish-slot {
   scale: 0.66;
   margin-block: -16%;
 }
-.dish-stage[data-sel="false"] .dish-panel {
-  opacity: 0;
-  max-height: 0;
-  overflow: hidden;
-  pointer-events: none;
-  visibility: hidden;
-  transition:
-    opacity 0.3s ease,
-    translate 0.5s ease,
-    max-height 0.6s ease,
-    visibility 0s 0.6s;
-}
 
 @media (min-width: 1024px) {
-  /* Six-dish view: big plate, centred in the whole section (the empty right column is invisible) */
-  .dish-stage[data-sel="false"] .dish-slot {
-    translate: 50% 0;
-    scale: 1.2;
-  }
-  .dish-stage[data-sel="false"] .dish-panel {
-    max-height: none;
-    overflow: visible;
+  /* The panel is always visible now (intro text, or the featured masala once a dish is picked),
+     so the plate always sits beside it rather than being centred alone. */
+  .dish-panel {
     translate: 2.5rem 0;
   }
-  /* Selected: plate slides to the left column and shrinks */
+  /* Selected: plate shrinks slightly, leaving a little more room for the featured-masala panel */
   .dish-stage[data-sel="true"] .dish-slot {
-    translate: 0 0;
     scale: 0.92;
     margin-block: 0;
   }
@@ -584,7 +568,6 @@
   .dish-photo,
   .dish-slice,
   .dish-slice-ring,
-  .dish-stage[data-sel="false"] .dish-panel,
   .dish-stage[data-sel="true"] .dish-sectors {
     transition: none;
   }

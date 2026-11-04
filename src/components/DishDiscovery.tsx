@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import DishPlatter from "@/components/DishPlatter";
 import FeaturedMasala from "@/components/FeaturedMasala";
@@ -89,8 +90,8 @@ export default function DishDiscovery({ items }: { items: DishStageItem[] }) {
               />
             </div>
 
-            <div className="dish-panel" inert={!isSelected}>
-              {selected !== null && (
+            <div className="dish-panel">
+              {selected !== null ? (
                 <FeaturedMasala
                   item={items[selected]}
                   index={selected}
@@ -102,6 +103,23 @@ export default function DishDiscovery({ items }: { items: DishStageItem[] }) {
                   onPrevious={() => step(-1)}
                   onNext={() => step(1)}
                 />
+              ) : (
+                /* Default state (no dish picked yet): the homepage's introduction to Blended
+                   Masalas, beside the platter. Replaced by the FeaturedMasala panel above once a
+                   dish is selected, same as before. */
+                <div className="mx-auto max-w-md px-2 text-center lg:px-8 lg:text-left">
+                  <p className="eyebrow eyebrow-light">Blended masalas</p>
+                  <h3 className="display-heading mt-4 text-4xl text-parchment sm:text-5xl">
+                    Blended Masale
+                  </h3>
+                  <p className="mt-5 text-lg leading-8 text-parchment/80">
+                    Ready spice blends for classic dishes from across India. Pick a dish on the
+                    platter to see the masala behind it, or browse the full range.
+                  </p>
+                  <Link href="/products#blended-masalas" className="btn btn-light mt-8">
+                    View All Blended Masalas
+                  </Link>
+                </div>
               )}
             </div>
           </div>

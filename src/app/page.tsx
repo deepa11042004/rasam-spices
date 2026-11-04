@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { CSSProperties } from "react";
 
+import CategoryCard from "@/components/CategoryCard";
 import HeroVisual from "@/components/HeroVisual";
 import OrnamentDivider from "@/components/OrnamentDivider";
 import ProductCarousel from "@/components/ProductCarousel";
@@ -11,7 +12,7 @@ import SpiceBackdrop from "@/components/SpiceBackdrop";
 import RasamAnimatedLogo from "@/components/RasamAnimatedLogo";
 
 import { company } from "@/data/company";
-import { categories, getProductsByCategory } from "@/data/products";
+import { categories, featuredProducts, getProductsByCategory } from "@/data/products";
 
 
 export default function Home() {
@@ -81,7 +82,60 @@ export default function Home() {
         </div>
       </section>
 
-  
+      {/* FEATURED PRODUCTS: same slider used on the Products page, now the homepage's first
+          product moment right after the hero. Removed from the Products page to avoid
+          duplication. */}
+      {featuredProducts.length > 0 && (
+        <section id="featured" aria-label="Featured products" className="border-b border-turmeric/40 bg-parchment">
+          <div className="mx-auto max-w-7xl px-6 py-12 lg:px-10 lg:py-16">
+            <ProductCarousel
+              category={{ id: "featured", name: "Featured products" }}
+              products={featuredProducts}
+            />
+          </div>
+        </section>
+      )}
+
+      {/* SHOP BY CATEGORY: two cards straight to the Products page's category anchors. Blended
+          Masalas is represented by the dish platter below instead of a third card here. */}
+      <section aria-label="Shop by category" className="bg-parchment pb-20 lg:pb-28">
+        <div className="mx-auto max-w-7xl px-6 lg:px-10">
+          <div className="max-w-2xl">
+            <p className="eyebrow">Browse</p>
+            <h2 className="display-heading mt-4 text-4xl text-earth sm:text-5xl">Shop by category</h2>
+          </div>
+
+          <div className="mt-10 grid gap-6 sm:grid-cols-2">
+            <CategoryCard
+              title="Individual Spices & Seasonings"
+              description="Jeera, kasuri methi and pink salt for everyday seasoning."
+              href="/products#spices-seasonings"
+              image={{
+                src: "/images/blackmirch.png",
+                alt: "A close pile of whole black peppercorns",
+              }}
+            />
+            <CategoryCard
+              title="Ground Spices"
+              description="Single-spice powders for everyday Indian cooking."
+              href="/products#ground-spices"
+              image={{
+                src: "/images/hero-spices.png",
+                alt: "Bowls of ground turmeric and red chilli powder with whole cinnamon, star anise and cardamom",
+              }}
+              imagePosition="82% 48%"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* DISH PLATTER: charcoal band with the spice photograph sunk into it. The homepage's
+          introduction to Blended Masalas -- see the text beside the plate in DishDiscovery.tsx. */}
+      <div className="relative isolate overflow-hidden border-y border-turmeric/40">
+        <SpiceBackdrop tone="dark" />
+        <RotatingDishSection />
+      </div>
+
       {/* OUR RANGE: quiet ivory */}
       <section id="our-range" className="bg-parchment py-20 lg:py-28">
         <div className="mx-auto max-w-7xl px-6 lg:px-10">
@@ -105,12 +159,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-         {/* DISH PLATTER: charcoal band with the spice photograph sunk into it */}
-      <div className="relative isolate overflow-hidden border-y border-turmeric/40">
-        <SpiceBackdrop tone="dark" />
-        <RotatingDishSection />
-      </div>
-
 
       {/* ABOUT: image-led panel beside the story */}
       <section className="bg-ivory-deep/60 py-20 lg:py-28">
