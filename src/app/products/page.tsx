@@ -35,18 +35,26 @@ export default function ProductsPage() {
           </div>
         </div>
 
-        {/* Subtle, translucent Kashmiri-chilli backdrop behind the heading only (not the page). */}
-        <div className="relative z-10 mx-auto max-w-7xl bg-chilli/10 px-6 pb-12 pt-10 lg:px-10 lg:pb-16 lg:pt-14">
-          <p className="eyebrow">The catalogue</p>
-          <h1 className="display-heading mt-4 text-5xl text-earth sm:text-7xl">Our products</h1>
-          <p className="mt-5 max-w-2xl text-lg leading-8 text-earth-muted">
-            {products.length} spices and masalas in three categories. For orders and trade
-            terms, please{" "}
-            <Link href="/contact" className="font-semibold text-spice underline underline-offset-4">
-              send an enquiry
-            </Link>
-            .
-          </p>
+        <div className="relative z-10 mx-auto max-w-7xl px-6 pb-12 pt-10 lg:px-10 lg:pb-16 lg:pt-14">
+          {/* Soft, diffused Kashmiri-chilli glow behind the heading and description only -- a
+              blurred radial wash with no hard edges, not a panel. The category nav below sits
+              outside this wrapper, back on the plain ivory background. */}
+          <div className="relative">
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute -inset-x-10 -inset-y-14 -z-10 bg-[radial-gradient(60%_90%_at_28%_35%,rgb(140_47_34_/_0.20),transparent_72%)] blur-3xl lg:-inset-x-16"
+            />
+            <p className="eyebrow">The catalogue</p>
+            <h1 className="display-heading mt-4 text-5xl text-earth sm:text-7xl">Our products</h1>
+            <p className="mt-5 max-w-2xl text-lg leading-8 text-earth-muted">
+              {products.length} spices and masalas in three categories. For orders and trade
+              terms, please{" "}
+              <Link href="/contact" className="font-semibold text-spice underline underline-offset-4">
+                send an enquiry
+              </Link>
+              .
+            </p>
+          </div>
 
           <nav aria-label="Product categories" className="mt-8">
             <ul className="flex flex-wrap gap-3">
