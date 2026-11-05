@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import PackagingGallery from "@/components/PackagingGallery";
+import ProductPrevNextNav from "@/components/ProductPrevNextNav";
 import RelatedProducts from "@/components/RelatedProducts";
 import { company } from "@/data/company";
 import { getCategory, getProduct, products } from "@/data/products";
@@ -71,8 +72,14 @@ export default async function ProductPage(props: PageProps<"/products/[id]">) {
           </ol>
         </nav>
 
+        {/* Prev/next (mobile): under the breadcrumb, out of the way of the gallery and details. */}
+        <ProductPrevNextNav product={product} variant="mobile" />
+
         {/* B. Main product presentation */}
-        <div className="mt-8 grid gap-8 md:grid-cols-[minmax(0,300px)_1fr] md:gap-10 lg:grid-cols-[minmax(0,480px)_1fr] lg:gap-16 xl:grid-cols-[minmax(0,560px)_1fr]">
+        <div className="relative mt-8 grid gap-8 md:grid-cols-[minmax(0,300px)_1fr] md:gap-10 lg:grid-cols-[minmax(0,480px)_1fr] lg:gap-16 xl:grid-cols-[minmax(0,560px)_1fr]">
+          {/* Prev/next (desktop/tablet): outside both columns, vertically centred on this section. */}
+          <ProductPrevNextNav product={product} variant="desktop" />
+
           <PackagingGallery product={product} />
 
           <div className="md:sticky md:top-28 md:self-start">
