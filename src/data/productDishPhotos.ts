@@ -22,7 +22,7 @@ export type ProductDishPhoto = {
 export const productDishPhotos: Partial<Record<string, ProductDishPhoto>> = {
   "biryani-masala": {
     src: "/images/dishes/Biryani.png",
-    alt: "Chicken biryani with saffron rice",
+    alt: "Vegetable biryani with paneer, peas and beans",
     focus: "50% 50%",
   },
   "shahi-paneer-masala": {

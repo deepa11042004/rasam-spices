@@ -64,15 +64,20 @@ export const categories: Category[] = [
   },
 ];
 
-/** Front pack photo: public/images/products/<file>.webp */
-const img = (file: string, name: string, format: "box" | "pouch"): ProductPhoto => ({
-  src: `/images/products/${file}.webp`,
+/** Front pack photo: public/images/products/<file>.<ext> (ext defaults to webp). */
+const img = (
+  file: string,
+  name: string,
+  format: "box" | "pouch",
+  ext: "webp" | "png" = "webp",
+): ProductPhoto => ({
+  src: `/images/products/${file}.${ext}`,
   alt: `Front of the RASAM ${name} ${format}`,
 });
 
-/** Back pack photo: public/images/products/<file>-back.webp */
-const backImg = (file: string, name: string): ProductPhoto => ({
-  src: `/images/products/${file}-back.webp`,
+/** Back pack photo: public/images/products/<file>-back.<ext> (ext defaults to webp). */
+const backImg = (file: string, name: string, ext: "webp" | "png" = "webp"): ProductPhoto => ({
+  src: `/images/products/${file}-back.${ext}`,
   alt: `Back of the RASAM ${name} pouch, showing the printed label`,
 });
 
@@ -94,6 +99,8 @@ export const products: Product[] = [
     id: "red-chilli-powder",
     name: "Red Chilli Powder",
     category: "ground-spices",
+    image: img("red-chilli-powder", "Red Chilli Powder", "pouch", "png"),
+    backImage: backImg("red-chilli-powder", "Red Chilli Powder", "png"),
     packFormat: "Pouch",
     tagline: "Bold Heat. Rich Colour. Authentic Flavour.",
     description:
@@ -150,7 +157,10 @@ export const products: Product[] = [
     id: "hing-powder",
     name: "Hing Powder",
     category: "ground-spices",
-    image: { src: "/images/dishes/spices/Hing.png", alt: "Hing (asafoetida) powder" },
+    image: {
+      src: "/images/products/hing-powder.png",
+      alt: "Front of the RASAM Strong Hing Powder jar",
+    },
     packSizes: ["25 g", "50 g", "100 g"],
     tagline: "Distinctive Aroma. Rich Flavour. Traditional Goodness.",
     description:
@@ -268,7 +278,8 @@ export const products: Product[] = [
     id: "jeera",
     name: "Jeera",
     category: "spices-seasonings",
-    image: { src: "/images/dishes/spices/Jeer.png", alt: "Jeera (cumin seeds)" },
+    image: img("jeera", "Jeera", "pouch", "png"),
+    backImage: backImg("jeera", "Jeera", "png"),
     tagline: "Earthy Aroma. Authentic Taste. Everyday Goodness.",
     description:
       "Bring out the authentic taste of Indian cooking with Jeera. Known for its warm aroma and distinctive earthy flavour, cumin adds a delicious touch to curries, dals, vegetables, rice, and everyday dishes, making every meal more flavourful.",

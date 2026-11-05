@@ -29,7 +29,7 @@ export const dishes: readonly DishEntry[] = [
     id: "biryani",
     name: "Biryani",
     src: "/images/dishes/Biryani.png",
-    alt: "Chicken biryani with saffron rice",
+    alt: "Vegetable biryani with paneer, peas and beans",
     focus: "50% 50%",
     productId: "biryani-masala",
   },
