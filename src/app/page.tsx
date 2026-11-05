@@ -120,10 +120,10 @@ export default function Home() {
               description="Single-spice powders for everyday Indian cooking."
               href="/products#ground-spices"
               image={{
-                src: "/images/hero-spices.png",
-                alt: "Bowls of ground turmeric and red chilli powder with whole cinnamon, star anise and cardamom",
+                src: "/images/Ground%20Spices.png",
+                alt: "Wooden bowls of ground turmeric, coriander, red chilli and black pepper on a wooden board with fresh ginger, garlic and cinnamon",
               }}
-              imagePosition="82% 48%"
+              imagePosition="50% 58%"
             />
           </div>
         </div>
