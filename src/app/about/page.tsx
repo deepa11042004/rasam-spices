@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import FoundersSection from "@/components/FoundersSection";
 import OrnamentDivider from "@/components/OrnamentDivider";
 import SpiceBackdrop from "@/components/SpiceBackdrop";
 
@@ -68,6 +69,10 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+
+      {/* OUR LEADERSHIP: Honey + Ajay founder bios, on the same botanical-green band language used
+          in the "Small Beginnings" section below so the two dark panels read as a pair. */}
+      <FoundersSection />
 
       {/* SMALL BEGINNINGS. BIG AMBITIONS: deep botanical-green band, same dark-panel language as
           the homepage's business-enquiries section, with a faint mandala-corner ornament. */}

@@ -106,11 +106,40 @@ export default function ProductsPage() {
       )}
 
       {/* Product inventory: one interactive showcase per category, in a wide container that uses
-          ~92% of the viewport on desktop. See ProductInventoryShowcase.tsx. */}
-      <section aria-labelledby="inventory-heading" className="bg-parchment">
-        <div className="mx-auto w-full px-4 pt-14 text-center sm:px-6 lg:w-[92%] lg:px-0 lg:pt-20">
-          <p className="eyebrow">Our products</p>
-          <h2 id="inventory-heading" className="display-heading mt-4 text-4xl text-earth sm:text-5xl">
+          ~92% of the viewport on desktop. See ProductInventoryShowcase.tsx.
+
+          Background: wooden-spoon-of-spices photograph on a dark slate, biased to the LEFT where
+          the spices sit, with a dark overlay for text readability and parchment fades top/bottom
+          so neighbouring sections transition smoothly. The inventory cards inside already carry
+          their own light backgrounds, so they stay perfectly readable above the dark backdrop. */}
+      <section
+        aria-labelledby="inventory-heading"
+        className="relative isolate overflow-hidden"
+      >
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-20">
+          <Image
+            src="/images/our product background.jpg"
+            alt=""
+            fill
+            sizes="100vw"
+            quality={80}
+            className="object-cover"
+            style={{ objectPosition: "left center" }}
+          />
+        </div>
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 bg-charcoal/70" />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-20 bg-linear-to-b from-parchment to-transparent lg:h-28"
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-20 bg-linear-to-t from-parchment to-transparent lg:h-28"
+        />
+
+        <div className="relative mx-auto w-full px-4 pt-14 text-center sm:px-6 lg:w-[92%] lg:px-0 lg:pt-20">
+          <p className="eyebrow eyebrow-light justify-center">Our products</p>
+          <h2 id="inventory-heading" className="display-heading mt-4 text-4xl text-ivory sm:text-5xl">
             Spices for Every Kitchen
           </h2>
         </div>
@@ -120,16 +149,16 @@ export default function ProductsPage() {
             key={category.id}
             id={category.id}
             aria-labelledby={`${category.id}-heading`}
-            className={`scroll-mt-24 ${index % 2 === 1 ? "bg-ivory-deep/50" : ""} ${
+            className={`relative scroll-mt-24 ${
               index < showcases.length - 1 ? "" : "border-b border-turmeric/40"
             }`}
           >
             <div className="mx-auto w-full px-4 py-12 sm:px-6 lg:w-[92%] lg:px-0 lg:py-16">
               <div className="text-center">
-                <h3 id={`${category.id}-heading`} className="display-heading text-4xl text-earth sm:text-5xl">
+                <h3 id={`${category.id}-heading`} className="display-heading text-4xl text-ivory sm:text-5xl">
                   {category.name}
                 </h3>
-                <p className="mt-3 text-lg text-earth-muted">
+                <p className="mt-3 text-lg text-parchment/85">
                   {category.summary} <span className="whitespace-nowrap">({items.length} products)</span>
                 </p>
               </div>

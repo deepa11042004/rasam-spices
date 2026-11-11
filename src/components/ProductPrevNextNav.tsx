@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { getProductsByCategory, type Product } from "@/data/products";
 
+// z-10 lifts the desktop arrows above the PackagingGallery card edge they overlap; the ivory
+// ring makes the green button read as a distinct floating element against the gallery panel.
 const circleButton =
-  "group flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-green text-ivory shadow-card transition-colors hover:bg-green-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-turmeric sm:h-12 sm:w-12";
+  "group z-10 flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-green text-ivory shadow-lift ring-2 ring-parchment transition-colors hover:bg-green-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-turmeric sm:h-12 sm:w-12";
 
 function ChevronLeftIcon() {
   return (
