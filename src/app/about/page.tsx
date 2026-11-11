@@ -70,10 +70,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* OUR LEADERSHIP: Honey + Ajay founder bios, on the same botanical-green band language used
-          in the "Small Beginnings" section below so the two dark panels read as a pair. */}
-      <FoundersSection />
-
       {/* SMALL BEGINNINGS. BIG AMBITIONS: deep botanical-green band, same dark-panel language as
           the homepage's business-enquiries section, with a faint mandala-corner ornament. */}
       <section className="relative isolate overflow-hidden border-y border-cacao/40 bg-botanical-green text-ivory">
@@ -139,6 +135,10 @@ export default function AboutPage() {
           </p>
         </div>
       </section>
+
+      {/* OUR LEADERSHIP (collapsible): a compact Founders header at the very bottom of the About
+          page that expands on click to reveal Honey + Ajay bios with small profile photos. */}
+      <FoundersSection />
     </>
   );
 }
