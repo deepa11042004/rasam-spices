@@ -46,7 +46,7 @@ const allSlides: HeroSlide[] = [
     label: "Whole and ground spices",
     images: [
       {
-        src: "/images/GroundSpices.png",
+        src: "/images/hero-spices.png",
         alt: "Wooden bowls of turmeric, red chilli powder, peppercorns and coriander seeds with cinnamon, star anise and dried chillies",
       },
     ],

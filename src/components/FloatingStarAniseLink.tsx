@@ -5,12 +5,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 /**
- * Fixed circular link to /products. Hidden on the Products pages themselves, where it would point
- * at the page the visitor is already on.
+ * Fixed circular link to /products. Hidden on the Products catalogue itself (where it would point
+ * at the page the visitor is already on), but visible on every other route including the individual
+ * product detail pages under /products/[id], where it takes the visitor back to the catalogue.
  */
 export default function FloatingStarAniseLink({ src }: { src: string }) {
   const pathname = usePathname();
-  if (pathname.startsWith("/products")) return null;
+  if (pathname === "/products") return null;
 
   return (
     <div
