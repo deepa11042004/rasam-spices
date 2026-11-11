@@ -134,7 +134,7 @@ export default function AboutPage() {
 
           <OrnamentDivider className="mx-auto mt-14 text-turmeric" />
 
-          <p className="rasam-tagline mx-auto mt-8 text-center">
+          <p className="rasam-tagline rasam-tagline-on-light mx-auto mt-8 text-center">
             RASAM Spices — Rooted in Tradition. Growing with Ambition.
           </p>
         </div>

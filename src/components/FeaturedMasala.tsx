@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { CSSProperties } from "react";
 import ProductImage from "@/components/ProductImage";
 import type { DishStageItem } from "@/components/DishDiscovery";
@@ -48,15 +49,28 @@ export default function FeaturedMasala({
         }
       >
         {product ? (
-          <ProductImage
-            product={product}
-            sizes="(min-width: 1024px) 420px, 80vw"
-            className="max-w-[240px] drop-shadow-[0_24px_30px_rgba(0,0,0,0.55)] sm:max-w-[300px] lg:max-w-[380px]"
-          />
+          // Pack + name link to the product detail page, so clicking the matching masala on the
+          // homepage dish platter takes the visitor straight to that specific spice's page.
+          <Link
+            href={`/products/${product.id}`}
+            aria-label={`View ${name} product page`}
+            className="group flex flex-col items-center rounded-2xl outline-none transition-transform duration-200 hover:scale-[1.02] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-turmeric"
+          >
+            <ProductImage
+              product={product}
+              sizes="(min-width: 1024px) 420px, 80vw"
+              className="max-w-[240px] drop-shadow-[0_24px_30px_rgba(0,0,0,0.55)] sm:max-w-[300px] lg:max-w-[380px]"
+            />
+            <h3 className="mt-4 display-heading text-4xl text-parchment transition-colors group-hover:text-turmeric sm:text-5xl lg:text-6xl">
+              {name}
+            </h3>
+          </Link>
         ) : (
-          <p className="py-16 text-earth-muted">The matching masala is not available yet.</p>
+          <>
+            <p className="py-16 text-earth-muted">The matching masala is not available yet.</p>
+            <h3 className="mt-4 display-heading text-4xl text-parchment sm:text-5xl lg:text-6xl">{name}</h3>
+          </>
         )}
-        <h3 className="mt-4 display-heading text-4xl text-parchment sm:text-5xl lg:text-6xl">{name}</h3>
       </div>
 
       <div className="mt-5 flex items-center gap-8">
