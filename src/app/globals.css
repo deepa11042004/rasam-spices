@@ -840,6 +840,41 @@
   }
 }
 
+/*
+ * Typing statement (Homepage, TypingStatement.tsx): a slim bar that blinks while the
+ * sentence types itself in, then quietly fades away once it's finished so the line
+ * settles rather than keeps drawing the eye.
+ */
+.typing-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  margin-left: 0.15em;
+  vertical-align: -0.1em;
+  background: var(--brand-spice);
+  animation: typing-blink 1s step-end infinite;
+}
+.typing-cursor-stop {
+  animation: none;
+  opacity: 0;
+  transition: opacity 0.7s ease 0.15s;
+}
+@keyframes typing-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .typing-cursor {
+    animation: none;
+    opacity: 0;
+  }
+}
+
 /* Floating star-anise link: gentle bob; still for reduced-motion visitors */
 @keyframes star-float {
   0%,

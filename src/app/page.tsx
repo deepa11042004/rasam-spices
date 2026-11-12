@@ -10,6 +10,7 @@ import ProductCarousel from "@/components/ProductCarousel";
 import RotatingDishSection from "@/components/RotatingDishSection";
 import SpiceBackdrop from "@/components/SpiceBackdrop";
 import RasamAnimatedLogo from "@/components/RasamAnimatedLogo";
+import TypingStatement from "@/components/TypingStatement";
 
 import { company } from "@/data/company";
 import { categories, featuredProducts, getProductsByCategory } from "@/data/products";
@@ -135,6 +136,18 @@ export default function Home() {
         <SpiceBackdrop tone="dark" />
         <RotatingDishSection />
       </div>
+
+      {/* PARTNER STATEMENT: a quiet, typed-in line of welcome to trade partners, giving the
+          page room to breathe between the dish platter and the Our Story panel below. */}
+      <section className="border-t border-turmeric/30 bg-parchment">
+        <div className="mx-auto max-w-4xl px-6 py-16 text-center lg:px-10 lg:py-24">
+          <div className="gold-rule mx-auto w-20" />
+          <TypingStatement
+            text="We welcome retailers, distributors, wholesalers, and business partners to grow with RASAM and bring the authentic taste of our spices to more customers."
+            className="display-heading mt-8 text-2xl italic leading-snug text-earth sm:text-3xl lg:text-4xl"
+          />
+        </div>
+      </section>
 
       {/* ABOUT: image-led panel beside the story */}
       <section className="bg-ivory-deep/60 py-20 lg:py-28">
