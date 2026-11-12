@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 import PackagingGallery from "@/components/PackagingGallery";
 import ProductPrevNextNav from "@/components/ProductPrevNextNav";
 import RelatedProducts from "@/components/RelatedProducts";
-import { company } from "@/data/company";
 import { getCategory, getProduct, products } from "@/data/products";
 
 /** Build one static page per product at build time. */
@@ -33,11 +32,10 @@ export default async function ProductPage(props: PageProps<"/products/[id]">) {
   const category = getCategory(product.category);
   const sizes = product.packSizes?.join(", ");
 
-  // A product-specific subject line, built the same way company.ts builds its generic one --
-  // no change to the shared helper, just a local variant for this page's enquiry links.
-  const productEnquiryMailto = `mailto:${company.email}?subject=${encodeURIComponent(
-    `Business enquiry – RASAM ${product.name}`,
-  )}`;
+  // Deep-link straight into the matching Contact page form, with this product
+  // already selected there (see ContactFormTabs.tsx's readInitialTab/readInitialSelection).
+  const businessEnquiryHref = `/contact?enquiry=business&product=${product.id}`;
+  const sampleRequestHref = `/contact?enquiry=sample&product=${product.id}`;
 
   return (
     <section className="bg-parchment">
@@ -97,12 +95,12 @@ export default async function ProductPage(props: PageProps<"/products/[id]">) {
             )}
 
             <div className="mt-8 flex flex-wrap gap-3">
-              <a href={productEnquiryMailto} className="btn btn-primary">
-                Email an enquiry
-              </a>
-              <a href={company.phone.href} className="btn btn-ghost-dark">
-                Call {company.phone.display}
-              </a>
+              <Link href={businessEnquiryHref} className="btn btn-primary">
+                Business Enquiry
+              </Link>
+              <Link href={sampleRequestHref} className="btn btn-indigo">
+                Sample Request
+              </Link>
             </div>
           </div>
         </div>
@@ -151,12 +149,12 @@ export default async function ProductPage(props: PageProps<"/products/[id]">) {
               availability.
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
-              <a href={productEnquiryMailto} className="btn btn-primary">
-                Email an enquiry
-              </a>
-              <a href={company.phone.href} className="btn btn-light">
-                Call {company.phone.display}
-              </a>
+              <Link href={businessEnquiryHref} className="btn btn-primary">
+                Business Enquiry
+              </Link>
+              <Link href={sampleRequestHref} className="btn btn-indigo">
+                Sample Request
+              </Link>
             </div>
           </div>
         </section>

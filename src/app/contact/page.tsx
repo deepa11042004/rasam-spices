@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { company } from "@/data/company";
 import ContactFormTabs from "@/components/contact/ContactFormTabs";
 import OrnamentDivider from "@/components/OrnamentDivider";
@@ -30,7 +31,9 @@ export default function ContactPage() {
 
       <section className="border-t border-turmeric/40 bg-ivory-deep/40">
         <div className="mx-auto max-w-4xl px-6 py-14 lg:px-10 lg:py-20">
-          <ContactFormTabs />
+          <Suspense fallback={null}>
+            <ContactFormTabs />
+          </Suspense>
         </div>
       </section>
 

@@ -1,6 +1,7 @@
 "use client";
 
-import { useId, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import BusinessEnquiryForm from "./BusinessEnquiryForm";
 import GeneralEnquiryForm from "./GeneralEnquiryForm";
 import SampleRequestForm from "./SampleRequestForm";
@@ -11,23 +12,71 @@ import {
   type BusinessEnquiryFormData,
   type GeneralEnquiryFormData,
   type SampleRequestFormData,
+  type SelectedProduct,
 } from "./types";
+import { getCategory, getProduct } from "@/data/products";
 
 type TabId = "business" | "general" | "sample";
 
+/**
+ * Product pages link here as `/contact?enquiry=business&product=<id>` (or
+ * `sample`) so a customer who clicked "Business Enquiry" / "Sample Request"
+ * on a product lands straight on the matching form with that product
+ * already selected, instead of starting from a blank General Enquiry.
+ */
+function readInitialTab(searchParams: URLSearchParams): TabId {
+  const enquiry = searchParams.get("enquiry");
+  return enquiry === "business" || enquiry === "sample" ? enquiry : "general";
+}
+
+function readInitialSelection(searchParams: URLSearchParams): SelectedProduct[] {
+  const productId = searchParams.get("product");
+  if (!productId) return [];
+  const product = getProduct(productId);
+  if (!product) return [];
+  return [
+    {
+      id: product.id,
+      name: product.name,
+      category: getCategory(product.category).name,
+      quantity: "",
+      unit: "kg",
+    },
+  ];
+}
+
 export default function ContactFormTabs() {
+  const searchParams = useSearchParams();
+  const initialTab = readInitialTab(searchParams);
+
   // Customers land directly on the General Enquiry form — it needs no button
   // of its own. The two prominent buttons below switch to the specialised
-  // Business Enquiry / Sample Request forms instead.
-  const [activeTab, setActiveTab] = useState<TabId>("general");
+  // Business Enquiry / Sample Request forms instead (or a product page can
+  // deep-link straight into one of them, see readInitialTab above).
+  const [activeTab, setActiveTab] = useState<TabId>(initialTab);
   const idBase = useId();
   const formCardRef = useRef<HTMLDivElement>(null);
 
   // Each form keeps its own independent state here, so switching between
   // them never loses what the customer has already entered elsewhere.
-  const [businessData, setBusinessData] = useState<BusinessEnquiryFormData>(emptyBusinessEnquiry);
+  const [businessData, setBusinessData] = useState<BusinessEnquiryFormData>(() => ({
+    ...emptyBusinessEnquiry,
+    selectedProducts: initialTab === "business" ? readInitialSelection(searchParams) : [],
+  }));
   const [generalData, setGeneralData] = useState<GeneralEnquiryFormData>(emptyGeneralEnquiry);
-  const [sampleData, setSampleData] = useState<SampleRequestFormData>(emptySampleRequest);
+  const [sampleData, setSampleData] = useState<SampleRequestFormData>(() => ({
+    ...emptySampleRequest,
+    selectedProducts: initialTab === "sample" ? readInitialSelection(searchParams) : [],
+  }));
+
+  // Arriving already deep-linked to a specific form should feel the same as
+  // clicking its button -- scroll the form card into view, once, on load.
+  useEffect(() => {
+    if (initialTab !== "general") {
+      formCardRef.current?.scrollIntoView({ block: "start" });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function selectTab(tab: TabId) {
     setActiveTab(tab);
