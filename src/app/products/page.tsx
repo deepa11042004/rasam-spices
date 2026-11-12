@@ -60,7 +60,7 @@ export default function ProductsPage() {
               {products.length} spices and masalas in three categories. For orders and trade
               terms, please{" "}
               <Link
-                href="/contact"
+                href="/contact?form=business"
                 className="font-semibold text-turmeric underline underline-offset-4 hover:text-parchment"
               >
                 send an enquiry

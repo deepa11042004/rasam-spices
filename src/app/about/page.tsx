@@ -62,7 +62,7 @@ export default function AboutPage() {
               <Link href="/products" className="btn btn-primary">
                 Explore products
               </Link>
-              <Link href="/contact" className="btn btn-ghost-dark">
+              <Link href="/contact?form=business" className="btn btn-ghost-dark">
                 Business enquiries
               </Link>
             </div>

@@ -50,8 +50,8 @@ export default function GeneralEnquiryForm({ data, onChange }: Props) {
     <form onSubmit={handleSubmit} noValidate className="space-y-6">
       <div>
         <p className="eyebrow">Quick message</p>
-        <h2 className="font-serif mt-2 text-2xl text-earth">General enquiry</h2>
-        <p className="mt-1.5 text-sm leading-6 text-earth-muted">
+        <h2 className="font-serif mt-2 text-2xl text-earth sm:text-3xl">General enquiry</h2>
+        <p className="mt-2 text-base leading-7 text-earth-muted">
           A quick way to ask about a product, pricing, an order or anything else — we&apos;ll
           reply by email or phone.
         </p>

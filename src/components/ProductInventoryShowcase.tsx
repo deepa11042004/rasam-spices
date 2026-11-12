@@ -247,7 +247,7 @@ export default function ProductInventoryShowcase({ items, label }: ProductInvent
                           <span aria-hidden="true">&rarr;</span>
                         </Link>
                         <Link
-                          href="/contact"
+                          href={`/contact?form=business&product=${product.id}`}
                           onClick={(event) => event.stopPropagation()}
                           className="text-xs font-semibold uppercase tracking-[0.14em] text-parchment/70 underline decoration-turmeric/40 underline-offset-4 transition-colors hover:text-turmeric hover:decoration-turmeric focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-turmeric"
                         >

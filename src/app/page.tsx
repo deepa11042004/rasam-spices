@@ -71,7 +71,7 @@ export default function Home() {
                 <Link href="/products" className="btn btn-primary">
                   Explore products
                 </Link>
-                <Link href="/contact" className="btn btn-ghost-light">
+                <Link href="/contact?form=business" className="btn btn-ghost-light">
                   Business enquiries
                 </Link>
               </div>
@@ -199,7 +199,7 @@ export default function Home() {
           </div>
 
           <div className="flex flex-wrap gap-3 lg:justify-end">
-            <Link href="/contact" className="btn btn-light">
+            <Link href="/contact?form=business" className="btn btn-light">
               Send a business enquiry
             </Link>
             <a href={company.phone.href} className="btn btn-ghost-light">

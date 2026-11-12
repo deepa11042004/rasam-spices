@@ -106,7 +106,7 @@ export default function ProductCard({
 
           {detailed && (
             <Link
-              href="/contact"
+              href={`/contact?form=business&product=${product.id}`}
               className={`text-xs font-semibold uppercase tracking-[0.14em] text-parchment/70 underline decoration-turmeric/40 underline-offset-4 transition-colors hover:text-turmeric hover:decoration-turmeric ${focusRing}`}
             >
               Enquire about {product.name}

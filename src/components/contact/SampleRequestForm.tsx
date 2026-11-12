@@ -103,8 +103,8 @@ export default function SampleRequestForm({ data, onChange }: Props) {
       <div className="space-y-6">
         <div>
           <p className="eyebrow">Review &amp; confirm</p>
-          <h2 className="font-serif mt-2 text-2xl text-earth">Review your sample request</h2>
-          <p className="mt-1.5 text-sm leading-6 text-earth-muted">
+          <h2 className="font-serif mt-2 text-2xl text-earth sm:text-3xl">Review your sample request</h2>
+          <p className="mt-2 text-base leading-7 text-earth-muted">
             Please check the details below before sending. Sample availability and delivery are
             subject to RASAM&apos;s confirmation.
           </p>
@@ -142,8 +142,8 @@ export default function SampleRequestForm({ data, onChange }: Props) {
     <form onSubmit={handleReview} noValidate className="space-y-8">
       <div>
         <p className="eyebrow">Try before you order</p>
-        <h2 className="font-serif mt-2 text-2xl text-earth">Sample request</h2>
-        <p className="mt-1.5 text-sm leading-6 text-earth-muted">
+        <h2 className="font-serif mt-2 text-2xl text-earth sm:text-3xl">Sample request</h2>
+        <p className="mt-2 text-base leading-7 text-earth-muted">
           Request samples of RASAM products. Sample availability and delivery are subject to our
           confirmation.
         </p>

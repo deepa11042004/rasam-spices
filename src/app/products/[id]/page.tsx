@@ -34,8 +34,8 @@ export default async function ProductPage(props: PageProps<"/products/[id]">) {
 
   // Deep-link straight into the matching Contact page form, with this product
   // already selected there (see ContactFormTabs.tsx's readInitialTab/readInitialSelection).
-  const businessEnquiryHref = `/contact?enquiry=business&product=${product.id}`;
-  const sampleRequestHref = `/contact?enquiry=sample&product=${product.id}`;
+  const businessEnquiryHref = `/contact?form=business&product=${product.id}`;
+  const sampleRequestHref = `/contact?form=sample&product=${product.id}`;
 
   return (
     <section className="bg-parchment">
