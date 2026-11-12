@@ -236,13 +236,6 @@ export default function ProductInventoryShowcase({ items, label }: ProductInvent
                       )}
                     </div>
 
-                    {product.pendingNote && (
-                      <p className="mt-3 rounded-md border border-turmeric/30 bg-parchment/5 px-3 py-2 text-xs leading-5 text-parchment/75">
-                        <span className="font-semibold text-parchment">To be confirmed: </span>
-                        {product.pendingNote}
-                      </p>
-                    )}
-
                     {isPinned ? (
                       <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2">
                         <Link

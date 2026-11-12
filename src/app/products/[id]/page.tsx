@@ -132,13 +132,6 @@ export default async function ProductPage(props: PageProps<"/products/[id]">) {
                 </div>
               )}
             </dl>
-
-            {product.pendingNote && (
-              <p className="mt-6 rounded-card bg-ivory-deep px-4 py-3 text-sm leading-6 text-earth-muted">
-                <span className="font-semibold text-earth">To be confirmed: </span>
-                {product.pendingNote}
-              </p>
-            )}
           </div>
         </section>
 

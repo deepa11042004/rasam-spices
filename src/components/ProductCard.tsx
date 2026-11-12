@@ -96,13 +96,6 @@ export default function ProductCard({
           </p>
         )}
 
-        {detailed && product.pendingNote && (
-          <p className="mt-4 rounded-md border border-turmeric/30 bg-parchment/5 px-3 py-2 text-sm leading-6 text-parchment/75">
-            <span className="font-semibold text-parchment">To be confirmed: </span>
-            {product.pendingNote}
-          </p>
-        )}
-
         <div className="mt-auto flex flex-col items-start gap-3 border-t border-turmeric/30 pt-5">
           <Link
             href={`/products/${product.id}`}

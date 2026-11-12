@@ -13,10 +13,9 @@ type ProductImageProps = {
 };
 
 /**
- * Shows an authentic pack photo inside a fixed 4:5 frame, or a clearly
- * marked placeholder when no photo has been supplied yet. The fixed frame
- * means a real photo can replace the placeholder without moving the layout.
- * `object-contain` keeps the whole pack visible: nothing is cropped away.
+ * Shows an authentic pack photo inside a fixed 4:5 frame. When no photo is
+ * set on the product yet, a plain, wordless jar silhouette fills the same
+ * frame instead, so the layout never shifts once a real photo is added.
  */
 export default function ProductImage({
   product,
@@ -32,13 +31,19 @@ export default function ProductImage({
       {photo ? (
         <Image src={photo.src} alt={photo.alt} fill sizes={sizes} quality={90} className="object-contain" />
       ) : (
-        <div className={`absolute inset-[12%] flex flex-col items-center justify-center gap-2 rounded-md border border-dashed text-center ${
-            onDark ? "border-turmeric/40" : "border-earth/30"
-          }`}>
-          <span className={`text-sm font-medium ${onDark ? "text-parchment/80" : "text-earth-muted"}`}>[Product Image]</span>
-          <span className={`px-3 text-xs ${onDark ? "text-parchment/60" : "text-earth-muted"}`}>
-            Photo of {product.name} to be added
-          </span>
+        <div className="absolute inset-[18%] flex items-center justify-center" aria-hidden="true">
+          <svg
+            viewBox="0 0 64 80"
+            className={`h-full w-full ${onDark ? "text-parchment/25" : "text-earth/15"}`}
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinejoin="round"
+          >
+            <path d="M22 6h20v8H22z" />
+            <path d="M18 14h28l4 8v48a4 4 0 0 1-4 4H18a4 4 0 0 1-4-4V22z" />
+            <path d="M14 30h36" />
+          </svg>
         </div>
       )}
     </div>
