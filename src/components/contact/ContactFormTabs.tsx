@@ -36,36 +36,64 @@ export default function ContactFormTabs() {
 
   const panelId = `${idBase}-panel-${activeTab}`;
 
+  // A thin colour accent along the top of the form card echoes whichever
+  // entry point is active, so switching forms reads as a deliberate shift
+  // rather than the same grey box relabelling itself.
+  const accentColor =
+    activeTab === "business"
+      ? "var(--brand-spice)"
+      : activeTab === "sample"
+        ? "var(--brand-indigo)"
+        : "var(--brand-turmeric)";
+
   return (
     <div>
       {/* The two primary, equally reachable ways in: Business Enquiry (chilli-red,
           most prominent) and Sample Request (peacock blue). General Enquiry needs
           no button here — it's what customers see by default below. */}
-      <div className="flex flex-col gap-3 sm:flex-row sm:justify-center sm:gap-4">
-        <button
-          type="button"
-          aria-pressed={activeTab === "business"}
-          aria-controls={panelId}
-          onClick={() => selectTab("business")}
-          className="btn btn-primary min-h-14 flex-1 px-8 text-sm sm:flex-none sm:text-base"
-        >
-          Business Enquiry
-        </button>
-        <button
-          type="button"
-          aria-pressed={activeTab === "sample"}
-          aria-controls={panelId}
-          onClick={() => selectTab("sample")}
-          className="btn btn-indigo min-h-14 flex-1 px-8 text-sm sm:flex-none sm:text-base"
-        >
-          Sample Request
-        </button>
+      <p className="eyebrow mx-auto justify-center">Choose how to connect</p>
+
+      <div className="mt-5 flex flex-col items-center gap-5 sm:flex-row sm:justify-center sm:gap-8">
+        <div className="flex w-full flex-col items-center gap-2 sm:w-auto">
+          <button
+            type="button"
+            aria-pressed={activeTab === "business"}
+            aria-controls={panelId}
+            onClick={() => selectTab("business")}
+            className="btn btn-primary min-h-14 w-full px-8 text-sm sm:w-auto sm:text-base"
+          >
+            Business Enquiry
+          </button>
+          <p className="text-center text-xs text-earth-muted">
+            For retailers, wholesalers &amp; distributors
+          </p>
+        </div>
+
+        <div className="flex w-full flex-col items-center gap-2 sm:w-auto">
+          <button
+            type="button"
+            aria-pressed={activeTab === "sample"}
+            aria-controls={panelId}
+            onClick={() => selectTab("sample")}
+            className="btn btn-indigo min-h-14 w-full px-8 text-sm sm:w-auto sm:text-base"
+          >
+            Sample Request
+          </button>
+          <p className="text-center text-xs text-earth-muted">
+            Try a product before you order
+          </p>
+        </div>
       </div>
 
       <div
         ref={formCardRef}
-        className="mt-8 scroll-mt-24 rounded-card border border-turmeric/40 bg-ivory p-5 shadow-card sm:p-8"
+        className="relative mt-8 scroll-mt-24 overflow-hidden rounded-card border border-turmeric/40 bg-ivory p-5 shadow-card sm:p-8"
       >
+        <div
+          aria-hidden="true"
+          className="absolute inset-x-0 top-0 h-1 transition-colors duration-300"
+          style={{ backgroundColor: accentColor }}
+        />
         {activeTab !== "general" && (
           <button
             type="button"

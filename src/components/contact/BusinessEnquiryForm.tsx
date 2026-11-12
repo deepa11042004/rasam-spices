@@ -98,7 +98,8 @@ export default function BusinessEnquiryForm({ data, onChange }: Props) {
     return (
       <div className="space-y-6">
         <div>
-          <h2 className="font-serif text-2xl text-earth">Review your business enquiry</h2>
+          <p className="eyebrow">Review &amp; confirm</p>
+          <h2 className="font-serif mt-2 text-2xl text-earth">Review your business enquiry</h2>
           <p className="mt-1.5 text-sm leading-6 text-earth-muted">
             Please check the details below before sending.
           </p>
@@ -135,7 +136,8 @@ export default function BusinessEnquiryForm({ data, onChange }: Props) {
   return (
     <form onSubmit={handleReview} noValidate className="space-y-8">
       <div>
-        <h2 className="font-serif text-2xl text-earth">Business enquiry</h2>
+        <p className="eyebrow">For retailers &amp; distributors</p>
+        <h2 className="font-serif mt-2 text-2xl text-earth">Business enquiry</h2>
         <p className="mt-1.5 text-sm leading-6 text-earth-muted">
           For distributors, wholesalers, retailers, restaurants, hotels, supermarkets and export
           buyers interested in sourcing RASAM products.
