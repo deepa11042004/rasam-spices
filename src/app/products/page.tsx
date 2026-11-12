@@ -36,74 +36,53 @@ export const metadata: Metadata = {
 export default function ProductsPage() {
   return (
     <>
+      {/* ── Hero: auto-slider with blurred spice-photo backdrop ── */}
       <section className="relative overflow-hidden border-b border-turmeric/40">
-        {/* Blurred spice-photo backdrop for the auto-slider. The heading cluster below has its own
-            dark backdrop now, so no parchment fade is needed at the bottom of this wrapper — the
-            two dark surfaces flow naturally into each other. */}
         <div className="relative isolate overflow-hidden">
           <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 scale-110 blur-sm">
             <Image src="/images/hero-background.png" alt="" fill sizes="100vw" quality={75} className="object-cover object-center" />
           </div>
           <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 bg-charcoal/30" />
 
-          {/* Slider on top, same width as the framed hero box on the home page. Slides: src/data/productHeroSlides.ts */}
           <div className="relative z-10 mx-auto max-w-7xl px-6 pt-8 pb-8 lg:px-10 lg:pt-10 lg:pb-10">
             <ProductHeroSlider slides={heroSlides} aspectClassName="aspect-[4/3] sm:aspect-[16/10] lg:aspect-[2/1]" />
           </div>
         </div>
+      </section>
 
-        {/* Heading cluster ("The catalogue" eyebrow, "Our products" h1, the N-items description
-            and the category navigation pills) sits on the wooden-spoon-of-spices photograph,
-            biased object-position:left so the spice arrangement stays visible, with a dark
-            overlay for text readability. Only this cluster uses the new backdrop; the slider
-            above keeps its blurred spice photo and the inventory sections below stay on plain
-            parchment. */}
-        <div className="relative isolate overflow-hidden">
-          <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-20">
-            <Image
-              src="/images/our product background.jpg"
-              alt=""
-              fill
-              sizes="100vw"
-              quality={80}
-              className="object-cover"
-              style={{ objectPosition: "left center" }}
-            />
+      {/* ── Our Products: heading cluster + category pills on solid chilli-red ── */}
+      <section className="border-b border-turmeric/40" style={{ backgroundColor: "#912D27" }}>
+        <div className="mx-auto max-w-7xl px-6 pb-12 pt-10 lg:px-10 lg:pb-16 lg:pt-14">
+          <div>
+            <p className="eyebrow eyebrow-light">The catalogue</p>
+            <h1 className="display-heading mt-4 text-5xl text-ivory sm:text-7xl">Our products</h1>
+            <p className="mt-5 max-w-2xl text-lg leading-8 text-parchment/85">
+              {products.length} spices and masalas in three categories. For orders and trade
+              terms, please{" "}
+              <Link
+                href="/contact"
+                className="font-semibold text-turmeric underline underline-offset-4 hover:text-parchment"
+              >
+                send an enquiry
+              </Link>
+              .
+            </p>
           </div>
-          <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 bg-charcoal/70" />
 
-          <div className="relative z-10 mx-auto max-w-7xl px-6 pb-12 pt-10 lg:px-10 lg:pb-16 lg:pt-14">
-            <div className="relative">
-              <p className="eyebrow eyebrow-light">The catalogue</p>
-              <h1 className="display-heading mt-4 text-5xl text-ivory sm:text-7xl">Our products</h1>
-              <p className="mt-5 max-w-2xl text-lg leading-8 text-parchment/85">
-                {products.length} spices and masalas in three categories. For orders and trade
-                terms, please{" "}
-                <Link
-                  href="/contact"
-                  className="font-semibold text-turmeric underline underline-offset-4 hover:text-parchment"
-                >
-                  send an enquiry
-                </Link>
-                .
-              </p>
-            </div>
-
-            <nav aria-label="Product categories" className="mt-8">
-              <ul className="flex flex-wrap gap-3">
-                {showcases.map(({ category }) => (
-                  <li key={category.id}>
-                    <a
-                      href={`#${category.id}`}
-                      className="inline-flex min-h-11 items-center rounded-full border border-turmeric bg-charcoal/40 px-5 text-xs font-semibold uppercase tracking-[0.14em] text-parchment transition-colors hover:border-green hover:bg-green hover:text-ivory"
-                    >
-                      {category.name} ({getProductsByCategory(category.id).length})
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          </div>
+          <nav aria-label="Product categories" className="mt-8">
+            <ul className="flex flex-wrap gap-3">
+              {showcases.map(({ category }) => (
+                <li key={category.id}>
+                  <a
+                    href={`#${category.id}`}
+                    className="inline-flex min-h-11 items-center rounded-full border border-turmeric/70 bg-[#7a2520] px-5 text-xs font-semibold uppercase tracking-[0.14em] text-parchment transition-colors hover:border-turmeric hover:bg-turmeric hover:text-charcoal"
+                  >
+                    {category.name} ({getProductsByCategory(category.id).length})
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
         </div>
       </section>
 
