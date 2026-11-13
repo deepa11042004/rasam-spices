@@ -6,7 +6,7 @@ type Props = {
   /** The full sentence to type in. Rendered in full by default (see note below). */
   text: string;
   className?: string;
-  /** Milliseconds between characters. */
+  /** Base milliseconds between characters (actual pace varies a little -- see below). */
   speed?: number;
 };
 
@@ -22,7 +22,7 @@ type Props = {
  * `prefers-reduced-motion` skips the animation entirely and leaves the full
  * sentence in place.
  */
-export default function TypingStatement({ text, className = "", speed = 26 }: Props) {
+export default function TypingStatement({ text, className = "", speed = 120 }: Props) {
   const [charCount, setCharCount] = useState(text.length);
   const [animate, setAnimate] = useState(false);
   const [done, setDone] = useState(true);
@@ -37,33 +37,47 @@ export default function TypingStatement({ text, className = "", speed = 26 }: Pr
     setAnimate(true);
   }, []);
 
-  // Starts the reveal only once the sentence is actually on screen.
+  // Starts the reveal only once the sentence is actually on screen. The pace
+  // between letters varies a little (and lingers briefly after a comma or
+  // full stop), so it reads like someone actually writing the line rather
+  // than a metronome.
   useEffect(() => {
     if (!animate) return;
     const node = paragraphRef.current;
     if (!node) return;
+
+    let timeoutId: number | undefined;
+
+    const typeNext = (i: number) => {
+      setCharCount(i);
+      if (i >= text.length) {
+        setDone(true);
+        return;
+      }
+      const justTyped = text[i - 1];
+      const pause =
+        justTyped === "," ? speed * 1.5 : justTyped === "." ? speed * 2.5 : 0;
+      // Small jitter (up to ~30% of base) keeps the pace in the 120-140ms
+      // band on average without reading as mechanical.
+      const jitter = speed * 0.3 * Math.random();
+      timeoutId = window.setTimeout(() => typeNext(i + 1), speed + jitter + pause);
+    };
 
     const observer = new IntersectionObserver(
       (entries) => {
         if (!entries[0]?.isIntersecting || hasStartedRef.current) return;
         hasStartedRef.current = true;
         observer.disconnect();
-
-        let i = 0;
-        const interval = window.setInterval(() => {
-          i += 1;
-          setCharCount(i);
-          if (i >= text.length) {
-            window.clearInterval(interval);
-            setDone(true);
-          }
-        }, speed);
+        timeoutId = window.setTimeout(() => typeNext(1), speed);
       },
       { threshold: 0.4 },
     );
 
     observer.observe(node);
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      if (timeoutId !== undefined) window.clearTimeout(timeoutId);
+    };
   }, [animate, text, speed]);
 
   return (

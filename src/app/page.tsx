@@ -140,11 +140,12 @@ export default function Home() {
       {/* PARTNER STATEMENT: a quiet, typed-in line of welcome to trade partners, giving the
           page room to breathe between the dish platter and the Our Story panel below. */}
       <section className="border-t border-turmeric/30 bg-parchment">
-        <div className="mx-auto max-w-4xl px-6 py-16 text-center lg:px-10 lg:py-24">
+        <div className="mx-auto max-w-5xl px-6 py-20 text-center lg:px-10 lg:py-28">
           <div className="gold-rule mx-auto w-20" />
           <TypingStatement
-            text="We welcome retailers, distributors, wholesalers, and business partners to grow with RASAM and bring the authentic taste of our spices to more customers."
-            className="display-heading mt-8 text-2xl italic leading-snug text-earth sm:text-3xl lg:text-4xl"
+            text="Whether you're a retailer, distributor, wholesaler, or business partner, we'd love to grow together and bring the authentic taste of RASAM to more kitchens."
+            speed={110}
+            className="display-heading mx-auto mt-9 max-w-4xl text-3xl italic leading-[1.4] text-earth sm:text-4xl sm:leading-[1.35] lg:text-5xl"
           />
         </div>
       </section>
