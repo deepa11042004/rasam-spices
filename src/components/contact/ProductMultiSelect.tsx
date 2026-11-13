@@ -94,10 +94,10 @@ export default function ProductMultiSelect({
   return (
     <div className="space-y-3" ref={containerRef}>
       <div>
-        <label htmlFor={inputId} className="block text-sm font-semibold text-earth">
+        <label htmlFor={inputId} className="block text-base font-semibold text-earth">
           {categoryLabel}
         </label>
-        <div className="relative mt-1.5">
+        <div className="relative mt-2">
           <input
             id={inputId}
             type="text"
@@ -121,7 +121,7 @@ export default function ProductMultiSelect({
                 : `Search ${categoryLabel.toLowerCase()}…`
             }
             disabled={availableProducts.length === 0}
-            className="block w-full rounded-lg border border-turmeric/40 bg-ivory px-4 py-2.5 text-base text-earth placeholder:text-earth-muted/50 transition-colors focus:border-turmeric focus:outline-none focus:ring-2 focus:ring-turmeric/30 disabled:cursor-not-allowed disabled:opacity-60"
+            className="block w-full rounded-lg border border-turmeric/40 bg-ivory px-4 py-3 text-base text-earth placeholder:text-earth-muted/80 transition-colors focus:border-turmeric focus:outline-none focus:ring-2 focus:ring-turmeric/30 disabled:cursor-not-allowed disabled:opacity-60"
           />
           {isOpen && availableProducts.length > 0 && (
             <ul
@@ -130,7 +130,7 @@ export default function ProductMultiSelect({
               className="absolute z-20 mt-1 max-h-56 w-full overflow-auto rounded-lg border border-turmeric/40 bg-ivory shadow-card"
             >
               {filteredOptions.length === 0 ? (
-                <li className="px-4 py-2.5 text-sm text-earth-muted">
+                <li className="px-4 py-3 text-[15px] text-earth-muted">
                   {query
                     ? "No matching products"
                     : "All products in this category are selected"}
@@ -142,10 +142,10 @@ export default function ProductMultiSelect({
                       type="button"
                       onMouseDown={(event) => event.preventDefault()}
                       onClick={() => addProduct(product)}
-                      className="flex w-full items-center justify-between px-4 py-2.5 text-left text-sm text-earth transition-colors hover:bg-ivory-deep"
+                      className="flex w-full items-center justify-between px-4 py-3 text-left text-[15px] text-earth transition-colors hover:bg-ivory-deep"
                     >
                       {product.name}
-                      <span className="text-xs text-turmeric">Add +</span>
+                      <span className="text-sm text-turmeric">Add +</span>
                     </button>
                   </li>
                 ))
@@ -193,7 +193,7 @@ export default function ProductMultiSelect({
                     onChange={(event) => updateQuantity(item.id, event.target.value)}
                     placeholder="Qty"
                     aria-invalid={error ? "true" : undefined}
-                    className={`w-24 rounded-md border bg-ivory px-2.5 py-1.5 text-sm text-earth focus:outline-none focus:ring-2 focus:ring-turmeric/30 ${
+                    className={`w-28 rounded-md border bg-ivory px-3 py-2 text-base text-earth focus:outline-none focus:ring-2 focus:ring-turmeric/30 ${
                       error ? "border-red-400" : "border-turmeric/40 focus:border-turmeric"
                     }`}
                   />
@@ -203,7 +203,7 @@ export default function ProductMultiSelect({
                     onChange={(event) =>
                       updateUnit(item.id, event.target.value as QuantityUnit)
                     }
-                    className="rounded-md border border-turmeric/40 bg-ivory px-2 py-1.5 text-sm text-earth focus:border-turmeric focus:outline-none focus:ring-2 focus:ring-turmeric/30"
+                    className="rounded-md border border-turmeric/40 bg-ivory px-2.5 py-2 text-base text-earth focus:border-turmeric focus:outline-none focus:ring-2 focus:ring-turmeric/30"
                   >
                     {UNIT_OPTIONS.map((unit) => (
                       <option key={unit} value={unit}>
@@ -213,7 +213,7 @@ export default function ProductMultiSelect({
                   </select>
                 </div>
                 {error && (
-                  <p className="w-full text-xs text-red-600" role="alert">
+                  <p className="w-full text-sm text-red-600" role="alert">
                     {error}
                   </p>
                 )}

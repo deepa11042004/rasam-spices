@@ -134,7 +134,7 @@ export default function BusinessEnquiryForm({ data, onChange }: Props) {
   }
 
   return (
-    <form onSubmit={handleReview} noValidate className="space-y-8">
+    <form onSubmit={handleReview} noValidate className="space-y-10">
       <div>
         <p className="eyebrow">For retailers &amp; distributors</p>
         <h2 className="font-serif mt-2 text-2xl text-earth sm:text-3xl">Business enquiry</h2>
@@ -145,10 +145,10 @@ export default function BusinessEnquiryForm({ data, onChange }: Props) {
       </div>
 
       <section>
-        <h3 className="text-xs font-semibold uppercase tracking-[0.14em] text-turmeric">
+        <h3 className="font-serif text-xl text-earth sm:text-[22px]">
           Business information
         </h3>
-        <div className="mt-4 grid gap-5 sm:grid-cols-2">
+        <div className="mt-5 grid gap-6 sm:grid-cols-2">
           <FormField label="Contact person name" htmlFor="be-contactPerson" required error={fieldErrors.contactPerson}>
             <input
               id="be-contactPerson"
@@ -252,10 +252,10 @@ export default function BusinessEnquiryForm({ data, onChange }: Props) {
       </section>
 
       <section>
-        <h3 className="text-xs font-semibold uppercase tracking-[0.14em] text-turmeric">
+        <h3 className="font-serif text-xl text-earth sm:text-[22px]">
           Products you&apos;re interested in
         </h3>
-        <p className="mt-1.5 text-sm text-earth-muted">
+        <p className="mt-2 text-[15px] leading-6 text-earth-muted">
           Search and select any products across the three categories below, then enter the
           quantity you&apos;re interested in for each one.
         </p>
@@ -285,7 +285,7 @@ export default function BusinessEnquiryForm({ data, onChange }: Props) {
 
       <SubmitStatus state={submitState} />
 
-      <button type="submit" className="btn btn-primary w-full sm:w-auto">
+      <button type="submit" className="btn btn-primary w-full !text-base sm:w-auto">
         Review enquiry
       </button>
     </form>

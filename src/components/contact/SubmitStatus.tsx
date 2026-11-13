@@ -9,7 +9,7 @@ export default function SubmitStatus({ state }: { state: SubmitState }) {
     return (
       <div
         role="status"
-        className="flex items-center gap-2.5 rounded-lg border border-turmeric/40 bg-ivory-deep px-4 py-3 text-sm text-earth"
+        className="flex items-center gap-2.5 rounded-lg border border-turmeric/40 bg-ivory-deep px-4 py-3 text-[15px] text-earth"
       >
         <svg className="h-4 w-4 animate-spin text-turmeric" viewBox="0 0 24 24" fill="none">
           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
@@ -28,7 +28,7 @@ export default function SubmitStatus({ state }: { state: SubmitState }) {
     return (
       <div
         role="status"
-        className="rounded-lg border border-green/40 bg-green/10 px-4 py-3 text-sm text-green"
+        className="rounded-lg border border-green/40 bg-green/10 px-4 py-3 text-[15px] text-green"
       >
         <p className="font-semibold">Your enquiry details are ready.</p>
         <p className="mt-1 text-earth-muted">
@@ -42,7 +42,7 @@ export default function SubmitStatus({ state }: { state: SubmitState }) {
   }
 
   return (
-    <div role="alert" className="rounded-lg border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700">
+    <div role="alert" className="rounded-lg border border-red-300 bg-red-50 px-4 py-3 text-[15px] text-red-700">
       Please check the highlighted fields above and try again.
     </div>
   );

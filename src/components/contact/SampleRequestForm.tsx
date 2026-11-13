@@ -139,7 +139,7 @@ export default function SampleRequestForm({ data, onChange }: Props) {
   }
 
   return (
-    <form onSubmit={handleReview} noValidate className="space-y-8">
+    <form onSubmit={handleReview} noValidate className="space-y-10">
       <div>
         <p className="eyebrow">Try before you order</p>
         <h2 className="font-serif mt-2 text-2xl text-earth sm:text-3xl">Sample request</h2>
@@ -150,10 +150,10 @@ export default function SampleRequestForm({ data, onChange }: Props) {
       </div>
 
       <section>
-        <h3 className="text-xs font-semibold uppercase tracking-[0.14em] text-turmeric">
+        <h3 className="font-serif text-xl text-earth sm:text-[22px]">
           Your information
         </h3>
-        <div className="mt-4 grid gap-5 sm:grid-cols-2">
+        <div className="mt-5 grid gap-6 sm:grid-cols-2">
           <FormField label="Full name" htmlFor="sr-fullName" required error={fieldErrors.fullName}>
             <input
               id="sr-fullName"
@@ -223,10 +223,10 @@ export default function SampleRequestForm({ data, onChange }: Props) {
       </section>
 
       <section>
-        <h3 className="text-xs font-semibold uppercase tracking-[0.14em] text-turmeric">
+        <h3 className="font-serif text-xl text-earth sm:text-[22px]">
           Products you&apos;d like samples of
         </h3>
-        <p className="mt-1.5 text-sm text-earth-muted">
+        <p className="mt-2 text-[15px] leading-6 text-earth-muted">
           Search and select products across the three categories below, then enter the sample
           quantity you&apos;d like for each one.
         </p>
@@ -245,10 +245,10 @@ export default function SampleRequestForm({ data, onChange }: Props) {
       </section>
 
       <section>
-        <h3 className="text-xs font-semibold uppercase tracking-[0.14em] text-turmeric">
+        <h3 className="font-serif text-xl text-earth sm:text-[22px]">
           Delivery information
         </h3>
-        <div className="mt-4 grid gap-5 sm:grid-cols-2">
+        <div className="mt-5 grid gap-6 sm:grid-cols-2">
           <div className="sm:col-span-2">
             <FormField label="Full delivery address" htmlFor="sr-address" required error={fieldErrors.address}>
               <input
@@ -323,7 +323,7 @@ export default function SampleRequestForm({ data, onChange }: Props) {
 
       <SubmitStatus state={submitState} />
 
-      <button type="submit" className="btn btn-primary w-full sm:w-auto">
+      <button type="submit" className="btn btn-primary w-full !text-base sm:w-auto">
         Review request
       </button>
     </form>

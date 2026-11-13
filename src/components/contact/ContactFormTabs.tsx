@@ -132,7 +132,7 @@ export default function ContactFormTabs() {
     >
       {/* LEFT: whichever form is currently selected. Stacks below the
           selector on mobile; sits to the left of it from the lg breakpoint. */}
-      <div className="relative order-2 overflow-hidden rounded-card border border-turmeric/40 bg-ivory p-5 shadow-card sm:p-8 lg:order-1">
+      <div className="relative order-2 overflow-hidden rounded-card border border-turmeric/40 bg-ivory p-6 shadow-card sm:p-10 lg:order-1">
         <div
           aria-hidden="true"
           className="absolute inset-x-0 top-0 h-1 transition-colors duration-300"

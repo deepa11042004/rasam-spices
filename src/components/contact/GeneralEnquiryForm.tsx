@@ -47,7 +47,7 @@ export default function GeneralEnquiryForm({ data, onChange }: Props) {
   }
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="space-y-6">
+    <form onSubmit={handleSubmit} noValidate className="space-y-8">
       <div>
         <p className="eyebrow">Quick message</p>
         <h2 className="font-serif mt-2 text-2xl text-earth sm:text-3xl">General enquiry</h2>
@@ -57,7 +57,7 @@ export default function GeneralEnquiryForm({ data, onChange }: Props) {
         </p>
       </div>
 
-      <div className="grid gap-5 sm:grid-cols-2">
+      <div className="grid gap-6 sm:grid-cols-2">
         <FormField label="Full name" htmlFor="ge-fullName" required error={errors.fullName}>
           <input
             id="ge-fullName"
@@ -148,7 +148,7 @@ export default function GeneralEnquiryForm({ data, onChange }: Props) {
 
       <SubmitStatus state={submitState} />
 
-      <button type="submit" disabled={submitState === "submitting"} className="btn btn-primary w-full sm:w-auto">
+      <button type="submit" disabled={submitState === "submitting"} className="btn btn-primary w-full !text-base sm:w-auto">
         {submitState === "submitting" ? "Preparing…" : "Send enquiry"}
       </button>
     </form>
