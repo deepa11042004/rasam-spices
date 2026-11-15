@@ -1,10 +1,7 @@
-
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import FloatingStarAnise from "@/components/FloatingStarAnise";
+import PublicLayout from "@/components/PublicLayout";
 
 // All three faces below are self-hosted locally (next/font/local) instead of fetched from Google
 // Fonts at build time (next/font/google), to avoid a Turbopack font-loader network-resolution
@@ -12,6 +9,7 @@ import FloatingStarAnise from "@/components/FloatingStarAnise";
 // bundled from disk instead of downloaded. See src/fonts/ (the variable-weight file is the exact
 // same file the "geist" npm package ships internally; vendoring it here means the build no longer
 // depends on that package's internal file layout surviving every future `npm install`).
+
 const geistSans = localFont({
   src: "../fonts/geist-sans/Geist-Variable.woff2",
   variable: "--font-geist-sans",
@@ -75,12 +73,7 @@ export default function RootLayout({
         >
           Skip to content
         </a>
-        <Header />
-        <main id="main" className="flex-1">
-          {children}
-        </main>
-        <Footer />
-        <FloatingStarAnise />
+        <PublicLayout>{children}</PublicLayout>
       </body>
     </html>
   );

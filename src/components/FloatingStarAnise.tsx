@@ -10,7 +10,7 @@ const IMAGE_PATH = "/images/star-anise-floating.png";
  * Server component: it only checks that the image exists, then hands over to the client link.
  */
 export default function FloatingStarAnise() {
-  const exists = existsSync(path.join(process.cwd(), "public", IMAGE_PATH));
+  const exists = existsSync(path.join(process.cwd(), "public", IMAGE_PATH.slice(1)));
   if (!exists) return null;
   return <FloatingStarAniseLink src={IMAGE_PATH} />;
 }

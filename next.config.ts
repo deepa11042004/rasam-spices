@@ -7,6 +7,10 @@ const nextConfig: NextConfig = {
     // collection and the dish photos, which are re-encoded from already-compressed sources.
     qualities: [75, 90],
   },
+  serverExternalPackages: [
+    "@prisma/adapter-mariadb",
+    "@prisma/client",
+  ],
   turbopack: {
     rules: {
       "*.css": {

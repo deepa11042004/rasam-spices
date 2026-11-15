@@ -9,6 +9,11 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@prisma/adapter-mariadb": "^7.10.1",
+    "@prisma/client": "^7.10.1",
+    "@supabase/ssr": "^0.12.7",
+    "argon2": "^0.45.2",
+    "mariadb": "^3.5.5",
     "next": "16.4.2",
     "react": "19.3.0",
     "react-dom": "19.3.0"
@@ -20,7 +25,14 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.4.2",
+    "prisma": "^7.10.1",
     "tailwindcss": "^4",
     "typescript": "^5"
+  },
+  "allowScripts": {
+    "@prisma/engines@7.10.1": true,
+    "prisma@7.10.1": true,
+    "argon2@0.45.2": true,
+    "unrs-resolver@1.12.2": true
   }
 }
