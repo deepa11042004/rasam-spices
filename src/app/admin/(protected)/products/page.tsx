@@ -18,6 +18,11 @@ export default async function ProductsPage({
   const params = await searchParams;
   const q = typeof params.q === "string" ? params.q.trim() : "";
   const catFilter = typeof params.category === "string" ? params.category : "";
+  // "visible" | "hidden"; anything else is ignored and shows everything.
+  const visibilityFilter =
+    params.visibility === "visible" || params.visibility === "hidden"
+      ? params.visibility
+      : "";
   const page = Math.max(1, Number(params.page) || 1);
 
   const where: Prisma.ProductWhereInput = {};
@@ -30,6 +35,7 @@ export default async function ProductsPage({
     ];
   }
   if (catFilter) where.category = catFilter;
+  if (visibilityFilter) where.isVisible = visibilityFilter === "visible";
 
   const [products, total] = await Promise.all([
     prisma.product.findMany({
@@ -45,6 +51,7 @@ export default async function ProductsPage({
   const spRecord: Record<string, string> = {};
   if (q) spRecord.q = q;
   if (catFilter) spRecord.category = catFilter;
+  if (visibilityFilter) spRecord.visibility = visibilityFilter;
 
   return (
     <div className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 lg:py-10">
@@ -75,6 +82,15 @@ export default async function ProductsPage({
               { value: "ground-spices", label: "Ground Spices" },
               { value: "blended-masalas", label: "Blended Masalas" },
               { value: "spices-seasonings", label: "Spices & Seasonings" },
+            ],
+          },
+          {
+            name: "visibility",
+            label: "Visibility",
+            value: visibilityFilter,
+            options: [
+              { value: "visible", label: "Visible" },
+              { value: "hidden", label: "Hidden" },
             ],
           },
         ]}
