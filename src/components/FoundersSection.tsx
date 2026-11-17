@@ -1,4 +1,3 @@
-
 "use client";
 
 import Image from "next/image";
@@ -15,31 +14,12 @@ type Founder = {
   };
 };
 
-// Founder order and approved profile images.
-const FOUNDERS: Founder[] = [
-  {
-    id: "ajay",
-    name: "Ajay Ruhela",
-    role: "Co-Founder",
-    description:
-      "An accomplished business professional with an MBA and over 11 years of business experience, Ajay Ruhela brings valuable expertise in business development, strategic planning, and operations. As Co-Founder, he focuses on driving sustainable growth, strengthening business relationships, and building a strong foundation for long-term success through strategic thinking and effective leadership.",
-    image: {
-      src: "/images/Founder 1.jpeg",
-      alt: "Portrait of Ajay Ruhela, Co-Founder of RASAM Spices",
-    },
-  },
-  {
-    id: "honey",
-    name: "Honey",
-    role: "Co-Founder & CEO",
-    description:
-      "A dynamic leader with a strong academic foundation in B.Tech and MBA, Honey brings expertise in the FMCG industry, with a vision to build a trusted and innovative brand. As Co-Founder & CEO, Honey drives business strategy, product excellence, and brand development, focusing on delivering quality products and creating lasting customer relationships.",
-    image: {
-      src: "/images/Founder 2.jpeg",
-      alt: "Portrait of Honey, Co-Founder & CEO of RASAM Spices",
-    },
-  },
-];
+// Default bios used when no prop is provided.
+const DEFAULT_AJAY_BIO =
+  "An accomplished business professional with an MBA and over 11 years of business experience, Ajay Ruhela brings valuable expertise in business development, strategic planning, and operations. As Co-Founder, he focuses on driving sustainable growth, strengthening business relationships, and building a strong foundation for long-term success through strategic thinking and effective leadership.";
+
+const DEFAULT_HONEY_BIO =
+  "A dynamic leader with a strong academic foundation in B.Tech and MBA, Honey brings expertise in the FMCG industry, with a vision to build a trusted and innovative brand. As Co-Founder & CEO, Honey drives business strategy, product excellence, and brand development, focusing on delivering quality products and creating lasting customer relationships.";
 
 function ChevronIcon() {
   return (
@@ -59,6 +39,11 @@ function ChevronIcon() {
   );
 }
 
+interface FoundersSectionProps {
+  founderAjayBio?: string;
+  founderHoneyBio?: string;
+}
+
 /**
  * Collapsible Founders panel for the bottom of the About page.
  *
@@ -69,12 +54,39 @@ function ChevronIcon() {
  * - Respects reduced-motion preferences.
  * - Reuses existing RASAM design tokens and styling.
  */
-export default function FoundersSection() {
+export default function FoundersSection({
+  founderAjayBio,
+  founderHoneyBio,
+}: FoundersSectionProps) {
   const [open, setOpen] = useState(false);
 
   const idBase = useId();
   const triggerId = `${idBase}-trigger`;
   const panelId = `${idBase}-panel`;
+
+  // Build founders array with potentially overridden bios
+  const founders: Founder[] = [
+    {
+      id: "ajay",
+      name: "Ajay Ruhela",
+      role: "Co-Founder",
+      description: founderAjayBio || DEFAULT_AJAY_BIO,
+      image: {
+        src: "/images/Founder 1.jpeg",
+        alt: "Portrait of Ajay Ruhela, Co-Founder of RASAM Spices",
+      },
+    },
+    {
+      id: "honey",
+      name: "Honey",
+      role: "Co-Founder & CEO",
+      description: founderHoneyBio || DEFAULT_HONEY_BIO,
+      image: {
+        src: "/images/Founder 2.jpeg",
+        alt: "Portrait of Honey, Co-Founder & CEO of RASAM Spices",
+      },
+    },
+  ];
 
   return (
     <section aria-labelledby={triggerId} className="bg-parchment">
@@ -130,7 +142,7 @@ export default function FoundersSection() {
               </p>
 
               <ul className="mt-6 divide-y divide-turmeric/20">
-                {FOUNDERS.map((founder, index) => (
+                {founders.map((founder, index) => (
                   <li
                     key={founder.id}
                     className={`grid gap-5 sm:grid-cols-[88px_1fr] sm:items-start sm:gap-6 ${

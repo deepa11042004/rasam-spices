@@ -12,11 +12,27 @@ import SpiceBackdrop from "@/components/SpiceBackdrop";
 import RasamAnimatedLogo from "@/components/RasamAnimatedLogo";
 import TypingStatement from "@/components/TypingStatement";
 
-import { company } from "@/data/company";
 import { categories, featuredProducts, getProductsByCategory } from "@/data/products";
+import { getPublicSettings, getSiteContentBatch } from "@/lib/site-settings";
 
 
-export default function Home() {
+export default async function Home() {
+  const [settings, content] = await Promise.all([
+    getPublicSettings(),
+    getSiteContentBatch({
+      "home.heroHeading": "Rich aroma.",
+      "home.heroHighlight": "Authentic flavours.",
+      "home.partnerStatement":
+        "Whether you’re a retailer, distributor, wholesaler, or business partner, we’d love to grow together and bring the authentic taste of RASAM to more kitchens.",
+      "home.aboutText": "",
+    }),
+  ]);
+
+  // Build the about text with the launch date from settings
+  const aboutText =
+    content["home.aboutText"] ||
+    `Launched on ${settings.launchDate}, RASAM Spices was founded with a simple vision: to bring the authentic taste of India to every home through spices that make everyday cooking more delicious and memorable.`;
+
   return (
     <>
       {/* HERO: spice photograph (blurred, visible around the card) + solid charcoal card with a gold border */}
@@ -51,7 +67,7 @@ export default function Home() {
               </div>
 
               <p className="rasam-tagline hero-in mt-5 !mx-0" style={{ "--hero-delay": "0.3s" } as CSSProperties}>
-                {company.brandLine}
+                {settings.brandLine}
               </p>
 
               <div className="hero-in" style={{ "--hero-delay": "0.4s" } as CSSProperties}>
@@ -62,9 +78,9 @@ export default function Home() {
                 className="hero-in display-heading mt-6 text-[2.75rem] text-parchment sm:text-6xl lg:text-7xl"
                 style={{ "--hero-delay": "0.5s" } as CSSProperties}
               >
-                Rich aroma.
+                {content["home.heroHeading"]}
                 <br />
-                <span className="text-turmeric">Authentic flavours.</span>
+                <span className="text-turmeric">{content["home.heroHighlight"]}</span>
               </h1>
 
               <div className="hero-in mt-9 flex flex-wrap justify-center gap-3 lg:justify-start" style={{ "--hero-delay": "0.75s" } as CSSProperties}>
@@ -143,7 +159,7 @@ export default function Home() {
         <div className="mx-auto max-w-5xl px-6 py-20 text-center lg:px-10 lg:py-28">
           <div className="gold-rule mx-auto w-20" />
           <TypingStatement
-            text="Whether you're a retailer, distributor, wholesaler, or business partner, we'd love to grow together and bring the authentic taste of RASAM to more kitchens."
+            text={content["home.partnerStatement"]}
             speed={110}
             className="display-heading mx-auto mt-9 max-w-4xl text-3xl italic leading-[1.4] text-earth sm:text-4xl sm:leading-[1.35] lg:text-5xl"
           />
@@ -170,10 +186,7 @@ export default function Home() {
               Spices are the heart of Indian cuisine.
             </h2>
             <p className="mt-7 max-w-xl text-lg leading-8 text-earth-muted">
-              Launched on {company.launchDate}, RASAM Spices was founded with a
-              simple vision: to bring the authentic taste of India to every
-              home through spices that make everyday cooking more delicious
-              and memorable.
+              {aboutText}
             </p>
             <Link href="/about" className="btn btn-ghost-dark mt-9">
               About RASAM Spices
@@ -203,8 +216,8 @@ export default function Home() {
             <Link href="/contact?form=business" className="btn btn-light">
               Send a business enquiry
             </Link>
-            <a href={company.phone.href} className="btn btn-ghost-light">
-              Call {company.phone.display}
+            <a href={settings.phone.href} className="btn btn-ghost-light">
+              Call {settings.phone.display}
             </a>
           </div>
         </div>

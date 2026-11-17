@@ -12,6 +12,11 @@ import {
   isValidIndianMobile,
   validateSelectedProductQuantities,
 } from "./validation";
+import { submitBusinessEnquiry } from "@/lib/enquiry-actions";
+
+const SUCCESS_TITLE = "Your business enquiry has been submitted successfully.";
+const SUCCESS_DETAIL =
+  "Our team will contact you shortly. Thank you for your interest in RASAM!";
 
 type Props = {
   data: BusinessEnquiryFormData;
@@ -41,6 +46,9 @@ export default function BusinessEnquiryForm({ data, onChange }: Props) {
   const [productsTouchedError, setProductsTouchedError] = useState<string | undefined>();
   const [showReview, setShowReview] = useState(false);
   const [submitState, setSubmitState] = useState<SubmitState>("idle");
+  /** Message from a failed server submission; undefined falls back to the
+   *  default "check the highlighted fields" text. */
+  const [submitError, setSubmitError] = useState<string | undefined>();
 
   function update<K extends keyof BusinessEnquiryFormData>(
     key: K,
@@ -77,9 +85,24 @@ export default function BusinessEnquiryForm({ data, onChange }: Props) {
     }
   }
 
-  function handleConfirm() {
+  async function handleConfirm() {
+    // Guard against duplicate submissions: ignore repeat clicks while a
+    // request is in flight, and once the enquiry has already been stored.
+    if (submitState === "submitting" || submitState === "success") return;
+
     setSubmitState("submitting");
-    window.setTimeout(() => setSubmitState("success"), 500);
+    setSubmitError(undefined);
+
+    const result = await submitBusinessEnquiry(data);
+
+    if (result.ok) {
+      // Success is shown only after the database confirms the write.
+      setSubmitState("success");
+    } else {
+      // Entered values are left untouched so nothing is lost on failure.
+      setSubmitError(result.message);
+      setSubmitState("error");
+    }
   }
 
   const reviewRows = [
@@ -107,27 +130,45 @@ export default function BusinessEnquiryForm({ data, onChange }: Props) {
 
         <FormReviewSummary rows={reviewRows} selectedProducts={data.selectedProducts} />
 
-        <SubmitStatus state={submitState} />
+        <SubmitStatus
+          state={submitState}
+          submittingText="Submitting your enquiry…"
+          successTitle={SUCCESS_TITLE}
+          successDetail={SUCCESS_DETAIL}
+          errorText={submitError}
+        />
 
         <div className="flex flex-wrap gap-3">
-          <button
-            type="button"
-            onClick={() => {
-              setShowReview(false);
-              setSubmitState("idle");
-            }}
-            className="btn btn-ghost-dark"
-          >
-            Edit details
-          </button>
-          <button
-            type="button"
-            onClick={handleConfirm}
-            disabled={submitState === "submitting" || submitState === "success"}
-            className="btn btn-primary"
-          >
-            {submitState === "submitting" ? "Preparing…" : "Confirm & send enquiry"}
-          </button>
+          {submitState !== "success" && (
+            <>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowReview(false);
+                  setSubmitState("idle");
+                  setSubmitError(undefined);
+                }}
+                disabled={submitState === "submitting"}
+                className="btn btn-ghost-dark"
+              >
+                Edit details
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  void handleConfirm();
+                }}
+                disabled={submitState === "submitting"}
+                className="btn btn-primary"
+              >
+                {submitState === "submitting"
+                  ? "Submitting…"
+                  : submitState === "error"
+                    ? "Try again"
+                    : "Confirm & send enquiry"}
+              </button>
+            </>
+          )}
         </div>
       </div>
     );

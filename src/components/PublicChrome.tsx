@@ -1,15 +1,25 @@
-﻿"use client";
+"use client";
 
 import type { ReactNode } from "react";
 import { usePathname } from "next/navigation";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 
+/**
+ * Client-side chrome wrapper.
+ *
+ * Header and Footer are passed in as rendered elements rather than imported
+ * here: Footer is an async Server Component that reads company settings from
+ * the database, and importing it into this client component would pull
+ * server-only code (Prisma) into the client bundle.
+ */
 export default function PublicChrome({
   children,
+  header,
+  footer,
   floating,
 }: {
   children: ReactNode;
+  header: ReactNode;
+  footer: ReactNode;
   floating: ReactNode;
 }) {
   const pathname = usePathname();
@@ -19,11 +29,11 @@ export default function PublicChrome({
 
   return (
     <>
-      <Header />
+      {header}
       <main id="main" className="flex-1">
         {children}
       </main>
-      <Footer />
+      {footer}
       {floating}
     </>
   );

@@ -5,6 +5,11 @@ import FormField, { inputClass, selectClass, textareaClass } from "./FormField";
 import SubmitStatus, { type SubmitState } from "./SubmitStatus";
 import { ENQUIRY_TYPES, emptyGeneralEnquiry, type GeneralEnquiryFormData } from "./types";
 import { isRequired, isValidEmail, isValidIndianMobile } from "./validation";
+import { submitGeneralEnquiry } from "@/lib/enquiry-actions";
+
+const SUCCESS_TITLE = "Your enquiry has been submitted successfully.";
+const SUCCESS_DETAIL =
+  "Our team will contact you shortly. Thank you for your interest in RASAM!";
 
 type Props = {
   data: GeneralEnquiryFormData;
@@ -29,25 +34,52 @@ function validate(data: GeneralEnquiryFormData): Errors {
 export default function GeneralEnquiryForm({ data, onChange }: Props) {
   const [errors, setErrors] = useState<Errors>({});
   const [submitState, setSubmitState] = useState<SubmitState>("idle");
+  /** Message from a failed server submission; undefined falls back to the
+   *  default "check the highlighted fields" text. */
+  const [submitError, setSubmitError] = useState<string | undefined>();
 
   function update<K extends keyof GeneralEnquiryFormData>(key: K, value: GeneralEnquiryFormData[K]) {
     onChange({ ...data, [key]: value });
   }
 
-  function handleSubmit(event: React.FormEvent) {
+  async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
+
+    // Guard against duplicate submissions: ignore repeat submits while a
+    // request is in flight, and once the enquiry has already been stored.
+    if (submitState === "submitting" || submitState === "success") return;
+
     const nextErrors = validate(data);
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length > 0) {
+      setSubmitError(undefined);
       setSubmitState("error");
       return;
     }
+
     setSubmitState("submitting");
-    window.setTimeout(() => setSubmitState("success"), 500);
+    setSubmitError(undefined);
+
+    const result = await submitGeneralEnquiry(data);
+
+    if (result.ok) {
+      // Success is shown only after the database confirms the write.
+      setSubmitState("success");
+    } else {
+      // Entered values are left untouched so nothing is lost on failure.
+      setSubmitError(result.message);
+      setSubmitState("error");
+    }
   }
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="space-y-8">
+    <form
+      onSubmit={(event) => {
+        void handleSubmit(event);
+      }}
+      noValidate
+      className="space-y-8"
+    >
       <div>
         <p className="eyebrow">Quick message</p>
         <h2 className="font-serif mt-2 text-2xl text-earth sm:text-3xl">General enquiry</h2>
@@ -146,11 +178,27 @@ export default function GeneralEnquiryForm({ data, onChange }: Props) {
         />
       </FormField>
 
-      <SubmitStatus state={submitState} />
+      <SubmitStatus
+        state={submitState}
+        submittingText="Submitting your enquiry…"
+        successTitle={SUCCESS_TITLE}
+        successDetail={SUCCESS_DETAIL}
+        errorText={submitError}
+      />
 
-      <button type="submit" disabled={submitState === "submitting"} className="btn btn-primary w-full !text-base sm:w-auto">
-        {submitState === "submitting" ? "Preparing…" : "Send enquiry"}
-      </button>
+      {submitState !== "success" && (
+        <button
+          type="submit"
+          disabled={submitState === "submitting"}
+          className="btn btn-primary w-full !text-base sm:w-auto"
+        >
+          {submitState === "submitting"
+            ? "Submitting…"
+            : submitState === "error"
+              ? "Try again"
+              : "Send enquiry"}
+        </button>
+      )}
     </form>
   );
 }

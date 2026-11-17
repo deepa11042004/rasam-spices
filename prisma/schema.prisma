@@ -94,6 +94,7 @@ model SampleRequest {
 
 model Product {
   id                String   @id
+  slug              String?  @unique
   name              String
   category          String
   description       String?  @db.Text
@@ -147,12 +148,36 @@ model DishPlatterItem {
 }
 
 model CompanySettings {
-  id          String   @id @default(cuid())
-  companyName String
-  email       String?
-  address     String?  @db.Text
-  fssaiNumber String?
-  updatedAt   DateTime @updatedAt
+  id              String   @id @default(cuid())
+  companyName     String
+  email           String?
+  address         String?  @db.Text
+  fssaiNumber     String?
+
+  // Extended company info (previously hardcoded in src/data/company.ts)
+  phone           String?
+  phoneHref       String?
+  brandLine       String?
+  launchDate      String?
+  websiteDisplay  String?
+  websiteHref     String?
+
+  // SEO
+  siteDescription String?  @db.Text
+
+  // Footer
+  footerTagline   String?  @db.Text
+
+  updatedAt       DateTime @updatedAt
+}
+
+/// Key-value store for editable page content blocks.
+model SiteContent {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  title     String?
+  content   String   @db.LongText
+  updatedAt DateTime @updatedAt
 }
 
 model SocialLink {

@@ -1,7 +1,7 @@
 "use server";
 
 /**
- * Server actions for company settings and social links.
+ * Server actions for company settings, site content, and social links.
  */
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
@@ -26,6 +26,14 @@ export type CompanySettingsData = {
   email: string;
   address: string;
   fssaiNumber: string;
+  phone: string;
+  phoneHref: string;
+  brandLine: string;
+  launchDate: string;
+  websiteDisplay: string;
+  websiteHref: string;
+  siteDescription: string;
+  footerTagline: string;
 };
 
 export async function updateCompanySettings(data: CompanySettingsData): Promise<ActionResult> {
@@ -38,28 +46,129 @@ export async function updateCompanySettings(data: CompanySettingsData): Promise<
   const email = sanitize(data.email, 254);
   const address = sanitize(data.address, 2000);
   const fssaiNumber = sanitize(data.fssaiNumber, 100);
+  const phone = sanitize(data.phone, 50);
+  const phoneHref = sanitize(data.phoneHref, 100);
+  const brandLine = sanitize(data.brandLine, 300);
+  const launchDate = sanitize(data.launchDate, 100);
+  const websiteDisplay = sanitize(data.websiteDisplay, 200);
+  const websiteHref = sanitize(data.websiteHref, 500);
+  const siteDescription = sanitize(data.siteDescription, 2000);
+  const footerTagline = sanitize(data.footerTagline, 2000);
 
   try {
-    // Get or create the single settings record
     const existing = await prisma.companySettings.findFirst();
+
+    const payload = {
+      companyName,
+      email: email || null,
+      address: address || null,
+      fssaiNumber: fssaiNumber || null,
+      phone: phone || null,
+      phoneHref: phoneHref || null,
+      brandLine: brandLine || null,
+      launchDate: launchDate || null,
+      websiteDisplay: websiteDisplay || null,
+      websiteHref: websiteHref || null,
+      siteDescription: siteDescription || null,
+      footerTagline: footerTagline || null,
+    };
 
     if (existing) {
       await prisma.companySettings.update({
         where: { id: existing.id },
-        data: { companyName, email: email || null, address: address || null, fssaiNumber: fssaiNumber || null },
+        data: payload,
       });
     } else {
-      await prisma.companySettings.create({
-        data: { companyName, email: email || null, address: address || null, fssaiNumber: fssaiNumber || null },
+      await prisma.companySettings.create({ data: payload });
+    }
+
+    revalidatePath("/admin/settings");
+    revalidatePath("/");
+    revalidatePath("/about");
+    revalidatePath("/contact");
+    return { ok: true, message: "Settings saved" };
+  } catch (err) {
+    console.error("[updateCompanySettings]", err);
+    return { ok: false, message: "Failed to save settings" };
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Site content (page-level editable text blocks)
+// ---------------------------------------------------------------------------
+
+export type SiteContentData = {
+  key: string;
+  title?: string;
+  content: string;
+};
+
+export async function upsertSiteContent(data: SiteContentData): Promise<ActionResult> {
+  const admin = await getSessionAdmin();
+  if (!admin) return { ok: false, message: "Unauthorized" };
+
+  const key = sanitize(data.key, 100);
+  if (!key) return { ok: false, message: "Key is required" };
+
+  const title = data.title ? sanitize(data.title, 200) : null;
+  // Allow longer content for page blocks (up to 50k chars)
+  const content = typeof data.content === "string"
+    ? data.content.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, "").trim().slice(0, 50000)
+    : "";
+
+  try {
+    const existing = await prisma.siteContent.findUnique({ where: { key } });
+
+    if (existing) {
+      await prisma.siteContent.update({
+        where: { key },
+        data: { title, content },
+      });
+    } else {
+      await prisma.siteContent.create({
+        data: { key, title, content },
       });
     }
 
     revalidatePath("/admin/settings");
     revalidatePath("/");
-    return { ok: true, message: "Settings saved" };
+    revalidatePath("/about");
+    revalidatePath("/contact");
+    return { ok: true, message: "Content saved" };
   } catch (err) {
-    console.error("[updateCompanySettings]", err);
-    return { ok: false, message: "Failed to save settings" };
+    console.error("[upsertSiteContent]", err);
+    return { ok: false, message: "Failed to save content" };
+  }
+}
+
+export async function upsertManySiteContent(items: SiteContentData[]): Promise<ActionResult> {
+  const admin = await getSessionAdmin();
+  if (!admin) return { ok: false, message: "Unauthorized" };
+
+  try {
+    for (const item of items) {
+      const key = sanitize(item.key, 100);
+      if (!key) continue;
+      const title = item.title ? sanitize(item.title, 200) : null;
+      const content = typeof item.content === "string"
+        ? item.content.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, "").trim().slice(0, 50000)
+        : "";
+
+      await prisma.siteContent.upsert({
+        where: { key },
+        update: { title, content },
+        create: { key, title, content },
+      });
+    }
+
+    revalidatePath("/admin/settings");
+    revalidatePath("/");
+    revalidatePath("/about");
+    revalidatePath("/contact");
+    return { ok: true, message: "Content saved" };
+  } catch (err) {
+    console.error("[upsertManySiteContent]", err);
+    return { ok: false, message: "Failed to save content" };
   }
 }
 

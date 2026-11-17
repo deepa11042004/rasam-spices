@@ -1,5 +1,7 @@
-﻿import type { ReactNode } from "react";
+import type { ReactNode } from "react";
 import PublicChrome from "@/components/PublicChrome";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import FloatingStarAnise from "@/components/FloatingStarAnise";
 
 export default function PublicLayout({
@@ -8,7 +10,11 @@ export default function PublicLayout({
   children: ReactNode;
 }) {
   return (
-    <PublicChrome floating={<FloatingStarAnise />}>
+    <PublicChrome
+      header={<Header />}
+      footer={<Footer />}
+      floating={<FloatingStarAnise />}
+    >
       {children}
     </PublicChrome>
   );

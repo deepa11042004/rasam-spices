@@ -1,9 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import BrandMark from "@/components/BrandMark";
-import { company, navLinks } from "@/data/company";
+import { navLinks } from "@/data/company";
+import { getPublicSettings } from "@/lib/site-settings";
 
-export default function Footer() {
+export default async function Footer() {
+  const settings = await getPublicSettings();
+
   return (
 <footer className="relative isolate border-t border-turmeric bg-forest-deep pb-8 pt-16 text-ivory [&_:focus-visible]:outline-turmeric">
       {/* Star-anise photo under a dark green wash (lazy-loaded and resized by next/image) */}
@@ -21,8 +24,7 @@ export default function Footer() {
         <div>
           <BrandMark tone="light" />
           <p className="mt-4 max-w-sm text-sm leading-7 text-ivory/85">
-            Authentic Indian spices and masalas for every home. For retail,
-            wholesale and distributorship enquiries, get in touch.
+            {settings.footerTagline}
           </p>
         </div>
 
@@ -43,20 +45,20 @@ export default function Footer() {
           <h2 className="eyebrow eyebrow-light !font-sans">Contact</h2>
           <address className="mt-6 space-y-3 text-sm not-italic leading-6 text-ivory/85">
             <p>
-              {company.address.lines.map((line) => (
+              {settings.address.lines.map((line) => (
                 <span key={line} className="block">
                   {line}
                 </span>
               ))}
             </p>
             <p>
-              <a href={company.phone.href} className="hover:text-turmeric">
-                {company.phone.display}
+              <a href={settings.phone.href} className="hover:text-turmeric">
+                {settings.phone.display}
               </a>
             </p>
             <p>
-              <a href={`mailto:${company.email}`} className="hover:text-turmeric">
-                {company.email}
+              <a href={`mailto:${settings.email}`} className="hover:text-turmeric">
+                {settings.email}
               </a>
             </p>
           </address>
@@ -66,9 +68,9 @@ export default function Footer() {
       <div className="mx-auto mt-12 max-w-7xl px-6 lg:px-10">
         <div className="flex flex-col gap-2 border-t border-turmeric/30 pt-6 text-xs text-ivory/70 sm:flex-row sm:justify-between">
         <p>
-          © {new Date().getFullYear()} {company.displayName}
+          &copy; {new Date().getFullYear()} {settings.displayName}
         </p>
-        <p>FSSAI Lic. No. {company.fssaiLicence}</p>
+        <p>FSSAI Lic. No. {settings.fssaiLicence}</p>
         </div>
       </div>
     </footer>

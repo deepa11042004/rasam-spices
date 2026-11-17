@@ -79,7 +79,25 @@ function readInitialSelection(searchParams: URLSearchParams): SelectedProduct[] 
   ];
 }
 
-export default function ContactFormTabs() {
+interface ContactFormTabsProps {
+  /** Contact email shown under "Prefer to talk directly?". Falls back to the
+   *  value in src/data/company.ts when not supplied. */
+  contactEmail?: string;
+  /** Phone number in display format. */
+  contactPhone?: string;
+  /** tel: URI for the phone number. */
+  contactPhoneHref?: string;
+}
+
+export default function ContactFormTabs({
+  contactEmail,
+  contactPhone,
+  contactPhoneHref,
+}: ContactFormTabsProps = {}) {
+  const email = contactEmail || company.email;
+  const phoneDisplay = contactPhone || company.phone.display;
+  const phoneHref = contactPhoneHref || company.phone.href;
+
   const searchParams = useSearchParams();
   const initialTab = readInitialTab(searchParams);
   const cameFromDeepLink = searchParams.get("form") !== null || searchParams.get("enquiry") !== null;
@@ -227,16 +245,16 @@ export default function ContactFormTabs() {
           <p className="eyebrow">Prefer to talk directly?</p>
           <div className="mt-3 space-y-1.5 text-sm">
             <a
-              href={`mailto:${company.email}`}
+              href={`mailto:${email}`}
               className="block font-medium text-spice underline-offset-4 hover:underline"
             >
-              {company.email}
+              {email}
             </a>
             <a
-              href={company.phone.href}
+              href={phoneHref}
               className="block font-medium text-spice underline-offset-4 hover:underline"
             >
-              {company.phone.display}
+              {phoneDisplay}
             </a>
           </div>
         </div>

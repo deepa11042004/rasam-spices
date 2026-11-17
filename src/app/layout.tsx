@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import PublicLayout from "@/components/PublicLayout";
+import { getPublicSettings } from "@/lib/site-settings";
 
 // All three faces below are self-hosted locally (next/font/local) instead of fetched from Google
 // Fonts at build time (next/font/google), to avoid a Turbopack font-loader network-resolution
@@ -47,14 +48,16 @@ const script = localFont({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: {
-    template: "%s | RASAM Spices",
-    default: "RASAM Spices | Authentic Indian Spices & Masalas",
-  },
-  description:
-    "RASAM Spices brings the authentic taste of India to every home: ground spices, blended masalas and seasonings. Business enquiries welcome from retailers, wholesalers and distributors.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getPublicSettings();
+  return {
+    title: {
+      template: `%s | ${settings.displayName} Spices`,
+      default: `${settings.displayName} Spices | Authentic Indian Spices & Masalas`,
+    },
+    description: settings.siteDescription,
+  };
+}
 
 export default function RootLayout({
   children,
