@@ -9,17 +9,19 @@ import type { DishStageItem } from "@/components/DishDiscovery";
  * Slice i spans 60 degrees: from -90 + 60i to -30 + 60i (slice 0 starts at the top, clockwise).
  * Each slice is: centre -> straight radius -> circular arc along the plate edge -> straight radius -> centre.
  */
-const SPAN = 360 / DISH_SLICE_COUNT;
 const START = -90;
+/** Degrees per wedge for a plate of `count` dishes (6 => the original 60). */
+const spanFor = (count: number) => 360 / Math.max(1, count);
 const rad = (deg: number) => (deg * Math.PI) / 180;
 const point = (deg: number, radius: number) => ({
   x: 0.5 + radius * Math.cos(rad(deg)),
   y: 0.5 + radius * Math.sin(rad(deg)),
 });
 
-function sectorPath(index: number) {
-  const from = point(START + index * SPAN, 0.5);
-  const to = point(START + (index + 1) * SPAN, 0.5);
+function sectorPath(index: number, count: number) {
+  const span = spanFor(count);
+  const from = point(START + index * span, 0.5);
+  const to = point(START + (index + 1) * span, 0.5);
   return `M0.5 0.5 L${from.x.toFixed(5)} ${from.y.toFixed(5)} A0.5 0.5 0 0 1 ${to.x.toFixed(5)} ${to.y.toFixed(5)} Z`;
 }
 
@@ -49,6 +51,10 @@ const DIVIDER = "#35271D"; // thin, dark, natural
  */
 export default function DishPlatter({ items, selected, onSelect, onReset }: Props) {
   const isSelected = selected !== null;
+  // The plate is cut into as many wedges as there are configured dishes, so a
+  // platter of fewer than six still fills the circle. Six is the maximum.
+  const sliceCount = Math.max(1, Math.min(items.length, DISH_SLICE_COUNT));
+  const span = spanFor(sliceCount);
   const spinRef = useRef<HTMLDivElement>(null);
 
   // Smoothly stop the rotation: read the current angle, then ease forward to the next upright position.
@@ -81,7 +87,7 @@ export default function DishPlatter({ items, selected, onSelect, onReset }: Prop
         <defs>
           {items.map((item, index) => (
             <clipPath key={item.dish.id} id={clipId(index)} clipPathUnits="objectBoundingBox">
-              <path d={sectorPath(index)} />
+              <path d={sectorPath(index, sliceCount)} />
             </clipPath>
           ))}
         </defs>
@@ -130,7 +136,7 @@ export default function DishPlatter({ items, selected, onSelect, onReset }: Prop
           {/* Six-slice selector */}
           <div className="dish-sectors absolute inset-0" aria-hidden={isSelected}>
             {items.map(({ dish }, index) => {
-              const mid = START + index * SPAN + SPAN / 2;
+              const mid = START + index * span + span / 2;
               const centre = point(mid, PHOTO_REACH / 100);
               return (
                 <button
@@ -170,7 +176,7 @@ export default function DishPlatter({ items, selected, onSelect, onReset }: Prop
                     className="dish-slice-ring pointer-events-none absolute inset-0 h-full w-full"
                     aria-hidden="true"
                   >
-                    <path d={sectorPath(index)} fill="none" stroke="#FFF1D6" strokeWidth="0.03" strokeLinejoin="round" />
+                    <path d={sectorPath(index, sliceCount)} fill="none" stroke="#FFF1D6" strokeWidth="0.03" strokeLinejoin="round" />
                   </svg>
                 </button>
               );
@@ -178,8 +184,8 @@ export default function DishPlatter({ items, selected, onSelect, onReset }: Prop
 
             {/* Thin dark dividers (about 2.6px on the 720px desktop plate), on the same rotating body */}
             <svg viewBox="0 0 100 100" className="pointer-events-none absolute inset-0 h-full w-full" aria-hidden="true">
-              {Array.from({ length: DISH_SLICE_COUNT }, (_, index) => {
-                const end = point(START + index * SPAN, 0.5);
+              {Array.from({ length: sliceCount }, (_, index) => {
+                const end = point(START + index * span, 0.5);
                 return (
                   <line
                     key={`divider-${index}`}

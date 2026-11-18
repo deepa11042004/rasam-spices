@@ -14,10 +14,11 @@ const NAV_ITEMS = [
   { label: "Business Enquiry", href: "/admin/business-enquiries" },
   { label: "Sample Enquiry", href: "/admin/sample-requests" },
   { label: "Products", href: "/admin/products" },
+  { label: "Homepage Dish Platter", href: "/admin/dish-platter" },
   { label: "Settings", href: "/admin/settings" },
 ] as const;
 
-// ---------------------------------------------------------------------------npx tsc --noEmit
+// ---------------------------------------------------------------------------
 // SVG icons (inline to avoid extra dependencies)
 // ---------------------------------------------------------------------------
 
@@ -56,6 +57,27 @@ function PackageIcon({ className }: { className?: string }) {
       <path d="M12 2l9 4.5v11L12 22l-9-4.5v-11L12 2z" />
       <path d="M12 22V12" />
       <path d="M3 6.5L12 12l9-5.5" />
+    </svg>
+  );
+}
+
+function ServingDishIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.8}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      {/* Domed cloche over a serving base */}
+      <path d="M3 17h18" />
+      <path d="M4.5 17a7.5 7.5 0 0 1 15 0" />
+      <path d="M12 6.5v3" />
+      <circle cx="12" cy="5.5" r="1" />
     </svg>
   );
 }
@@ -113,6 +135,7 @@ const ICONS: Record<string, typeof DashboardIcon> = {
   "/admin/business-enquiries": BriefcaseIcon,
   "/admin/sample-requests": PackageIcon,
   "/admin/products": TagIcon,
+  "/admin/dish-platter": ServingDishIcon,
   "/admin/settings": SettingsIcon,
 };
 
