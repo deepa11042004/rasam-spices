@@ -291,18 +291,19 @@ export default function ProductForm({
             publicly, so say which one — or that this product is not on the
             platter, rather than letting an upload silently do nothing. */}
         {mode === "edit" && (
-          platterDishName ? (
-            <p className="rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs text-emerald-800">
-              Shown on the homepage platter as{" "}
-              <span className="font-semibold">{platterDishName}</span>.
-            </p>
-          ) : (
-            <p className="rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800">
-              This product is not on the homepage dish platter, so a dish image
-              uploaded here will be saved but will not appear on the public
-              site. Only the six products paired with a platter dish display one.
-            </p>
-          )
+          <p className="rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs text-emerald-800">
+            Appears in the Products page showcase when a visitor opens this
+            product&apos;s expanded card.
+            {platterDishName ? (
+              <>
+                {" "}
+                Also shown on the homepage dish platter as{" "}
+                <span className="font-semibold">{platterDishName}</span>.
+              </>
+            ) : (
+              " This product is not on the homepage dish platter, so it will not appear there."
+            )}
+          </p>
         )}
 
         {dishPhotoSrc ? (

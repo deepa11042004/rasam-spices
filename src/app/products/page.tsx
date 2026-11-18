@@ -1,31 +1,25 @@
+
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import ProductCarousel from "@/components/ProductCarousel";
 import ProductHeroSlider from "@/components/ProductHeroSlider";
-import ProductInventoryShowcase, { type ShowcaseItem } from "@/components/ProductInventoryShowcase";
+import ProductInventoryShowcase, {
+  type ShowcaseItem,
+} from "@/components/ProductInventoryShowcase";
 import { heroSlides } from "@/data/productHeroSlides";
 import {
-  featuredProducts,
-  getCategory,
-  getProductsByCategory,
-  products,
+  categories,
   type CategoryId,
 } from "@/data/products";
+import { getPublicProducts } from "@/lib/public-products";
 import { productDishPhotos } from "@/data/productDishPhotos";
 
-// Display order of the three category showcases (and of the category links in the hero).
-const CATEGORY_ORDER: CategoryId[] = ["ground-spices", "spices-seasonings", "blended-masalas"];
-
-// Every product in each category is listed, whether or not a verified dish / usage photo exists
-// for it (src/data/productDishPhotos.ts is the only place that pairing is made). A product
-// without one still appears; its pinned panel just shows the pack and details.
-const showcases = CATEGORY_ORDER.map((id) => ({
-  category: getCategory(id),
-  items: getProductsByCategory(id).map(
-    (product): ShowcaseItem => ({ product, dish: productDishPhotos[product.id] }),
-  ),
-}));
+const CATEGORY_ORDER: CategoryId[] = [
+  "ground-spices",
+  "spices-seasonings",
+  "blended-masalas",
+];
 
 export const metadata: Metadata = {
   title: "Products",
@@ -33,8 +27,43 @@ export const metadata: Metadata = {
     "The RASAM Spices range: ground spices, blended masalas and individual spices & seasonings.",
 };
 
-export default function ProductsPage() {
+
+export const dynamic = "force-dynamic";
+
+export default async function ProductsPage() {
+  const products = await getPublicProducts();
+
+  const featuredProducts = products.filter(
+    (product) => product.featured === true,
+  );
+
+  const showcases = CATEGORY_ORDER.map((id) => {
+    const category = categories.find((item) => item.id === id);
+
+    if (!category) {
+      throw new Error(`Missing product category: ${id}`);
+    }
+
+    const categoryProducts = products.filter(
+      (product) => product.category === id,
+    );
+
+    return {
+      category,
+      items: categoryProducts.map(
+        (product): ShowcaseItem => ({
+          product,
+          // The product's own uploaded dish photo wins; the curated map in
+          // src/data/productDishPhotos.ts remains the fallback for products
+          // that have never had one uploaded. Packaging is never used here.
+          dish: product.dishPhoto ?? productDishPhotos[product.id],
+        }),
+      ),
+    };
+  });
+
   return (
+
     <>
       {/* ── Hero: auto-slider with blurred spice-photo backdrop ── */}
       <section className="relative overflow-hidden border-b border-turmeric/40">
@@ -77,7 +106,7 @@ export default function ProductsPage() {
                     href={`#${category.id}`}
                     className="inline-flex min-h-11 items-center rounded-full border border-turmeric/70 bg-[#7a2520] px-5 text-xs font-semibold uppercase tracking-[0.14em] text-parchment transition-colors hover:border-turmeric hover:bg-turmeric hover:text-charcoal"
                   >
-                    {category.name} ({getProductsByCategory(category.id).length})
+                   {category.name} ({showcases.find((item) => item.category.id === category.id)?.items.length ?? 0})
                   </a>
                 </li>
               ))}

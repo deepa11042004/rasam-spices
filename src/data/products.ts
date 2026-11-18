@@ -32,6 +32,12 @@ export type Product = {
   image?: ProductPhoto;
   /** Back pack photo. Only set when the genuine back image exists in inventories/. */
   backImage?: ProductPhoto;
+  /**
+   * Prepared-dish photograph uploaded by an admin for this specific product
+   * (Product.dishPhotoSrc). Never a packaging photo. When absent, callers fall
+   * back to the curated map in src/data/productDishPhotos.ts.
+   */
+  dishPhoto?: ProductPhoto;
   /** Brochure description (English). */
   description?: string;
   /** Brochure tagline. */
@@ -42,6 +48,8 @@ export type Product = {
   packFormat?: "Box" | "Pouch";
   /** Anything about this listing still waiting for client confirmation. */
   pendingNote?: string;
+  /** URL-safe slug for public product pages. */
+  slug?: string;
   /** Shown in the homepage "featured" section. */
   featured?: boolean;
 };

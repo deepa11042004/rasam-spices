@@ -27,6 +27,7 @@ function toFrontendProduct(record: ProductRecord): Product {
 
   return {
     id: record.id,
+    slug: record.slug ?? undefined,
     name: record.name,
     category: toCategoryId(record.category),
     description: record.description ?? undefined,
@@ -43,6 +44,14 @@ function toFrontendProduct(record: ProductRecord): Product {
       ? {
           src: record.backImageSrc,
           alt: record.backImageAlt ?? `${record.name} packaging`,
+        }
+      : undefined,
+
+    // Admin-uploaded prepared-dish photo for this product, if any.
+    dishPhoto: record.dishPhotoSrc
+      ? {
+          src: record.dishPhotoSrc,
+          alt: `${record.name} prepared dish`,
         }
       : undefined,
 
@@ -69,7 +78,27 @@ export async function getPublicProducts(): Promise<Product[]> {
   return records.map(toFrontendProduct);
 }
 
-export async function getPublicProduct(
+/**
+ * Look up a visible product by its URL slug.
+ */
+export async function getPublicProductBySlug(
+  slug: string,
+): Promise<Product | null> {
+  const record = await prisma.product.findFirst({
+    where: {
+      slug,
+      isVisible: true,
+    },
+  });
+
+  return record ? toFrontendProduct(record) : null;
+}
+
+/**
+ * Look up a visible product by its internal ID.
+ * Used for ID→slug redirects on legacy URLs.
+ */
+export async function getPublicProductById(
   id: string,
 ): Promise<Product | null> {
   const record = await prisma.product.findFirst({
@@ -80,4 +109,19 @@ export async function getPublicProduct(
   });
 
   return record ? toFrontendProduct(record) : null;
+}
+
+/**
+ * Look up any product (visible or not) by its internal ID.
+ * Returns the slug if set, for redirect purposes.
+ */
+export async function getProductSlugById(
+  id: string,
+): Promise<string | null> {
+  const record = await prisma.product.findUnique({
+    where: { id },
+    select: { slug: true },
+  });
+
+  return record?.slug ?? null;
 }
