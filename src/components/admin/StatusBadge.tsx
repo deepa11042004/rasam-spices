@@ -3,7 +3,7 @@ const STATUS_STYLES: Record<string, string> = {
   CONTACTED: "bg-purple-50 text-purple-700 ring-purple-600/20",
   IN_PROGRESS: "bg-amber-50 text-amber-700 ring-amber-600/20",
   CONVERTED: "bg-green-50 text-green-700 ring-green-600/20",
-  CLOSED_LOST: "bg-neutral-100 text-neutral-600 ring-neutral-500/20",
+  CLOSED_LOST: "bg-admin-cream text-admin-ink-muted ring-admin-border-strong",
 };
 
 const STATUS_LABELS: Record<string, string> = {
@@ -15,7 +15,7 @@ const STATUS_LABELS: Record<string, string> = {
 };
 
 export default function StatusBadge({ status }: { status: string }) {
-  const style = STATUS_STYLES[status] ?? "bg-neutral-50 text-neutral-600 ring-neutral-400/20";
+  const style = STATUS_STYLES[status] ?? "bg-admin-cream/60 text-admin-ink-muted ring-admin-border-strong";
   const label = STATUS_LABELS[status] ?? status;
 
   return (

@@ -14,7 +14,7 @@ export default function AdminLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <main id="main" className="flex min-h-screen flex-col bg-neutral-50 text-neutral-900">
+    <main id="main" className="flex min-h-screen flex-col bg-admin-cream/60 text-admin-ink">
       {children}
     </main>
   );

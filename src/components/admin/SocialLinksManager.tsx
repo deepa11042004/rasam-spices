@@ -95,12 +95,12 @@ export default function SocialLinksManager({ initialLinks }: SocialLinksManagerP
   }
 
   const inputClass =
-    "block w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm shadow-sm placeholder:text-neutral-400 focus:border-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-500";
+    "block w-full rounded-md border border-admin-border-strong bg-white px-3 py-2 text-sm shadow-sm placeholder:text-admin-ink-muted/60 focus:border-admin-spice focus:outline-none focus:ring-1 focus:ring-admin-spice/20";
 
   return (
     <div className="space-y-4">
       {links.length === 0 && !showNew && (
-        <p className="text-sm text-neutral-500">No social links configured yet.</p>
+        <p className="text-sm text-admin-ink-muted">No social links configured yet.</p>
       )}
 
       {/* Existing links */}
@@ -108,23 +108,23 @@ export default function SocialLinksManager({ initialLinks }: SocialLinksManagerP
         {links.map((link) => (
           <div
             key={link.id}
-            className="flex items-center gap-3 rounded-lg border border-neutral-200 bg-white px-4 py-3"
+            className="flex items-center gap-3 rounded-lg border border-admin-border bg-white px-4 py-3"
           >
             <div className="flex-1">
               <div className="flex items-center gap-2">
-                <span className="text-sm font-medium text-neutral-800">{link.platform}</span>
+                <span className="text-sm font-medium text-admin-ink">{link.platform}</span>
                 {!link.isVisible && (
-                  <span className="text-xs text-neutral-400">(hidden)</span>
+                  <span className="text-xs text-admin-ink-muted/80">(hidden)</span>
                 )}
               </div>
-              <p className="truncate text-xs text-neutral-500">{link.url}</p>
-              <p className="text-xs text-neutral-400">Order: {link.sortOrder}</p>
+              <p className="truncate text-xs text-admin-ink-muted">{link.url}</p>
+              <p className="text-xs text-admin-ink-muted/80">Order: {link.sortOrder}</p>
             </div>
             <button
               type="button"
               onClick={() => handleToggleVisible(link)}
               disabled={isPending}
-              className="text-xs text-neutral-500 hover:text-neutral-700 disabled:opacity-50"
+              className="text-xs text-admin-ink-muted hover:text-admin-ink disabled:opacity-50"
             >
               {link.isVisible ? "Hide" : "Show"}
             </button>
@@ -142,10 +142,10 @@ export default function SocialLinksManager({ initialLinks }: SocialLinksManagerP
 
       {/* Add new link form */}
       {showNew ? (
-        <div className="rounded-lg border border-neutral-200 bg-neutral-50 p-4 space-y-3">
+        <div className="rounded-lg border border-admin-border bg-admin-cream/60 p-4 space-y-3">
           <div className="grid gap-3 sm:grid-cols-2">
             <div>
-              <label htmlFor="new-platform" className="mb-1 block text-xs font-medium text-neutral-600">
+              <label htmlFor="new-platform" className="mb-1 block text-xs font-medium text-admin-ink-muted">
                 Platform
               </label>
               <select id="new-platform" value={newPlatform} onChange={(e) => setNewPlatform(e.target.value)} className={inputClass}>
@@ -156,20 +156,20 @@ export default function SocialLinksManager({ initialLinks }: SocialLinksManagerP
               </select>
             </div>
             <div>
-              <label htmlFor="new-url" className="mb-1 block text-xs font-medium text-neutral-600">
+              <label htmlFor="new-url" className="mb-1 block text-xs font-medium text-admin-ink-muted">
                 URL
               </label>
               <input id="new-url" value={newUrl} onChange={(e) => setNewUrl(e.target.value)} placeholder="https://…" className={inputClass} />
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <label className="flex items-center gap-2 text-sm text-neutral-700">
-              <input type="checkbox" checked={newVisible} onChange={(e) => setNewVisible(e.target.checked)} className="rounded border-neutral-300" />
+            <label className="flex items-center gap-2 text-sm text-admin-ink">
+              <input type="checkbox" checked={newVisible} onChange={(e) => setNewVisible(e.target.checked)} className="rounded border-admin-border-strong" />
               Visible
             </label>
             <div className="flex items-center gap-2">
-              <label htmlFor="new-order" className="text-xs text-neutral-600">Order:</label>
-              <input id="new-order" type="number" min={0} value={newOrder} onChange={(e) => setNewOrder(Number(e.target.value))} className="w-16 rounded-md border border-neutral-300 px-2 py-1 text-sm" />
+              <label htmlFor="new-order" className="text-xs text-admin-ink-muted">Order:</label>
+              <input id="new-order" type="number" min={0} value={newOrder} onChange={(e) => setNewOrder(Number(e.target.value))} className="w-16 rounded-md border border-admin-border-strong px-2 py-1 text-sm" />
             </div>
           </div>
           <div className="flex items-center gap-3">
@@ -177,14 +177,14 @@ export default function SocialLinksManager({ initialLinks }: SocialLinksManagerP
               type="button"
               onClick={handleAddLink}
               disabled={isPending}
-              className="rounded-md bg-neutral-800 px-3 py-1.5 text-sm font-medium text-white hover:bg-neutral-700 disabled:opacity-50"
+              className="rounded-md bg-admin-spice px-3 py-1.5 text-sm font-medium text-white hover:bg-admin-spice-dark disabled:opacity-50"
             >
               {isPending ? "Adding…" : "Add Link"}
             </button>
             <button
               type="button"
               onClick={() => setShowNew(false)}
-              className="text-sm text-neutral-500 hover:text-neutral-700"
+              className="text-sm text-admin-ink-muted hover:text-admin-ink"
             >
               Cancel
             </button>
@@ -194,7 +194,7 @@ export default function SocialLinksManager({ initialLinks }: SocialLinksManagerP
         <button
           type="button"
           onClick={() => setShowNew(true)}
-          className="text-sm font-medium text-neutral-600 hover:text-neutral-900"
+          className="text-sm font-medium text-admin-ink-muted hover:text-admin-ink"
         >
           + Add Social Link
         </button>

@@ -30,8 +30,8 @@ export default function ProductToggle({ productId, field, checked }: ProductTogg
       aria-label={field === "visibility" ? "Toggle visibility" : "Toggle featured"}
       onClick={handleChange}
       disabled={isPending}
-      className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-500 focus-visible:ring-offset-2 disabled:opacity-50 ${
-        checked ? "bg-neutral-800" : "bg-neutral-300"
+      className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-spice focus-visible:ring-offset-2 disabled:opacity-50 ${
+        checked ? "bg-admin-spice" : "bg-admin-border-strong"
       }`}
     >
       <span

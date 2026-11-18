@@ -46,17 +46,17 @@ export default function SiteContentForm({
   }
 
   const inputClass =
-    "block w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm shadow-sm placeholder:text-neutral-400 focus:border-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-500";
+    "block w-full rounded-md border border-admin-border-strong bg-white px-3 py-2 text-sm shadow-sm placeholder:text-admin-ink-muted/60 focus:border-admin-spice focus:outline-none focus:ring-1 focus:ring-admin-spice/20";
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
-      <h3 className="text-base font-semibold text-neutral-800">{sectionTitle}</h3>
+      <h3 className="text-base font-semibold text-admin-ink">{sectionTitle}</h3>
 
       {fields.map((field) => (
         <div key={field.key}>
           <label
             htmlFor={`sc-${field.key}`}
-            className="mb-1 block text-sm font-medium text-neutral-700"
+            className="mb-1 block text-sm font-medium text-admin-ink"
           >
             {field.label}
           </label>
@@ -70,7 +70,7 @@ export default function SiteContentForm({
             className={inputClass}
           />
           {field.hint && (
-            <p className="mt-1 text-xs text-neutral-400">{field.hint}</p>
+            <p className="mt-1 text-xs text-admin-ink-muted/80">{field.hint}</p>
           )}
         </div>
       ))}
@@ -79,7 +79,7 @@ export default function SiteContentForm({
         <button
           type="submit"
           disabled={isPending}
-          className="rounded-md bg-neutral-800 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-neutral-700 disabled:opacity-50"
+          className="rounded-md bg-admin-spice px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-admin-spice-dark disabled:opacity-50"
         >
           {isPending ? "Saving…" : "Save Content"}
         </button>

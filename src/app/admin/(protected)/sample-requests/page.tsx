@@ -53,11 +53,11 @@ export default async function SampleRequestsPage({
 
   return (
     <div className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 lg:py-10">
-      <div className="mb-6 border-b border-neutral-200 pb-4">
-        <h1 className="font-[family-name:var(--font-display)] text-2xl font-semibold tracking-tight text-neutral-800">
+      <div className="mb-6 border-b border-admin-border pb-4">
+        <h1 className="font-[family-name:var(--font-display)] text-2xl font-semibold tracking-tight text-admin-ink">
           Sample Requests
         </h1>
-        <p className="mt-1 text-sm text-neutral-500">{total} total</p>
+        <p className="mt-1 text-sm text-admin-ink-muted">{total} total</p>
       </div>
 
       <SearchFilter
@@ -74,41 +74,41 @@ export default async function SampleRequestsPage({
       />
 
       {requests.length === 0 ? (
-        <div className="mt-10 rounded-lg border border-dashed border-neutral-300 px-8 py-16 text-center">
-          <p className="text-sm text-neutral-500">
+        <div className="mt-10 rounded-lg border border-dashed border-admin-border-strong px-8 py-16 text-center">
+          <p className="text-sm text-admin-ink-muted">
             {q || statusFilter ? "No requests match your filters." : "No sample requests yet."}
           </p>
         </div>
       ) : (
-        <div className="mt-6 overflow-x-auto rounded-lg border border-neutral-200">
-          <table className="min-w-full divide-y divide-neutral-200 text-sm">
-            <thead className="bg-neutral-50">
+        <div className="mt-6 overflow-x-auto rounded-lg border border-admin-border">
+          <table className="min-w-full divide-y divide-admin-border text-sm">
+            <thead className="bg-admin-cream/60">
               <tr>
-                <th className="px-4 py-3 text-left font-medium text-neutral-600">Name</th>
-                <th className="px-4 py-3 text-left font-medium text-neutral-600 hidden sm:table-cell">Email</th>
-                <th className="px-4 py-3 text-left font-medium text-neutral-600 hidden md:table-cell">Customer Type</th>
-                <th className="px-4 py-3 text-left font-medium text-neutral-600 hidden lg:table-cell">City</th>
-                <th className="px-4 py-3 text-left font-medium text-neutral-600">Status</th>
-                <th className="px-4 py-3 text-left font-medium text-neutral-600 hidden md:table-cell">Date</th>
+                <th className="px-4 py-3 text-left font-medium text-admin-ink-muted">Name</th>
+                <th className="px-4 py-3 text-left font-medium text-admin-ink-muted hidden sm:table-cell">Email</th>
+                <th className="px-4 py-3 text-left font-medium text-admin-ink-muted hidden md:table-cell">Customer Type</th>
+                <th className="px-4 py-3 text-left font-medium text-admin-ink-muted hidden lg:table-cell">City</th>
+                <th className="px-4 py-3 text-left font-medium text-admin-ink-muted">Status</th>
+                <th className="px-4 py-3 text-left font-medium text-admin-ink-muted hidden md:table-cell">Date</th>
                 <th className="px-4 py-3"></th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-neutral-100 bg-white">
+            <tbody className="divide-y divide-admin-border/70 bg-white">
               {requests.map((e) => (
-                <tr key={e.id} className="hover:bg-neutral-50">
-                  <td className="px-4 py-3 font-medium text-neutral-800 whitespace-nowrap">
+                <tr key={e.id} className="hover:bg-admin-cream/40">
+                  <td className="px-4 py-3 font-medium text-admin-ink whitespace-nowrap">
                     {e.fullName}
-                    {e.companyName && <span className="block text-xs text-neutral-400">{e.companyName}</span>}
+                    {e.companyName && <span className="block text-xs text-admin-ink-muted/80">{e.companyName}</span>}
                   </td>
-                  <td className="px-4 py-3 text-neutral-600 hidden sm:table-cell">{e.email}</td>
-                  <td className="px-4 py-3 text-neutral-600 hidden md:table-cell">{e.customerType}</td>
-                  <td className="px-4 py-3 text-neutral-600 hidden lg:table-cell">{e.city}, {e.state}</td>
+                  <td className="px-4 py-3 text-admin-ink-muted hidden sm:table-cell">{e.email}</td>
+                  <td className="px-4 py-3 text-admin-ink-muted hidden md:table-cell">{e.customerType}</td>
+                  <td className="px-4 py-3 text-admin-ink-muted hidden lg:table-cell">{e.city}, {e.state}</td>
                   <td className="px-4 py-3"><StatusBadge status={e.status} /></td>
-                  <td className="px-4 py-3 text-neutral-500 hidden md:table-cell whitespace-nowrap">
+                  <td className="px-4 py-3 text-admin-ink-muted hidden md:table-cell whitespace-nowrap">
                     {e.createdAt.toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
                   </td>
                   <td className="px-4 py-3 text-right">
-                    <Link href={`/admin/sample-requests/${e.id}`} className="text-sm font-medium text-neutral-600 hover:text-neutral-900">
+                    <Link href={`/admin/sample-requests/${e.id}`} className="text-sm font-medium text-admin-ink-muted hover:text-admin-ink">
                       View
                     </Link>
                   </td>

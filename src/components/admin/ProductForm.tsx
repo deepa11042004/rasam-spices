@@ -199,17 +199,17 @@ export default function ProductForm({
   }
 
   const inputClass =
-    "block w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm shadow-sm placeholder:text-neutral-400 focus:border-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-500";
+    "block w-full rounded-md border border-admin-border-strong bg-white px-3 py-2 text-sm shadow-sm placeholder:text-admin-ink-muted/60 focus:border-admin-spice focus:outline-none focus:ring-1 focus:ring-admin-spice/20";
 
   return (
     <form onSubmit={handleSubmit} className="space-y-8">
       {/* Basic info */}
       <fieldset className="space-y-4">
-        <legend className="text-sm font-semibold text-neutral-700">Basic Information</legend>
+        <legend className="text-sm font-semibold text-admin-ink">Basic Information</legend>
 
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <label htmlFor="product-id" className="mb-1 block text-sm font-medium text-neutral-700">
+            <label htmlFor="product-id" className="mb-1 block text-sm font-medium text-admin-ink">
               Product ID
             </label>
             <input
@@ -221,11 +221,11 @@ export default function ProductForm({
               pattern="[a-z0-9-]+"
               maxLength={100}
               placeholder="e.g. turmeric-powder"
-              className={`${inputClass} ${mode === "edit" ? "bg-neutral-100" : ""}`}
+              className={`${inputClass} ${mode === "edit" ? "bg-admin-cream" : ""}`}
             />
           </div>
           <div>
-            <label htmlFor="product-name" className="mb-1 block text-sm font-medium text-neutral-700">
+            <label htmlFor="product-name" className="mb-1 block text-sm font-medium text-admin-ink">
               Name
             </label>
             <input id="product-name" value={name} onChange={(e) => setName(e.target.value)} required maxLength={200} className={inputClass} />
@@ -233,7 +233,7 @@ export default function ProductForm({
         </div>
 
         <div>
-          <label htmlFor="product-category" className="mb-1 block text-sm font-medium text-neutral-700">
+          <label htmlFor="product-category" className="mb-1 block text-sm font-medium text-admin-ink">
             Category
           </label>
           <select id="product-category" value={category} onChange={(e) => setCategory(e.target.value)} className={inputClass}>
@@ -244,34 +244,34 @@ export default function ProductForm({
         </div>
 
         <div>
-          <label htmlFor="product-tagline" className="mb-1 block text-sm font-medium text-neutral-700">Tagline</label>
+          <label htmlFor="product-tagline" className="mb-1 block text-sm font-medium text-admin-ink">Tagline</label>
           <input id="product-tagline" value={tagline} onChange={(e) => setTagline(e.target.value)} maxLength={500} className={inputClass} />
         </div>
 
         <div>
-          <label htmlFor="product-description" className="mb-1 block text-sm font-medium text-neutral-700">Description</label>
+          <label htmlFor="product-description" className="mb-1 block text-sm font-medium text-admin-ink">Description</label>
           <textarea id="product-description" value={description} onChange={(e) => setDescription(e.target.value)} rows={4} maxLength={5000} className={inputClass} />
         </div>
       </fieldset>
 
       {/* Images */}
       <fieldset className="space-y-4">
-        <legend className="text-sm font-semibold text-neutral-700">Images</legend>
+        <legend className="text-sm font-semibold text-admin-ink">Images</legend>
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <label htmlFor="product-img" className="mb-1 block text-sm font-medium text-neutral-700">Front Image Path</label>
+            <label htmlFor="product-img" className="mb-1 block text-sm font-medium text-admin-ink">Front Image Path</label>
             <input id="product-img" value={imageSrc} onChange={(e) => setImageSrc(e.target.value)} placeholder="/images/products/example.webp" className={inputClass} />
           </div>
           <div>
-            <label htmlFor="product-img-alt" className="mb-1 block text-sm font-medium text-neutral-700">Front Image Alt</label>
+            <label htmlFor="product-img-alt" className="mb-1 block text-sm font-medium text-admin-ink">Front Image Alt</label>
             <input id="product-img-alt" value={imageAlt} onChange={(e) => setImageAlt(e.target.value)} className={inputClass} />
           </div>
           <div>
-            <label htmlFor="product-back-img" className="mb-1 block text-sm font-medium text-neutral-700">Back Image Path</label>
+            <label htmlFor="product-back-img" className="mb-1 block text-sm font-medium text-admin-ink">Back Image Path</label>
             <input id="product-back-img" value={backImageSrc} onChange={(e) => setBackImageSrc(e.target.value)} className={inputClass} />
           </div>
           <div>
-            <label htmlFor="product-back-img-alt" className="mb-1 block text-sm font-medium text-neutral-700">Back Image Alt</label>
+            <label htmlFor="product-back-img-alt" className="mb-1 block text-sm font-medium text-admin-ink">Back Image Alt</label>
             <input id="product-back-img-alt" value={backImageAlt} onChange={(e) => setBackImageAlt(e.target.value)} className={inputClass} />
           </div>
         </div>
@@ -280,8 +280,8 @@ export default function ProductForm({
       {/* Dish Image — optional photo of the prepared dish, shown on the public
           dish platter. Distinct from the packaging images above. */}
       <fieldset className="space-y-3">
-        <legend className="text-sm font-semibold text-neutral-700">Dish Image</legend>
-        <p className="text-xs text-neutral-500">
+        <legend className="text-sm font-semibold text-admin-ink">Dish Image</legend>
+        <p className="text-xs text-admin-ink-muted">
           Optional. A photo of the prepared dish for this product. This is not
           the packaging photo — it replaces the plate image on the homepage dish
           platter. Leave empty to keep the existing default image.
@@ -312,14 +312,14 @@ export default function ProductForm({
             <img
               src={dishPhotoSrc}
               alt="Dish image preview"
-              className="h-32 w-32 rounded-md border border-neutral-200 object-cover"
+              className="h-32 w-32 rounded-md border border-admin-border object-cover"
             />
             <div className="flex flex-col gap-2">
               <button
                 type="button"
                 onClick={() => dishFileInputRef.current?.click()}
                 disabled={dishUploading}
-                className="rounded-md border border-neutral-300 px-3 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-50 disabled:opacity-50"
+                className="rounded-md border border-admin-border-strong px-3 py-1.5 text-sm font-medium text-admin-ink hover:bg-admin-cream/40 disabled:opacity-50"
               >
                 {dishUploading ? "Uploading…" : "Replace image"}
               </button>
@@ -338,7 +338,7 @@ export default function ProductForm({
             type="button"
             onClick={() => dishFileInputRef.current?.click()}
             disabled={dishUploading}
-            className="rounded-md border border-dashed border-neutral-300 px-4 py-3 text-sm font-medium text-neutral-600 hover:bg-neutral-50 disabled:opacity-50"
+            className="rounded-md border border-dashed border-admin-border-strong px-4 py-3 text-sm font-medium text-admin-ink-muted hover:bg-admin-cream/40 disabled:opacity-50"
           >
             {dishUploading ? "Uploading…" : "Choose dish image…"}
           </button>
@@ -363,9 +363,9 @@ export default function ProductForm({
 
       {/* Packaging */}
       <fieldset className="space-y-4">
-        <legend className="text-sm font-semibold text-neutral-700">Packaging</legend>
+        <legend className="text-sm font-semibold text-admin-ink">Packaging</legend>
         <div>
-          <label htmlFor="product-pack-format" className="mb-1 block text-sm font-medium text-neutral-700">Pack Format</label>
+          <label htmlFor="product-pack-format" className="mb-1 block text-sm font-medium text-admin-ink">Pack Format</label>
           <select id="product-pack-format" value={packFormat} onChange={(e) => setPackFormat(e.target.value)} className={inputClass}>
             {PACK_FORMATS.map((f) => (
               <option key={f.value} value={f.value}>{f.label}</option>
@@ -374,7 +374,7 @@ export default function ProductForm({
         </div>
 
         <div>
-          <span className="mb-2 block text-sm font-medium text-neutral-700">Pack Sizes</span>
+          <span className="mb-2 block text-sm font-medium text-admin-ink">Pack Sizes</span>
 
           {/* Standard size options */}
           <div className="flex flex-wrap gap-2">
@@ -385,8 +385,8 @@ export default function ProductForm({
                 onClick={() => togglePackSize(size)}
                 className={`rounded-full border px-3 py-1 text-sm transition-colors ${
                   selectedPackSizes.has(size)
-                    ? "border-neutral-800 bg-neutral-800 text-white"
-                    : "border-neutral-300 bg-white text-neutral-600 hover:border-neutral-400"
+                    ? "border-admin-spice bg-admin-spice text-white"
+                    : "border-admin-border-strong bg-white text-admin-ink-muted hover:border-admin-gold"
                 }`}
               >
                 {size}
@@ -407,7 +407,7 @@ export default function ProductForm({
               type="button"
               onClick={addCustomSize}
               disabled={!customSize.trim()}
-              className="rounded-md border border-neutral-300 px-3 py-2 text-sm text-neutral-600 hover:bg-neutral-100 disabled:opacity-40"
+              className="rounded-md border border-admin-border-strong px-3 py-2 text-sm text-admin-ink-muted hover:bg-admin-cream disabled:opacity-40"
             >
               Add
             </button>
@@ -419,13 +419,13 @@ export default function ProductForm({
               {Array.from(selectedPackSizes).map((size) => (
                 <span
                   key={size}
-                  className="inline-flex items-center gap-1 rounded-md bg-neutral-100 px-2.5 py-1 text-sm text-neutral-700"
+                  className="inline-flex items-center gap-1 rounded-md bg-admin-cream px-2.5 py-1 text-sm text-admin-ink"
                 >
                   {size}
                   <button
                     type="button"
                     onClick={() => removePackSize(size)}
-                    className="ml-0.5 text-neutral-400 hover:text-neutral-700"
+                    className="ml-0.5 text-admin-ink-muted/80 hover:text-admin-ink"
                     aria-label={`Remove ${size}`}
                   >
                     ×
@@ -439,49 +439,49 @@ export default function ProductForm({
 
       {/* Visibility */}
       <fieldset className="space-y-4">
-        <legend className="text-sm font-semibold text-neutral-700">Visibility & Status</legend>
+        <legend className="text-sm font-semibold text-admin-ink">Visibility & Status</legend>
         <div className="flex gap-6">
-          <label className="flex items-center gap-2 text-sm text-neutral-700">
-            <input type="checkbox" checked={isVisible} onChange={(e) => setIsVisible(e.target.checked)} className="rounded border-neutral-300" />
+          <label className="flex items-center gap-2 text-sm text-admin-ink">
+            <input type="checkbox" checked={isVisible} onChange={(e) => setIsVisible(e.target.checked)} className="rounded border-admin-border-strong" />
             Visible on website
           </label>
-          <label className="flex items-center gap-2 text-sm text-neutral-700">
-            <input type="checkbox" checked={isFeatured} onChange={(e) => setIsFeatured(e.target.checked)} className="rounded border-neutral-300" />
+          <label className="flex items-center gap-2 text-sm text-admin-ink">
+            <input type="checkbox" checked={isFeatured} onChange={(e) => setIsFeatured(e.target.checked)} className="rounded border-admin-border-strong" />
             Featured on homepage
           </label>
         </div>
         <div>
-          <label htmlFor="product-pending" className="mb-1 block text-sm font-medium text-neutral-700">Pending Note (internal)</label>
+          <label htmlFor="product-pending" className="mb-1 block text-sm font-medium text-admin-ink">Pending Note (internal)</label>
           <input id="product-pending" value={pendingNote} onChange={(e) => setPendingNote(e.target.value)} maxLength={2000} className={inputClass} />
         </div>
       </fieldset>
 
       {/* Preview */}
       <div>
-        <button type="button" onClick={() => setShowPreview(!showPreview)} className="text-sm font-medium text-neutral-600 hover:text-neutral-900 underline">
+        <button type="button" onClick={() => setShowPreview(!showPreview)} className="text-sm font-medium text-admin-ink-muted hover:text-admin-ink underline">
           {showPreview ? "Hide Preview" : "Show Preview"}
         </button>
         {showPreview && (
-          <div className="mt-3 rounded-lg border border-neutral-200 bg-neutral-50 p-4">
-            <h3 className="font-medium text-neutral-800">{name || "Untitled Product"}</h3>
-            {tagline && <p className="text-sm italic text-neutral-500">{tagline}</p>}
-            <p className="mt-1 text-xs text-neutral-400">
+          <div className="mt-3 rounded-lg border border-admin-border bg-admin-cream/60 p-4">
+            <h3 className="font-medium text-admin-ink">{name || "Untitled Product"}</h3>
+            {tagline && <p className="text-sm italic text-admin-ink-muted">{tagline}</p>}
+            <p className="mt-1 text-xs text-admin-ink-muted/80">
               {category.replace(/-/g, " ")} · {isVisible ? "Visible" : "Hidden"} · {isFeatured ? "Featured" : "Not featured"}
             </p>
             {selectedPackSizes.size > 0 && (
-              <p className="mt-1 text-xs text-neutral-400">Sizes: {Array.from(selectedPackSizes).join(", ")}</p>
+              <p className="mt-1 text-xs text-admin-ink-muted/80">Sizes: {Array.from(selectedPackSizes).join(", ")}</p>
             )}
-            {description && <p className="mt-2 text-sm text-neutral-600">{description}</p>}
+            {description && <p className="mt-2 text-sm text-admin-ink-muted">{description}</p>}
           </div>
         )}
       </div>
 
       {/* Actions */}
-      <div className="flex items-center gap-4 border-t border-neutral-200 pt-6">
+      <div className="flex items-center gap-4 border-t border-admin-border pt-6">
         <button
           type="submit"
           disabled={isPending}
-          className="rounded-md bg-neutral-800 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-neutral-700 disabled:opacity-50"
+          className="rounded-md bg-admin-spice px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-admin-spice-dark disabled:opacity-50"
         >
           {isPending ? "Saving…" : mode === "create" ? "Create Product" : "Save Changes"}
         </button>
@@ -508,7 +508,7 @@ export default function ProductForm({
                 <button
                   type="button"
                   onClick={() => setShowDeleteConfirm(false)}
-                  className="rounded-md border border-neutral-300 px-3 py-1.5 text-sm text-neutral-600 hover:bg-neutral-100"
+                  className="rounded-md border border-admin-border-strong px-3 py-1.5 text-sm text-admin-ink-muted hover:bg-admin-cream"
                 >
                   Cancel
                 </button>

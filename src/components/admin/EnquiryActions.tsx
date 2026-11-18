@@ -38,7 +38,7 @@ export function StatusSelect({ currentStatus, onUpdate, enquiryId }: StatusSelec
         defaultValue={currentStatus}
         onChange={handleChange}
         disabled={isPending}
-        className="rounded-md border border-neutral-300 bg-white px-2 py-1 text-sm shadow-sm focus:border-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-500 disabled:opacity-50"
+        className="rounded-md border border-admin-border-strong bg-white px-2 py-1 text-sm shadow-sm focus:border-admin-spice focus:outline-none focus:ring-1 focus:ring-admin-spice/20 disabled:opacity-50"
       >
         {ENQUIRY_STATUSES.map((s) => (
           <option key={s.value} value={s.value}>
@@ -80,7 +80,7 @@ export function NotesEditor({ currentNotes, onSave, enquiryId }: NotesEditorProp
 
   return (
     <div className="space-y-2">
-      <label htmlFor={`notes-${enquiryId}`} className="block text-sm font-medium text-neutral-700">
+      <label htmlFor={`notes-${enquiryId}`} className="block text-sm font-medium text-admin-ink">
         Admin Notes
       </label>
       <textarea
@@ -89,7 +89,7 @@ export function NotesEditor({ currentNotes, onSave, enquiryId }: NotesEditorProp
         onChange={(e) => setValue(e.target.value)}
         rows={4}
         maxLength={5000}
-        className="block w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm shadow-sm placeholder:text-neutral-400 focus:border-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-500"
+        className="block w-full rounded-md border border-admin-border-strong bg-white px-3 py-2 text-sm shadow-sm placeholder:text-admin-ink-muted/60 focus:border-admin-spice focus:outline-none focus:ring-1 focus:ring-admin-spice/20"
         placeholder="Internal notes (not visible to the enquirer)"
       />
       <div className="flex items-center gap-3">
@@ -97,7 +97,7 @@ export function NotesEditor({ currentNotes, onSave, enquiryId }: NotesEditorProp
           type="button"
           onClick={handleSave}
           disabled={isPending}
-          className="rounded-md bg-neutral-800 px-3 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2 disabled:opacity-50"
+          className="rounded-md bg-admin-spice px-3 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-admin-spice-dark focus:outline-none focus:ring-2 focus:ring-admin-spice/20 focus:ring-offset-2 disabled:opacity-50"
         >
           {isPending ? "Saving…" : "Save Notes"}
         </button>

@@ -35,14 +35,14 @@ export default function Pagination({
       {currentPage > 1 && (
         <Link
           href={buildHref(currentPage - 1)}
-          className="rounded-md px-3 py-1.5 text-sm text-neutral-600 hover:bg-neutral-100"
+          className="rounded-md px-3 py-1.5 text-sm text-admin-ink-muted hover:bg-admin-cream"
         >
           Previous
         </Link>
       )}
       {pages.map((p, i) =>
         p === "..." ? (
-          <span key={`dots-${i}`} className="px-2 text-neutral-400">
+          <span key={`dots-${i}`} className="px-2 text-admin-ink-muted/80">
             ...
           </span>
         ) : (
@@ -51,8 +51,8 @@ export default function Pagination({
             href={buildHref(p)}
             className={`rounded-md px-3 py-1.5 text-sm font-medium ${
               p === currentPage
-                ? "bg-neutral-800 text-white"
-                : "text-neutral-600 hover:bg-neutral-100"
+                ? "bg-admin-spice text-white"
+                : "text-admin-ink-muted hover:bg-admin-cream"
             }`}
             aria-current={p === currentPage ? "page" : undefined}
           >
@@ -63,7 +63,7 @@ export default function Pagination({
       {currentPage < totalPages && (
         <Link
           href={buildHref(currentPage + 1)}
-          className="rounded-md px-3 py-1.5 text-sm text-neutral-600 hover:bg-neutral-100"
+          className="rounded-md px-3 py-1.5 text-sm text-admin-ink-muted hover:bg-admin-cream"
         >
           Next
         </Link>

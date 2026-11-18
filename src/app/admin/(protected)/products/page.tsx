@@ -55,16 +55,16 @@ export default async function ProductsPage({
 
   return (
     <div className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 lg:py-10">
-      <div className="mb-6 flex flex-col gap-3 border-b border-neutral-200 pb-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mb-6 flex flex-col gap-3 border-b border-admin-border pb-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="font-[family-name:var(--font-display)] text-2xl font-semibold tracking-tight text-neutral-800">
+          <h1 className="font-[family-name:var(--font-display)] text-2xl font-semibold tracking-tight text-admin-ink">
             Products
           </h1>
-          <p className="mt-1 text-sm text-neutral-500">{total} products</p>
+          <p className="mt-1 text-sm text-admin-ink-muted">{total} products</p>
         </div>
         <Link
           href="/admin/products/new"
-          className="inline-flex items-center gap-1.5 rounded-md bg-neutral-800 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-neutral-700"
+          className="inline-flex items-center gap-1.5 rounded-md bg-admin-spice px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-admin-spice-dark"
         >
           + New Product
         </Link>
@@ -97,32 +97,32 @@ export default async function ProductsPage({
       />
 
       {products.length === 0 ? (
-        <div className="mt-10 rounded-lg border border-dashed border-neutral-300 px-8 py-16 text-center">
-          <p className="text-sm text-neutral-500">
+        <div className="mt-10 rounded-lg border border-dashed border-admin-border-strong px-8 py-16 text-center">
+          <p className="text-sm text-admin-ink-muted">
             {q || catFilter ? "No products match your filters." : "No products in the catalogue yet."}
           </p>
         </div>
       ) : (
-        <div className="mt-6 overflow-x-auto rounded-lg border border-neutral-200">
-          <table className="min-w-full divide-y divide-neutral-200 text-sm">
-            <thead className="bg-neutral-50">
+        <div className="mt-6 overflow-x-auto rounded-lg border border-admin-border">
+          <table className="min-w-full divide-y divide-admin-border text-sm">
+            <thead className="bg-admin-cream/60">
               <tr>
-                <th className="px-4 py-3 text-left font-medium text-neutral-600">Product</th>
-                <th className="px-4 py-3 text-left font-medium text-neutral-600 hidden sm:table-cell">Category</th>
-                <th className="px-4 py-3 text-center font-medium text-neutral-600">Visible</th>
-                <th className="px-4 py-3 text-center font-medium text-neutral-600">Featured</th>
-                <th className="px-4 py-3 text-center font-medium text-neutral-600 hidden md:table-cell">Order</th>
+                <th className="px-4 py-3 text-left font-medium text-admin-ink-muted">Product</th>
+                <th className="px-4 py-3 text-left font-medium text-admin-ink-muted hidden sm:table-cell">Category</th>
+                <th className="px-4 py-3 text-center font-medium text-admin-ink-muted">Visible</th>
+                <th className="px-4 py-3 text-center font-medium text-admin-ink-muted">Featured</th>
+                <th className="px-4 py-3 text-center font-medium text-admin-ink-muted hidden md:table-cell">Order</th>
                 <th className="px-4 py-3"></th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-neutral-100 bg-white">
+            <tbody className="divide-y divide-admin-border/70 bg-white">
               {products.map((p) => (
-                <tr key={p.id} className="hover:bg-neutral-50">
+                <tr key={p.id} className="hover:bg-admin-cream/40">
                   <td className="px-4 py-3">
-                    <div className="font-medium text-neutral-800">{p.name}</div>
-                    <div className="text-xs text-neutral-400">{p.id}</div>
+                    <div className="font-medium text-admin-ink">{p.name}</div>
+                    <div className="text-xs text-admin-ink-muted/80">{p.id}</div>
                   </td>
-                  <td className="px-4 py-3 text-neutral-600 hidden sm:table-cell capitalize">
+                  <td className="px-4 py-3 text-admin-ink-muted hidden sm:table-cell capitalize">
                     {p.category.replace(/-/g, " ")}
                   </td>
                   <td className="px-4 py-3 text-center">
@@ -131,11 +131,11 @@ export default async function ProductsPage({
                   <td className="px-4 py-3 text-center">
                     <ProductToggle productId={p.id} field="featured" checked={p.isFeatured} />
                   </td>
-                  <td className="px-4 py-3 text-center text-neutral-500 hidden md:table-cell">{p.sortOrder}</td>
+                  <td className="px-4 py-3 text-center text-admin-ink-muted hidden md:table-cell">{p.sortOrder}</td>
                   <td className="px-4 py-3 text-right">
                     <Link
                       href={`/admin/products/${p.id}`}
-                      className="text-sm font-medium text-neutral-600 hover:text-neutral-900"
+                      className="text-sm font-medium text-admin-ink-muted hover:text-admin-ink"
                     >
                       Edit
                     </Link>

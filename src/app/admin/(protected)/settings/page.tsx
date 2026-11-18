@@ -147,18 +147,18 @@ export default async function SettingsPage() {
 
   return (
     <div className="mx-auto w-full max-w-3xl px-4 py-8 sm:px-6 lg:py-10">
-      <div className="mb-8 border-b border-neutral-200 pb-4">
-        <h1 className="font-[family-name:var(--font-display)] text-2xl font-semibold tracking-tight text-neutral-800">
+      <div className="mb-8 border-b border-admin-border pb-4">
+        <h1 className="font-[family-name:var(--font-display)] text-2xl font-semibold tracking-tight text-admin-ink">
           Settings
         </h1>
-        <p className="mt-1 text-sm text-neutral-500">
+        <p className="mt-1 text-sm text-admin-ink-muted">
           Manage company information, website content, and social links
         </p>
       </div>
 
       {/* Company Information */}
       <section className="mb-10">
-        <h2 className="mb-4 text-lg font-semibold text-neutral-700">
+        <h2 className="mb-4 text-lg font-semibold text-admin-ink">
           Company Information
         </h2>
         <CompanySettingsForm
@@ -180,8 +180,8 @@ export default async function SettingsPage() {
       </section>
 
       {/* Homepage Content */}
-      <section className="mb-10 border-t border-neutral-200 pt-8">
-        <h2 className="mb-4 text-lg font-semibold text-neutral-700">
+      <section className="mb-10 border-t border-admin-border pt-8">
+        <h2 className="mb-4 text-lg font-semibold text-admin-ink">
           Homepage Content
         </h2>
         <SiteContentForm
@@ -192,8 +192,8 @@ export default async function SettingsPage() {
       </section>
 
       {/* About Page Content */}
-      <section className="mb-10 border-t border-neutral-200 pt-8">
-        <h2 className="mb-4 text-lg font-semibold text-neutral-700">
+      <section className="mb-10 border-t border-admin-border pt-8">
+        <h2 className="mb-4 text-lg font-semibold text-admin-ink">
           About Page Content
         </h2>
         <SiteContentForm
@@ -204,8 +204,8 @@ export default async function SettingsPage() {
       </section>
 
       {/* Contact Page Content */}
-      <section className="mb-10 border-t border-neutral-200 pt-8">
-        <h2 className="mb-4 text-lg font-semibold text-neutral-700">
+      <section className="mb-10 border-t border-admin-border pt-8">
+        <h2 className="mb-4 text-lg font-semibold text-admin-ink">
           Contact Page Content
         </h2>
         <SiteContentForm
@@ -216,8 +216,8 @@ export default async function SettingsPage() {
       </section>
 
       {/* Social Links */}
-      <section className="border-t border-neutral-200 pt-8">
-        <h2 className="mb-4 text-lg font-semibold text-neutral-700">
+      <section className="border-t border-admin-border pt-8">
+        <h2 className="mb-4 text-lg font-semibold text-admin-ink">
           Social Links
         </h2>
         <SocialLinksManager

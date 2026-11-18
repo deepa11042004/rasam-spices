@@ -44,17 +44,17 @@ export default async function GeneralEnquiryDetailPage({
     <div className="mx-auto w-full max-w-3xl px-4 py-8 sm:px-6 lg:py-10">
       <Link
         href="/admin/general-enquiries"
-        className="mb-4 inline-flex items-center gap-1 text-sm text-neutral-500 hover:text-neutral-700"
+        className="mb-4 inline-flex items-center gap-1 text-sm text-admin-ink-muted hover:text-admin-ink"
       >
         ← Back to General Enquiries
       </Link>
 
-      <div className="mb-6 flex flex-col gap-3 border-b border-neutral-200 pb-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mb-6 flex flex-col gap-3 border-b border-admin-border pb-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="font-[family-name:var(--font-display)] text-2xl font-semibold tracking-tight text-neutral-800">
+          <h1 className="font-[family-name:var(--font-display)] text-2xl font-semibold tracking-tight text-admin-ink">
             {enquiry.fullName}
           </h1>
-          <p className="mt-0.5 text-sm text-neutral-500">{enquiry.enquiryType}</p>
+          <p className="mt-0.5 text-sm text-admin-ink-muted">{enquiry.enquiryType}</p>
         </div>
         <StatusBadge status={enquiry.status} />
       </div>
@@ -65,10 +65,10 @@ export default async function GeneralEnquiryDetailPage({
           (f) =>
             f.value && (
               <div key={f.label}>
-                <dt className="text-xs font-medium uppercase tracking-wider text-neutral-400">
+                <dt className="text-xs font-medium uppercase tracking-wider text-admin-ink-muted/80">
                   {f.label}
                 </dt>
-                <dd className="mt-0.5 text-sm text-neutral-800">{f.value}</dd>
+                <dd className="mt-0.5 text-sm text-admin-ink">{f.value}</dd>
               </div>
             ),
         )}
@@ -76,14 +76,14 @@ export default async function GeneralEnquiryDetailPage({
 
       {/* Message */}
       <div className="mt-6">
-        <h2 className="text-xs font-medium uppercase tracking-wider text-neutral-400">Message</h2>
-        <div className="mt-1 whitespace-pre-wrap rounded-md border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm text-neutral-700">
+        <h2 className="text-xs font-medium uppercase tracking-wider text-admin-ink-muted/80">Message</h2>
+        <div className="mt-1 whitespace-pre-wrap rounded-md border border-admin-border bg-admin-cream/60 px-4 py-3 text-sm text-admin-ink">
           {enquiry.message}
         </div>
       </div>
 
       {/* Timestamps */}
-      <div className="mt-6 flex gap-6 text-xs text-neutral-400">
+      <div className="mt-6 flex gap-6 text-xs text-admin-ink-muted/80">
         <span>
           Created:{" "}
           {enquiry.createdAt.toLocaleString("en-IN", {
@@ -107,9 +107,9 @@ export default async function GeneralEnquiryDetailPage({
       </div>
 
       {/* Status update */}
-      <div className="mt-8 space-y-6 border-t border-neutral-200 pt-6">
+      <div className="mt-8 space-y-6 border-t border-admin-border pt-6">
         <div>
-          <h2 className="mb-2 text-sm font-medium text-neutral-700">Update Status</h2>
+          <h2 className="mb-2 text-sm font-medium text-admin-ink">Update Status</h2>
           <StatusSelect
             currentStatus={enquiry.status}
             onUpdate={updateGeneralEnquiryStatus}

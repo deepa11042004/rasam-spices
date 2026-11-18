@@ -23,10 +23,10 @@ export default async function AdminLoginPage({
       <div className="w-full max-w-sm">
         {/* Brand mark */}
         <div className="mb-8 text-center">
-          <h1 className="font-[family-name:var(--font-display)] text-3xl font-semibold tracking-tight text-neutral-800">
+          <h1 className="font-[family-name:var(--font-display)] text-3xl font-semibold tracking-tight text-admin-ink">
             RASAM Admin
           </h1>
-          <p className="mt-1 text-sm text-neutral-500">
+          <p className="mt-1 text-sm text-admin-ink-muted">
             Sign in to the administration panel
           </p>
         </div>
@@ -46,7 +46,7 @@ export default async function AdminLoginPage({
           <div>
             <label
               htmlFor="username"
-              className="mb-1.5 block text-sm font-medium text-neutral-700"
+              className="mb-1.5 block text-sm font-medium text-admin-ink"
             >
               Username
             </label>
@@ -56,14 +56,14 @@ export default async function AdminLoginPage({
               type="text"
               required
               autoComplete="username"
-              className="block w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm shadow-sm placeholder:text-neutral-400 focus:border-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-500"
+              className="block w-full rounded-md border border-admin-border-strong bg-white px-3 py-2 text-sm shadow-sm placeholder:text-admin-ink-muted/60 focus:border-admin-spice focus:outline-none focus:ring-1 focus:ring-admin-spice/20"
             />
           </div>
 
           <div>
             <label
               htmlFor="password"
-              className="mb-1.5 block text-sm font-medium text-neutral-700"
+              className="mb-1.5 block text-sm font-medium text-admin-ink"
             >
               Password
             </label>
@@ -73,13 +73,13 @@ export default async function AdminLoginPage({
               type="password"
               required
               autoComplete="current-password"
-              className="block w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm shadow-sm placeholder:text-neutral-400 focus:border-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-500"
+              className="block w-full rounded-md border border-admin-border-strong bg-white px-3 py-2 text-sm shadow-sm placeholder:text-admin-ink-muted/60 focus:border-admin-spice focus:outline-none focus:ring-1 focus:ring-admin-spice/20"
             />
           </div>
 
           <button
             type="submit"
-            className="w-full rounded-md bg-neutral-800 px-4 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2 active:bg-neutral-900"
+            className="w-full rounded-md bg-admin-spice px-4 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-admin-spice-dark focus:outline-none focus:ring-2 focus:ring-admin-spice/20 focus:ring-offset-2 active:bg-admin-spice-dark"
           >
             Sign in
           </button>

@@ -40,7 +40,7 @@ function StatLink({
   href,
   value,
   label,
-  tone = "border-neutral-200 bg-white",
+  tone = "border-admin-border bg-white",
 }: {
   href: string;
   value: number | string;
@@ -52,8 +52,8 @@ function StatLink({
       href={href}
       className={`rounded-lg border p-4 transition-shadow hover:shadow-md ${tone}`}
     >
-      <div className="text-2xl font-bold text-neutral-800">{value}</div>
-      <div className="mt-1 text-xs font-medium text-neutral-600">{label}</div>
+      <div className="text-2xl font-bold text-admin-ink">{value}</div>
+      <div className="mt-1 text-xs font-medium text-admin-ink-muted">{label}</div>
     </Link>
   );
 }
@@ -61,8 +61,8 @@ function StatLink({
 function SectionHeading({ title, note }: { title: string; note?: string }) {
   return (
     <div className="mb-4">
-      <h2 className="text-lg font-semibold text-neutral-800">{title}</h2>
-      {note && <p className="mt-0.5 text-xs text-neutral-500">{note}</p>}
+      <h2 className="text-lg font-semibold text-admin-ink">{title}</h2>
+      {note && <p className="mt-0.5 text-xs text-admin-ink-muted">{note}</p>}
     </div>
   );
 }
@@ -90,12 +90,12 @@ export default async function AdminDashboardPage({
 
   return (
     <div className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 lg:py-10">
-      <div className="mb-8 border-b border-neutral-200 pb-4">
-        <h1 className="font-[family-name:var(--font-display)] text-2xl font-semibold tracking-tight text-neutral-800">
+      <div className="mb-8 border-b border-admin-border pb-4">
+        <h1 className="font-[family-name:var(--font-display)] text-2xl font-semibold tracking-tight text-admin-ink">
           Dashboard
         </h1>
-        <p className="mt-1 text-sm text-neutral-500">
-          Welcome back, <span className="font-medium text-neutral-700">{admin?.username}</span>
+        <p className="mt-1 text-sm text-admin-ink-muted">
+          Welcome back, <span className="font-medium text-admin-ink">{admin?.username}</span>
         </p>
       </div>
 
@@ -123,42 +123,42 @@ export default async function AdminDashboardPage({
             href="/admin/products?visibility=hidden"
             value={inventory.hidden}
             label="Hidden from site"
-            tone="border-neutral-200 bg-neutral-50"
+            tone="border-admin-border bg-admin-cream/60"
           />
-          <div className="rounded-lg border border-neutral-200 bg-white p-4">
-            <div className="text-2xl font-bold text-neutral-800">
+          <div className="rounded-lg border border-admin-border bg-white p-4">
+            <div className="text-2xl font-bold text-admin-ink">
               {inventory.byCategory.length}
             </div>
-            <div className="mt-1 text-xs font-medium text-neutral-600">Categories in use</div>
+            <div className="mt-1 text-xs font-medium text-admin-ink-muted">Categories in use</div>
           </div>
         </div>
 
         <div className="mt-4 grid gap-6 lg:grid-cols-2">
           {/* Recently added */}
-          <div className="rounded-lg border border-neutral-200 bg-white p-4">
-            <h3 className="mb-3 text-xs font-medium uppercase tracking-wider text-neutral-400">
+          <div className="rounded-lg border border-admin-border bg-white p-4">
+            <h3 className="mb-3 text-xs font-medium uppercase tracking-wider text-admin-ink-muted/80">
               Recently added items
             </h3>
             {inventory.recent.length === 0 ? (
-              <p className="text-sm text-neutral-500">Nothing added yet.</p>
+              <p className="text-sm text-admin-ink-muted">Nothing added yet.</p>
             ) : (
-              <ul className="divide-y divide-neutral-100">
+              <ul className="divide-y divide-admin-border/70">
                 {inventory.recent.map((item) => (
                   <li key={item.id}>
                     <Link
                       href={`/admin/products/${item.id}`}
-                      className="flex items-center justify-between gap-3 py-2 hover:bg-neutral-50"
+                      className="flex items-center justify-between gap-3 py-2 hover:bg-admin-cream/40"
                     >
                       <span className="min-w-0">
-                        <span className="block truncate text-sm font-medium text-neutral-800">
+                        <span className="block truncate text-sm font-medium text-admin-ink">
                           {item.name}
                         </span>
-                        <span className="block text-xs text-neutral-500">
+                        <span className="block text-xs text-admin-ink-muted">
                           {categoryLabel(item.category)}
                           {!item.isVisible && " · hidden"}
                         </span>
                       </span>
-                      <span className="shrink-0 text-xs text-neutral-400">
+                      <span className="shrink-0 text-xs text-admin-ink-muted/80">
                         {formatDate(item.createdAt)}
                       </span>
                     </Link>
@@ -178,8 +178,8 @@ export default async function AdminDashboardPage({
         />
 
         {categoryOverview.rows.length === 0 ? (
-          <div className="rounded-lg border border-dashed border-neutral-300 px-8 py-12 text-center">
-            <p className="text-sm text-neutral-500">No products in the catalogue yet.</p>
+          <div className="rounded-lg border border-dashed border-admin-border-strong px-8 py-12 text-center">
+            <p className="text-sm text-admin-ink-muted">No products in the catalogue yet.</p>
           </div>
         ) : (
           <>
@@ -195,13 +195,13 @@ export default async function AdminDashboardPage({
                     href={`/admin/products?category=${encodeURIComponent(row.category)}`}
                     className="rounded-lg border border-turmeric/40 bg-amber-50/60 p-4 transition-shadow hover:shadow-md"
                   >
-                    <div className="text-2xl font-bold text-neutral-800">{row.total}</div>
-                    <div className="mt-1 text-xs font-medium text-neutral-700">{row.label}</div>
+                    <div className="text-2xl font-bold text-admin-ink">{row.total}</div>
+                    <div className="mt-1 text-xs font-medium text-admin-ink">{row.label}</div>
 
                     {/* Share of the catalogue */}
                     <div
                       aria-hidden="true"
-                      className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-neutral-200"
+                      className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-admin-cream"
                     >
                       <div
                         className="h-full rounded-full bg-turmeric"
@@ -209,7 +209,7 @@ export default async function AdminDashboardPage({
                       />
                     </div>
 
-                    <div className="mt-2 flex items-center gap-3 text-xs text-neutral-500">
+                    <div className="mt-2 flex items-center gap-3 text-xs text-admin-ink-muted">
                       <span>{row.visible} visible</span>
                       <span aria-hidden="true">·</span>
                       <span>{row.hidden} hidden</span>
@@ -219,15 +219,15 @@ export default async function AdminDashboardPage({
               })}
 
               {/* Catalogue total */}
-              <div className="rounded-lg border border-neutral-300 bg-neutral-50 p-4">
-                <div className="text-2xl font-bold text-neutral-900">
+              <div className="rounded-lg border border-admin-border-strong bg-admin-cream/60 p-4">
+                <div className="text-2xl font-bold text-admin-ink">
                   {categoryOverview.total}
                 </div>
-                <div className="mt-1 text-xs font-medium text-neutral-700">
+                <div className="mt-1 text-xs font-medium text-admin-ink">
                   All categories
                 </div>
-                <div className="mt-3 h-1.5 w-full rounded-full bg-neutral-300" aria-hidden="true" />
-                <div className="mt-2 flex items-center gap-3 text-xs text-neutral-500">
+                <div className="mt-3 h-1.5 w-full rounded-full bg-admin-border-strong" aria-hidden="true" />
+                <div className="mt-2 flex items-center gap-3 text-xs text-admin-ink-muted">
                   <span>{categoryOverview.visible} visible</span>
                   <span aria-hidden="true">·</span>
                   <span>{categoryOverview.hidden} hidden</span>
@@ -239,8 +239,8 @@ export default async function AdminDashboardPage({
       </section>
 
       {/* ================= Date filter ================= */}
-      <div className="mb-6 flex flex-wrap items-center gap-2 border-t border-neutral-200 pt-6">
-        <span className="mr-1 text-xs font-medium uppercase tracking-wider text-neutral-400">
+      <div className="mb-6 flex flex-wrap items-center gap-2 border-t border-admin-border pt-6">
+        <span className="mr-1 text-xs font-medium uppercase tracking-wider text-admin-ink-muted/80">
           Enquiry metrics
         </span>
         {RANGE_OPTIONS.map((option) => {
@@ -252,8 +252,8 @@ export default async function AdminDashboardPage({
               aria-current={active ? "true" : undefined}
               className={`rounded-md border px-3 py-1.5 text-sm font-medium transition-colors ${
                 active
-                  ? "border-neutral-800 bg-neutral-800 text-white"
-                  : "border-neutral-300 bg-white text-neutral-600 hover:bg-neutral-50"
+                  ? "border-admin-spice bg-admin-spice text-white"
+                  : "border-admin-border-strong bg-white text-admin-ink-muted hover:bg-admin-cream/40"
               }`}
             >
               {option.label}
@@ -281,11 +281,11 @@ export default async function AdminDashboardPage({
               }
             />
           ))}
-          <div className="rounded-lg border border-neutral-200 bg-white p-4">
-            <div className="text-2xl font-bold text-neutral-800">
+          <div className="rounded-lg border border-admin-border bg-white p-4">
+            <div className="text-2xl font-bold text-admin-ink">
               {enquiries.totals.combined}
             </div>
-            <div className="mt-1 text-xs font-medium text-neutral-600">All enquiries</div>
+            <div className="mt-1 text-xs font-medium text-admin-ink-muted">All enquiries</div>
           </div>
           <StatLink
             href="/admin/general-enquiries?status=NEW"
@@ -302,25 +302,25 @@ export default async function AdminDashboardPage({
           title="Enquiry Processing"
           note="Counts by CRM status. Select any number to open that filtered list."
         />
-        <div className="overflow-x-auto rounded-lg border border-neutral-200">
-          <table className="min-w-full divide-y divide-neutral-200 text-sm">
-            <thead className="bg-neutral-50">
+        <div className="overflow-x-auto rounded-lg border border-admin-border">
+          <table className="min-w-full divide-y divide-admin-border text-sm">
+            <thead className="bg-admin-cream/60">
               <tr>
-                <th className="px-4 py-3 text-left font-medium text-neutral-600">Status</th>
+                <th className="px-4 py-3 text-left font-medium text-admin-ink-muted">Status</th>
                 {ENQUIRY_TYPES_META.map((meta) => (
                   <th
                     key={meta.key}
-                    className="px-4 py-3 text-right font-medium text-neutral-600"
+                    className="px-4 py-3 text-right font-medium text-admin-ink-muted"
                   >
                     {meta.label.replace(" Enquiries", "").replace(" Requests", "")}
                   </th>
                 ))}
-                <th className="px-4 py-3 text-right font-medium text-neutral-600">Total</th>
+                <th className="px-4 py-3 text-right font-medium text-admin-ink-muted">Total</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-neutral-100 bg-white">
+            <tbody className="divide-y divide-admin-border/70 bg-white">
               {ENQUIRY_STATUSES.map((status) => (
-                <tr key={status.value} className="hover:bg-neutral-50">
+                <tr key={status.value} className="hover:bg-admin-cream/40">
                   <td className="px-4 py-3">
                     <StatusBadge status={status.value} />
                   </td>
@@ -331,36 +331,36 @@ export default async function AdminDashboardPage({
                         {count > 0 ? (
                           <Link
                             href={`${meta.href}?status=${status.value}`}
-                            className="font-medium text-neutral-800 underline-offset-2 hover:underline"
+                            className="font-medium text-admin-ink underline-offset-2 hover:underline"
                           >
                             {count}
                           </Link>
                         ) : (
-                          <span className="text-neutral-400">0</span>
+                          <span className="text-admin-ink-muted/80">0</span>
                         )}
                       </td>
                     );
                   })}
-                  <td className="px-4 py-3 text-right font-semibold text-neutral-900">
+                  <td className="px-4 py-3 text-right font-semibold text-admin-ink">
                     {enquiries.combined[status.value] ?? 0}
                   </td>
                 </tr>
               ))}
             </tbody>
-            <tfoot className="bg-neutral-50">
+            <tfoot className="bg-admin-cream/60">
               <tr>
-                <td className="px-4 py-3 text-xs font-medium uppercase tracking-wider text-neutral-500">
+                <td className="px-4 py-3 text-xs font-medium uppercase tracking-wider text-admin-ink-muted">
                   All statuses
                 </td>
                 {ENQUIRY_TYPES_META.map((meta) => (
                   <td
                     key={meta.key}
-                    className="px-4 py-3 text-right font-semibold text-neutral-900"
+                    className="px-4 py-3 text-right font-semibold text-admin-ink"
                   >
                     {enquiries.totals[meta.key]}
                   </td>
                 ))}
-                <td className="px-4 py-3 text-right font-semibold text-neutral-900">
+                <td className="px-4 py-3 text-right font-semibold text-admin-ink">
                   {enquiries.totals.combined}
                 </td>
               </tr>
@@ -374,41 +374,41 @@ export default async function AdminDashboardPage({
         <SectionHeading title="Performance" />
 
         <div className="grid gap-4 sm:grid-cols-3">
-          <div className="rounded-lg border border-neutral-200 bg-white p-4">
-            <div className="text-2xl font-bold text-neutral-800">
+          <div className="rounded-lg border border-admin-border bg-white p-4">
+            <div className="text-2xl font-bold text-admin-ink">
               {enquiries.conversionRate === null
                 ? "—"
                 : `${(enquiries.conversionRate * 100).toFixed(1)}%`}
             </div>
-            <div className="mt-1 text-xs font-medium text-neutral-600">Conversion rate</div>
-            <p className="mt-1 text-xs text-neutral-400">
+            <div className="mt-1 text-xs font-medium text-admin-ink-muted">Conversion rate</div>
+            <p className="mt-1 text-xs text-admin-ink-muted/80">
               {enquiries.converted} of {enquiries.totals.combined} marked Converted
             </p>
           </div>
-          <div className="rounded-lg border border-neutral-200 bg-white p-4">
-            <div className="text-2xl font-bold text-neutral-800">
+          <div className="rounded-lg border border-admin-border bg-white p-4">
+            <div className="text-2xl font-bold text-admin-ink">
               {enquiries.combined.NEW + enquiries.combined.CONTACTED + enquiries.combined.IN_PROGRESS}
             </div>
-            <div className="mt-1 text-xs font-medium text-neutral-600">Open (not yet closed)</div>
-            <p className="mt-1 text-xs text-neutral-400">
+            <div className="mt-1 text-xs font-medium text-admin-ink-muted">Open (not yet closed)</div>
+            <p className="mt-1 text-xs text-admin-ink-muted/80">
               New, Contacted and In Progress combined
             </p>
           </div>
-          <div className="rounded-lg border border-neutral-200 bg-white p-4">
-            <div className="text-2xl font-bold text-neutral-800">
+          <div className="rounded-lg border border-admin-border bg-white p-4">
+            <div className="text-2xl font-bold text-admin-ink">
               {enquiries.combined.CLOSED_LOST ?? 0}
             </div>
-            <div className="mt-1 text-xs font-medium text-neutral-600">Closed / Lost</div>
-            <p className="mt-1 text-xs text-neutral-400">In the selected period</p>
+            <div className="mt-1 text-xs font-medium text-admin-ink-muted">Closed / Lost</div>
+            <p className="mt-1 text-xs text-admin-ink-muted/80">In the selected period</p>
           </div>
         </div>
 
         {/* Received over time */}
-        <div className="mt-4 rounded-lg border border-neutral-200 bg-white p-4">
-          <h3 className="mb-1 text-xs font-medium uppercase tracking-wider text-neutral-400">
+        <div className="mt-4 rounded-lg border border-admin-border bg-white p-4">
+          <h3 className="mb-1 text-xs font-medium uppercase tracking-wider text-admin-ink-muted/80">
             Enquiries received — last 30 days
           </h3>
-          <p className="mb-4 text-xs text-neutral-400">
+          <p className="mb-4 text-xs text-admin-ink-muted/80">
             All enquiry types combined, by date received.
           </p>
           <div className="flex h-32 items-end gap-[3px]">
@@ -416,7 +416,7 @@ export default async function AdminDashboardPage({
               <div
                 key={point.date}
                 title={`${point.label}: ${point.count}`}
-                className="group relative flex-1 rounded-t-sm bg-neutral-200 transition-colors hover:bg-neutral-400"
+                className="group relative flex-1 rounded-t-sm bg-admin-cream transition-colors hover:bg-admin-gold"
                 style={{ height: `${Math.max(2, (point.count / peak) * 100)}%` }}
               >
                 <span className="sr-only">
@@ -425,7 +425,7 @@ export default async function AdminDashboardPage({
               </div>
             ))}
           </div>
-          <div className="mt-2 flex justify-between text-xs text-neutral-400">
+          <div className="mt-2 flex justify-between text-xs text-admin-ink-muted/80">
             <span>{received[0]?.label}</span>
             <span>Peak {peak}</span>
             <span>{received[received.length - 1]?.label}</span>
@@ -433,18 +433,18 @@ export default async function AdminDashboardPage({
         </div>
 
         {/* Honest note about what cannot be computed */}
-        <div className="mt-4 rounded-lg border border-neutral-200 bg-neutral-50 p-4">
-          <h3 className="text-xs font-medium uppercase tracking-wider text-neutral-500">
+        <div className="mt-4 rounded-lg border border-admin-border bg-admin-cream/60 p-4">
+          <h3 className="text-xs font-medium uppercase tracking-wider text-admin-ink-muted">
             Not shown — the CRM does not record this yet
           </h3>
           <ul className="mt-2 space-y-1.5">
             {UNAVAILABLE_METRICS.map((metric) => (
-              <li key={metric.name} className="text-xs text-neutral-500">
-                <span className="font-medium text-neutral-700">{metric.name}</span> — {metric.reason}
+              <li key={metric.name} className="text-xs text-admin-ink-muted">
+                <span className="font-medium text-admin-ink">{metric.name}</span> — {metric.reason}
               </li>
             ))}
           </ul>
-          <p className="mt-2 text-xs text-neutral-400">
+          <p className="mt-2 text-xs text-admin-ink-muted/80">
             Adding a status-change history table would make all four available.
           </p>
         </div>
@@ -455,29 +455,29 @@ export default async function AdminDashboardPage({
         <SectionHeading title="Recent Activity" />
         <div className="grid gap-6 lg:grid-cols-3">
           {/* General */}
-          <div className="rounded-lg border border-neutral-200 bg-white p-4">
-            <h3 className="mb-3 text-xs font-medium uppercase tracking-wider text-neutral-400">
+          <div className="rounded-lg border border-admin-border bg-white p-4">
+            <h3 className="mb-3 text-xs font-medium uppercase tracking-wider text-admin-ink-muted/80">
               Latest General Enquiries
             </h3>
             {recent.general.length === 0 ? (
-              <p className="text-sm text-neutral-500">None yet.</p>
+              <p className="text-sm text-admin-ink-muted">None yet.</p>
             ) : (
-              <ul className="divide-y divide-neutral-100">
+              <ul className="divide-y divide-admin-border/70">
                 {recent.general.map((item) => (
                   <li key={item.id}>
                     <Link
                       href={`/admin/general-enquiries/${item.id}`}
-                      className="block py-2 hover:bg-neutral-50"
+                      className="block py-2 hover:bg-admin-cream/40"
                     >
-                      <span className="block truncate text-sm font-medium text-neutral-800">
+                      <span className="block truncate text-sm font-medium text-admin-ink">
                         {item.fullName}
                       </span>
-                      <span className="block truncate text-xs text-neutral-500">
+                      <span className="block truncate text-xs text-admin-ink-muted">
                         {item.subject}
                       </span>
                       <span className="mt-1 flex items-center gap-2">
                         <StatusBadge status={item.status} />
-                        <span className="text-xs text-neutral-400">
+                        <span className="text-xs text-admin-ink-muted/80">
                           {formatDate(item.createdAt)}
                         </span>
                       </span>
@@ -489,29 +489,29 @@ export default async function AdminDashboardPage({
           </div>
 
           {/* Business */}
-          <div className="rounded-lg border border-neutral-200 bg-white p-4">
-            <h3 className="mb-3 text-xs font-medium uppercase tracking-wider text-neutral-400">
+          <div className="rounded-lg border border-admin-border bg-white p-4">
+            <h3 className="mb-3 text-xs font-medium uppercase tracking-wider text-admin-ink-muted/80">
               Latest Business Enquiries
             </h3>
             {recent.business.length === 0 ? (
-              <p className="text-sm text-neutral-500">None yet.</p>
+              <p className="text-sm text-admin-ink-muted">None yet.</p>
             ) : (
-              <ul className="divide-y divide-neutral-100">
+              <ul className="divide-y divide-admin-border/70">
                 {recent.business.map((item) => (
                   <li key={item.id}>
                     <Link
                       href={`/admin/business-enquiries/${item.id}`}
-                      className="block py-2 hover:bg-neutral-50"
+                      className="block py-2 hover:bg-admin-cream/40"
                     >
-                      <span className="block truncate text-sm font-medium text-neutral-800">
+                      <span className="block truncate text-sm font-medium text-admin-ink">
                         {item.businessName}
                       </span>
-                      <span className="block truncate text-xs text-neutral-500">
+                      <span className="block truncate text-xs text-admin-ink-muted">
                         {item.contactPerson}
                       </span>
                       <span className="mt-1 flex items-center gap-2">
                         <StatusBadge status={item.status} />
-                        <span className="text-xs text-neutral-400">
+                        <span className="text-xs text-admin-ink-muted/80">
                           {formatDate(item.createdAt)}
                         </span>
                       </span>
@@ -523,27 +523,27 @@ export default async function AdminDashboardPage({
           </div>
 
           {/* Sample */}
-          <div className="rounded-lg border border-neutral-200 bg-white p-4">
-            <h3 className="mb-3 text-xs font-medium uppercase tracking-wider text-neutral-400">
+          <div className="rounded-lg border border-admin-border bg-white p-4">
+            <h3 className="mb-3 text-xs font-medium uppercase tracking-wider text-admin-ink-muted/80">
               Latest Sample Requests
             </h3>
             {recent.sample.length === 0 ? (
-              <p className="text-sm text-neutral-500">None yet.</p>
+              <p className="text-sm text-admin-ink-muted">None yet.</p>
             ) : (
-              <ul className="divide-y divide-neutral-100">
+              <ul className="divide-y divide-admin-border/70">
                 {recent.sample.map((item) => (
                   <li key={item.id}>
                     <Link
                       href={`/admin/sample-requests/${item.id}`}
-                      className="block py-2 hover:bg-neutral-50"
+                      className="block py-2 hover:bg-admin-cream/40"
                     >
-                      <span className="block truncate text-sm font-medium text-neutral-800">
+                      <span className="block truncate text-sm font-medium text-admin-ink">
                         {item.fullName}
                       </span>
-                      <span className="block truncate text-xs text-neutral-500">{item.city}</span>
+                      <span className="block truncate text-xs text-admin-ink-muted">{item.city}</span>
                       <span className="mt-1 flex items-center gap-2">
                         <StatusBadge status={item.status} />
-                        <span className="text-xs text-neutral-400">
+                        <span className="text-xs text-admin-ink-muted/80">
                           {formatDate(item.createdAt)}
                         </span>
                       </span>
@@ -555,7 +555,7 @@ export default async function AdminDashboardPage({
           </div>
         </div>
         {rangeQuery && (
-          <p className="mt-3 text-xs text-neutral-400">
+          <p className="mt-3 text-xs text-admin-ink-muted/80">
             Recent activity always shows the latest records, regardless of the selected period.
           </p>
         )}

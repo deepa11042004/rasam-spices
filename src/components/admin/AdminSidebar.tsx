@@ -266,10 +266,10 @@ export default function AdminSidebar({
     <>
       {/* Brand */}
       <div className="mb-8 px-4">
-        <h2 className="font-[family-name:var(--font-display)] text-xl font-semibold tracking-tight text-neutral-800">
+        <h2 className="font-[family-name:var(--font-display)] text-xl font-semibold tracking-tight text-admin-ink">
           RASAM Admin
         </h2>
-        <p className="mt-0.5 truncate text-xs text-neutral-500">{adminUsername}</p>
+        <p className="mt-0.5 truncate text-xs text-admin-ink-muted">{adminUsername}</p>
       </div>
 
       {/* Nav links */}
@@ -282,10 +282,10 @@ export default function AdminSidebar({
               <li key={item.href}>
                 <Link
                   href={item.href}
-                  className={`flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-500 focus-visible:ring-offset-2 ${
+                  className={`flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-spice focus-visible:ring-offset-2 ${
                     active
-                      ? "bg-neutral-800 text-white"
-                      : "text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900"
+                      ? "bg-admin-spice text-white"
+                      : "text-admin-ink-muted hover:bg-admin-cream hover:text-admin-ink"
                   }`}
                   aria-current={active ? "page" : undefined}
                 >
@@ -299,11 +299,11 @@ export default function AdminSidebar({
       </nav>
 
       {/* Sign out (bottom) */}
-      <div className="mt-auto border-t border-neutral-200 px-2 pt-4">
+      <div className="mt-auto border-t border-admin-border px-2 pt-4">
         <form action={logoutAction}>
           <button
             type="submit"
-            className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-neutral-600 transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-500 focus-visible:ring-offset-2"
+            className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-admin-ink-muted transition-colors hover:bg-admin-cream hover:text-admin-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-spice focus-visible:ring-offset-2"
           >
             <LogOutIcon className="h-4 w-4 shrink-0" />
             Sign out
@@ -316,12 +316,12 @@ export default function AdminSidebar({
   return (
     <>
       {/* ── Mobile top bar ────────────────────────────────────── */}
-      <div className="sticky top-0 z-30 flex items-center gap-3 border-b border-neutral-200 bg-white px-4 py-3 lg:hidden">
+      <div className="sticky top-0 z-30 flex items-center gap-3 border-b border-admin-border bg-white px-4 py-3 lg:hidden">
         <button
           ref={menuButtonRef}
           type="button"
           onClick={toggleMobile}
-          className="rounded-md p-1.5 text-neutral-600 hover:bg-neutral-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-500"
+          className="rounded-md p-1.5 text-admin-ink-muted hover:bg-admin-cream focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-spice"
           aria-label={mobileOpen ? "Close navigation" : "Open navigation"}
           aria-expanded={mobileOpen}
           aria-controls={drawerId}
@@ -332,7 +332,7 @@ export default function AdminSidebar({
             <MenuIcon className="h-5 w-5" />
           )}
         </button>
-        <span className="font-[family-name:var(--font-display)] text-lg font-semibold tracking-tight text-neutral-800">
+        <span className="font-[family-name:var(--font-display)] text-lg font-semibold tracking-tight text-admin-ink">
           RASAM Admin
         </span>
       </div>
@@ -363,7 +363,7 @@ export default function AdminSidebar({
 
       {/* ── Desktop sidebar ───────────────────────────────────── */}
       <aside
-        className="hidden w-64 shrink-0 border-r border-neutral-200 bg-white pb-4 pt-6 lg:flex lg:flex-col"
+        className="hidden w-64 shrink-0 border-r border-admin-border bg-white pb-4 pt-6 lg:flex lg:flex-col"
         aria-label="Admin navigation"
       >
         {navContent}

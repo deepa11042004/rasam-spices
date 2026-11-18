@@ -61,26 +61,26 @@ export default function SearchFilter({
           value={localSearch}
           onChange={(e) => setLocalSearch(e.target.value)}
           placeholder={searchPlaceholder}
-          className="flex-1 rounded-md border border-neutral-300 bg-white px-3 py-1.5 text-sm shadow-sm placeholder:text-neutral-400 focus:border-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-500"
+          className="flex-1 rounded-md border border-admin-border-strong bg-white px-3 py-1.5 text-sm shadow-sm placeholder:text-admin-ink-muted/60 focus:border-admin-spice focus:outline-none focus:ring-1 focus:ring-admin-spice/20"
         />
         <button
           type="submit"
           disabled={isPending}
-          className="rounded-md bg-neutral-800 px-3 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-neutral-700 disabled:opacity-50"
+          className="rounded-md bg-admin-spice px-3 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-admin-spice-dark disabled:opacity-50"
         >
           Search
         </button>
       </form>
       {filters.map((filter) => (
         <div key={filter.name} className="flex items-center gap-2">
-          <label htmlFor={`filter-${filter.name}`} className="text-sm text-neutral-600 whitespace-nowrap">
+          <label htmlFor={`filter-${filter.name}`} className="text-sm text-admin-ink-muted whitespace-nowrap">
             {filter.label}:
           </label>
           <select
             id={`filter-${filter.name}`}
             value={filter.value ?? ""}
             onChange={(e) => updateParams({ [filter.name]: e.target.value })}
-            className="rounded-md border border-neutral-300 bg-white px-2 py-1.5 text-sm shadow-sm focus:border-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-500"
+            className="rounded-md border border-admin-border-strong bg-white px-2 py-1.5 text-sm shadow-sm focus:border-admin-spice focus:outline-none focus:ring-1 focus:ring-admin-spice/20"
           >
             <option value="">All</option>
             {filter.options.map((opt) => (
