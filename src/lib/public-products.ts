@@ -79,6 +79,31 @@ export async function getPublicProducts(): Promise<Product[]> {
 }
 
 /**
+ * The featured products shown publicly, in catalogue order.
+ *
+ * Single source of truth for both the homepage "Featured Spices" section and
+ * the Products page "Featured products" slider, so the two can never drift:
+ * eligibility is the same public rule used everywhere else (visible), plus
+ * the admin's featured flag. A product that is hidden, unfeatured, deleted or
+ * recategorised stops appearing in both places at once.
+ */
+export async function getFeaturedProducts(): Promise<Product[]> {
+  const records = await prisma.product.findMany({
+    where: {
+      isVisible: true,
+      isFeatured: true,
+    },
+    orderBy: [
+      { category: "asc" },
+      { sortOrder: "asc" },
+      { name: "asc" },
+    ],
+  });
+
+  return records.map(toFrontendProduct);
+}
+
+/**
  * Look up a visible product by its URL slug.
  */
 export async function getPublicProductBySlug(

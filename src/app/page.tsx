@@ -12,12 +12,13 @@ import SpiceBackdrop from "@/components/SpiceBackdrop";
 import RasamAnimatedLogo from "@/components/RasamAnimatedLogo";
 import TypingStatement from "@/components/TypingStatement";
 
-import { categories, featuredProducts, getProductsByCategory } from "@/data/products";
+import { categories, getProductsByCategory } from "@/data/products";
 import { getPublicSettings, getSiteContentBatch } from "@/lib/site-settings";
+import { getFeaturedProducts } from "@/lib/public-products";
 
 
 export default async function Home() {
-  const [settings, content] = await Promise.all([
+  const [settings, content, featuredProducts] = await Promise.all([
     getPublicSettings(),
     getSiteContentBatch({
       "home.heroHeading": "Rich aroma.",
@@ -26,6 +27,8 @@ export default async function Home() {
         "Whether you’re a retailer, distributor, wholesaler, or business partner, we’d love to grow together and bring the authentic taste of RASAM to more kitchens.",
       "home.aboutText": "",
     }),
+    // Same source as the Products page slider, so the two stay in step.
+    getFeaturedProducts(),
   ]);
 
   // Build the about text with the launch date from settings

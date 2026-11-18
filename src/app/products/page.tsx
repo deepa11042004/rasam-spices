@@ -12,7 +12,7 @@ import {
   categories,
   type CategoryId,
 } from "@/data/products";
-import { getPublicProducts } from "@/lib/public-products";
+import { getFeaturedProducts, getPublicProducts } from "@/lib/public-products";
 import { productDishPhotos } from "@/data/productDishPhotos";
 
 const CATEGORY_ORDER: CategoryId[] = [
@@ -31,11 +31,13 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function ProductsPage() {
-  const products = await getPublicProducts();
-
-  const featuredProducts = products.filter(
-    (product) => product.featured === true,
-  );
+  // Both lists come from the database. The featured slider uses the shared
+  // getFeaturedProducts() so it applies exactly the same eligibility rule as
+  // the homepage's Featured Spices section.
+  const [products, featuredProducts] = await Promise.all([
+    getPublicProducts(),
+    getFeaturedProducts(),
+  ]);
 
   const showcases = CATEGORY_ORDER.map((id) => {
     const category = categories.find((item) => item.id === id);

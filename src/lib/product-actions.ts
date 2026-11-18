@@ -298,6 +298,7 @@ export async function toggleProductVisibility(id: string, isVisible: boolean): P
     revalidatePath("/admin/products");
     revalidatePath("/admin"); // dashboard category + inventory counts
     revalidatePath("/products");
+    revalidatePath("/"); // homepage featured section
     return { ok: true };
   } catch {
     return { ok: false, message: "Failed to update visibility" };
@@ -312,6 +313,7 @@ export async function toggleProductFeatured(id: string, isFeatured: boolean): Pr
     await prisma.product.update({ where: { id }, data: { isFeatured } });
     revalidatePath("/admin/products");
     revalidatePath("/admin"); // dashboard category + inventory counts
+    revalidatePath("/products"); // featured slider on the Products page
     revalidatePath("/");
     return { ok: true };
   } catch {
