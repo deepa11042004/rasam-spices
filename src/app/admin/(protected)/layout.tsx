@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { getSessionAdmin } from "@/lib/admin-session";
 import AdminSidebar from "@/components/admin/AdminSidebar";
+import AdminHeader from "@/components/admin/AdminHeader";
 import { logoutAction } from "./actions";
 
 export default async function ProtectedAdminLayout({
@@ -12,10 +13,14 @@ export default async function ProtectedAdminLayout({
   if (!admin) redirect("/admin/login");
 
   return (
-    <div className="flex min-h-screen flex-col lg:flex-row">
+    <div className="flex min-h-screen flex-col bg-admin-ivory lg:flex-row">
       <AdminSidebar adminUsername={admin.username} logoutAction={logoutAction} />
-      <div className="flex-1 overflow-y-auto">
-        {children}
+
+      {/* min-w-0 lets wide tables scroll inside the column instead of
+          pushing the whole page sideways. */}
+      <div className="flex min-w-0 flex-1 flex-col">
+        <AdminHeader adminUsername={admin.username} logoutAction={logoutAction} />
+        <main className="flex-1 overflow-y-auto">{children}</main>
       </div>
     </div>
   );

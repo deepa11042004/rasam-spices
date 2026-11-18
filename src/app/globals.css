@@ -34,6 +34,24 @@
   --rasam-shadow-lift: 0 2px 4px rgb(23 23 19 / 0.08), 0 22px 40px -16px rgb(23 23 19 / 0.38);
   --rasam-ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
 
+  /* ---- Admin CRM tokens ----------------------------------------------
+   * The admin panel uses calm neutral surfaces with RASAM colours as
+   * restrained accents, so it reads as a professional business tool rather
+   * than a decorated marketing page. Hex values are the brand palette as
+   * supplied for the CRM; they sit a shade apart from the public-site
+   * --brand-* tokens, which are tuned for photography-heavy pages.
+   */
+  --admin-ink: #30231d;          /* Deep earthy brown: headings, primary text */
+  --admin-ink-muted: #65574d;    /* Muted brown: secondary text, labels */
+  --admin-spice: #a63d26;        /* Spice red: primary actions, active state */
+  --admin-spice-dark: #812d1c;   /* Dark spice red: hover/pressed */
+  --admin-gold: #c79a53;         /* Turmeric gold: hairlines, subtle accents */
+  --admin-ivory: #faf7f0;        /* Ivory: app background */
+  --admin-cream: #f2ebdd;        /* Light cream: quiet panels, table headers */
+  --admin-surface: #ffffff;      /* Cards and raised surfaces */
+  --admin-border: #e6dfd3;       /* Default hairline border */
+  --admin-border-strong: #d6cbb8;
+
   --background: var(--brand-parchment);
   --foreground: var(--brand-earth);
 
@@ -61,6 +79,17 @@
   --color-chilli: var(--brand-chilli);
   --color-indigo: var(--brand-indigo);
   --color-indigo-dark: var(--brand-indigo-dark);
+
+  --color-admin-ink: var(--admin-ink);
+  --color-admin-ink-muted: var(--admin-ink-muted);
+  --color-admin-spice: var(--admin-spice);
+  --color-admin-spice-dark: var(--admin-spice-dark);
+  --color-admin-gold: var(--admin-gold);
+  --color-admin-ivory: var(--admin-ivory);
+  --color-admin-cream: var(--admin-cream);
+  --color-admin-surface: var(--admin-surface);
+  --color-admin-border: var(--admin-border);
+  --color-admin-border-strong: var(--admin-border-strong);
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
