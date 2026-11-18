@@ -3,10 +3,12 @@ import Link from "next/link";
 import { getSessionAdmin } from "@/lib/admin-session";
 import { ENQUIRY_STATUSES } from "@/lib/enquiry-constants";
 import StatusBadge from "@/components/admin/StatusBadge";
+import { categories as CATEGORY_CONFIG } from "@/data/products";
 import {
   ENQUIRY_TYPES_META,
   RANGE_OPTIONS,
   UNAVAILABLE_METRICS,
+  getCategoryOverview,
   getEnquiryOverview,
   getInventoryOverview,
   getReceivedOverTime,
@@ -16,11 +18,14 @@ import {
 
 export const metadata: Metadata = { title: "Dashboard" };
 
-const CATEGORY_LABELS: Record<string, string> = {
-  "ground-spices": "Ground Spices",
-  "blended-masalas": "Blended Masalas",
-  "spices-seasonings": "Spices & Seasonings",
-};
+/**
+ * Category label from the shared config in src/data/products.ts, falling back
+ * to the stored value so a category added later still reads sensibly. Labels
+ * are not duplicated here.
+ */
+function categoryLabel(value: string): string {
+  return CATEGORY_CONFIG.find((c) => c.id === value)?.name ?? value;
+}
 
 function formatDate(value: Date) {
   return value.toLocaleDateString("en-IN", {
@@ -70,13 +75,15 @@ export default async function AdminDashboardPage({
   const params = await searchParams;
   const range = resolveRange(params.range);
 
-  const [admin, inventory, enquiries, received, recent] = await Promise.all([
-    getSessionAdmin(),
-    getInventoryOverview(),
-    getEnquiryOverview(range),
-    getReceivedOverTime(),
-    getRecentActivity(),
-  ]);
+  const [admin, inventory, categoryOverview, enquiries, received, recent] =
+    await Promise.all([
+      getSessionAdmin(),
+      getInventoryOverview(),
+      getCategoryOverview(),
+      getEnquiryOverview(range),
+      getReceivedOverTime(),
+      getRecentActivity(),
+    ]);
 
   const rangeQuery = range === "all" ? "" : `?range=${range}`;
   const peak = Math.max(1, ...received.map((p) => p.count));
@@ -127,40 +134,6 @@ export default async function AdminDashboardPage({
         </div>
 
         <div className="mt-4 grid gap-6 lg:grid-cols-2">
-          {/* By category */}
-          <div className="rounded-lg border border-neutral-200 bg-white p-4">
-            <h3 className="mb-3 text-xs font-medium uppercase tracking-wider text-neutral-400">
-              Items by category
-            </h3>
-            {inventory.byCategory.length === 0 ? (
-              <p className="text-sm text-neutral-500">No catalogue items yet.</p>
-            ) : (
-              <div className="space-y-2">
-                {inventory.byCategory.map((row) => (
-                  <Link
-                    key={row.category}
-                    href={`/admin/products?category=${encodeURIComponent(row.category)}`}
-                    className="flex items-center gap-3 rounded-md px-1 py-1 hover:bg-neutral-50"
-                  >
-                    <span className="w-44 shrink-0 truncate text-sm text-neutral-600">
-                      {CATEGORY_LABELS[row.category] ?? row.category}
-                    </span>
-                    <span
-                      aria-hidden="true"
-                      className="h-2 rounded-full bg-neutral-300"
-                      style={{
-                        width: `${Math.max(4, (row.count / inventory.total) * 100)}%`,
-                      }}
-                    />
-                    <span className="ml-auto text-sm font-medium text-neutral-800">
-                      {row.count}
-                    </span>
-                  </Link>
-                ))}
-              </div>
-            )}
-          </div>
-
           {/* Recently added */}
           <div className="rounded-lg border border-neutral-200 bg-white p-4">
             <h3 className="mb-3 text-xs font-medium uppercase tracking-wider text-neutral-400">
@@ -181,7 +154,7 @@ export default async function AdminDashboardPage({
                           {item.name}
                         </span>
                         <span className="block text-xs text-neutral-500">
-                          {CATEGORY_LABELS[item.category] ?? item.category}
+                          {categoryLabel(item.category)}
                           {!item.isVisible && " · hidden"}
                         </span>
                       </span>
@@ -195,6 +168,74 @@ export default async function AdminDashboardPage({
             )}
           </div>
         </div>
+      </section>
+
+      {/* ================= Product Category Overview ================= */}
+      <section className="mb-10">
+        <SectionHeading
+          title="Product Category Overview"
+          note="Catalogue records per category, including products hidden from the public site. Not stock quantities."
+        />
+
+        {categoryOverview.rows.length === 0 ? (
+          <div className="rounded-lg border border-dashed border-neutral-300 px-8 py-12 text-center">
+            <p className="text-sm text-neutral-500">No products in the catalogue yet.</p>
+          </div>
+        ) : (
+          <>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {categoryOverview.rows.map((row) => {
+                const share =
+                  categoryOverview.total > 0
+                    ? Math.round((row.total / categoryOverview.total) * 100)
+                    : 0;
+                return (
+                  <Link
+                    key={row.category}
+                    href={`/admin/products?category=${encodeURIComponent(row.category)}`}
+                    className="rounded-lg border border-turmeric/40 bg-amber-50/60 p-4 transition-shadow hover:shadow-md"
+                  >
+                    <div className="text-2xl font-bold text-neutral-800">{row.total}</div>
+                    <div className="mt-1 text-xs font-medium text-neutral-700">{row.label}</div>
+
+                    {/* Share of the catalogue */}
+                    <div
+                      aria-hidden="true"
+                      className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-neutral-200"
+                    >
+                      <div
+                        className="h-full rounded-full bg-turmeric"
+                        style={{ width: `${Math.max(2, share)}%` }}
+                      />
+                    </div>
+
+                    <div className="mt-2 flex items-center gap-3 text-xs text-neutral-500">
+                      <span>{row.visible} visible</span>
+                      <span aria-hidden="true">·</span>
+                      <span>{row.hidden} hidden</span>
+                    </div>
+                  </Link>
+                );
+              })}
+
+              {/* Catalogue total */}
+              <div className="rounded-lg border border-neutral-300 bg-neutral-50 p-4">
+                <div className="text-2xl font-bold text-neutral-900">
+                  {categoryOverview.total}
+                </div>
+                <div className="mt-1 text-xs font-medium text-neutral-700">
+                  All categories
+                </div>
+                <div className="mt-3 h-1.5 w-full rounded-full bg-neutral-300" aria-hidden="true" />
+                <div className="mt-2 flex items-center gap-3 text-xs text-neutral-500">
+                  <span>{categoryOverview.visible} visible</span>
+                  <span aria-hidden="true">·</span>
+                  <span>{categoryOverview.hidden} hidden</span>
+                </div>
+              </div>
+            </div>
+          </>
+        )}
       </section>
 
       {/* ================= Date filter ================= */}

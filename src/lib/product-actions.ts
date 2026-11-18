@@ -131,6 +131,7 @@ export async function createProduct(data: ProductFormData): Promise<ActionResult
       },
     });
     revalidatePath("/admin/products");
+    revalidatePath("/admin"); // dashboard category + inventory counts
     revalidatePath("/products");
     revalidatePath("/");
     return { ok: true, message: "Product created" };
@@ -230,6 +231,7 @@ export async function updateProduct(data: ProductFormData): Promise<ActionResult
     }
 
     revalidatePath("/admin/products");
+    revalidatePath("/admin"); // dashboard category + inventory counts
     revalidatePath(`/products/${id}`);
     // Also revalidate the slug path if it exists
     const finalSlug = slugUpdate ?? existingProduct?.slug;
@@ -277,6 +279,7 @@ export async function deleteProduct(id: string): Promise<ActionResult> {
     });
 
     revalidatePath("/admin/products");
+    revalidatePath("/admin"); // dashboard category + inventory counts
     revalidatePath("/products");
     revalidatePath("/");
     return { ok: true, message: "Product deleted" };
@@ -293,6 +296,7 @@ export async function toggleProductVisibility(id: string, isVisible: boolean): P
   try {
     await prisma.product.update({ where: { id }, data: { isVisible } });
     revalidatePath("/admin/products");
+    revalidatePath("/admin"); // dashboard category + inventory counts
     revalidatePath("/products");
     return { ok: true };
   } catch {
@@ -307,6 +311,7 @@ export async function toggleProductFeatured(id: string, isFeatured: boolean): Pr
   try {
     await prisma.product.update({ where: { id }, data: { isFeatured } });
     revalidatePath("/admin/products");
+    revalidatePath("/admin"); // dashboard category + inventory counts
     revalidatePath("/");
     return { ok: true };
   } catch {

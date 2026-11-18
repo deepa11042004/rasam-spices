@@ -10,6 +10,7 @@
  */
 import { prisma } from "@/lib/prisma";
 import { ENQUIRY_STATUSES } from "@/lib/enquiry-constants";
+import { categories as CATEGORY_CONFIG } from "@/data/products";
 
 // ---------------------------------------------------------------------------
 // Date range
@@ -127,6 +128,91 @@ function totalOf(counts: StatusCounts): number {
 // ---------------------------------------------------------------------------
 // Inventory (website catalogue records — not physical stock)
 // ---------------------------------------------------------------------------
+
+export type CategoryRow = {
+  /** The category value stored on the product record. */
+  category: string;
+  /** Human label from the shared category config, or a readable fallback. */
+  label: string;
+  total: number;
+  visible: number;
+  hidden: number;
+};
+
+/** Turn an unknown category value into something readable, e.g. "my-cat" -> "My Cat". */
+function prettifyCategory(value: string): string {
+  return value
+    .split(/[-_]/)
+    .filter(Boolean)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
+/**
+ * Catalogue counts per category, taken from the product records themselves.
+ *
+ * The category list is derived from the database rather than hardcoded, so a
+ * category added later appears automatically; labels come from the shared
+ * config in src/data/products.ts, falling back to a readable form of the
+ * stored value for anything not listed there. Grouping is by category, so each
+ * product is counted exactly once. Hidden products are included in `total` and
+ * also broken out separately.
+ *
+ * These are catalogue records shown on the website, not stock quantities.
+ */
+export async function getCategoryOverview(): Promise<{
+  rows: CategoryRow[];
+  total: number;
+  visible: number;
+  hidden: number;
+}> {
+  // One row per (category, isVisible) pair; a product belongs to exactly one.
+  // Prisma infers { category, isVisible, _count } here; casting the awaited
+  // value instead confuses the generic, so let it infer.
+  const grouped = await prisma.product.groupBy({
+    by: ["category", "isVisible"],
+    _count: true,
+  });
+
+  const byCategory = new Map<string, CategoryRow>();
+
+  for (const row of grouped) {
+    const existing = byCategory.get(row.category) ?? {
+      category: row.category,
+      label:
+        CATEGORY_CONFIG.find((c) => c.id === row.category)?.name ??
+        prettifyCategory(row.category),
+      total: 0,
+      visible: 0,
+      hidden: 0,
+    };
+
+    existing.total += row._count;
+    if (row.isVisible) existing.visible += row._count;
+    else existing.hidden += row._count;
+
+    byCategory.set(row.category, existing);
+  }
+
+  // Show configured categories in their configured order, then any extras.
+  // Widened to string[]: product.category is a plain column, not the union.
+  const configuredOrder: string[] = CATEGORY_CONFIG.map((c) => c.id);
+  const rows = [...byCategory.values()].sort((a, b) => {
+    const ai = configuredOrder.indexOf(a.category);
+    const bi = configuredOrder.indexOf(b.category);
+    if (ai !== -1 && bi !== -1) return ai - bi;
+    if (ai !== -1) return -1;
+    if (bi !== -1) return 1;
+    return b.total - a.total;
+  });
+
+  return {
+    rows,
+    total: rows.reduce((sum, r) => sum + r.total, 0),
+    visible: rows.reduce((sum, r) => sum + r.visible, 0),
+    hidden: rows.reduce((sum, r) => sum + r.hidden, 0),
+  };
+}
 
 export async function getInventoryOverview() {
   const [total, visible, byCategory, recent] = await Promise.all([
