@@ -64,6 +64,41 @@ export const getPublicSettings = cache(async (): Promise<PublicCompanySettings> 
 });
 
 // ---------------------------------------------------------------------------
+// Social links
+// ---------------------------------------------------------------------------
+
+export type PublicSocialLink = { platform: string; url: string };
+
+/**
+ * Visible social links for the public site, in the order an admin arranged
+ * them. These are the SocialLink records managed in admin Settings: the single
+ * source of truth, with no duplicate configuration anywhere.
+ *
+ * A platform with no saved URL simply has no record, so nothing is rendered
+ * for it. A database problem resolves to an empty list rather than throwing,
+ * because missing icons must never take down the footer.
+ */
+export const getPublicSocialLinks = cache(
+  async (): Promise<PublicSocialLink[]> => {
+    try {
+      const rows = await prisma.socialLink.findMany({
+        where: { isVisible: true },
+        orderBy: [{ sortOrder: "asc" }, { platform: "asc" }],
+        select: { platform: true, url: true },
+      });
+
+      // Guard against a blank or placeholder URL slipping through.
+      return rows.filter(
+        (r) => typeof r.url === "string" && /^https?:\/\//i.test(r.url.trim()),
+      );
+    } catch (err) {
+      console.error("[getPublicSocialLinks]", err);
+      return [];
+    }
+  },
+);
+
+// ---------------------------------------------------------------------------
 // Site content (page blocks)
 // ---------------------------------------------------------------------------
 

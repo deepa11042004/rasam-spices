@@ -2,10 +2,14 @@ import Image from "next/image";
 import Link from "next/link";
 import BrandMark from "@/components/BrandMark";
 import { navLinks } from "@/data/company";
-import { getPublicSettings } from "@/lib/site-settings";
+import SocialIcons from "@/components/SocialIcons";
+import { getPublicSettings, getPublicSocialLinks } from "@/lib/site-settings";
 
 export default async function Footer() {
-  const settings = await getPublicSettings();
+  const [settings, socialLinks] = await Promise.all([
+    getPublicSettings(),
+    getPublicSocialLinks(),
+  ]);
 
   return (
 <footer className="relative isolate border-t border-turmeric bg-forest-deep pb-8 pt-16 text-ivory [&_:focus-visible]:outline-turmeric">
@@ -62,6 +66,10 @@ export default async function Footer() {
               </a>
             </p>
           </address>
+
+          {/* Social links an admin configured in Settings. Nothing renders
+              when none are set. */}
+          <SocialIcons links={socialLinks} className="mt-6" tone="light" />
         </div>
       </div>
 

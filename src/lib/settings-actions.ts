@@ -83,7 +83,8 @@ export async function updateCompanySettings(data: CompanySettingsData): Promise<
     }
 
     revalidatePath("/admin/settings");
-    revalidatePath("/");
+    // The footer lives in the root layout, so every public page shows these.
+    revalidatePath("/", "layout");
     revalidatePath("/about");
     revalidatePath("/contact");
     return { ok: true, message: "Settings saved" };
@@ -131,7 +132,8 @@ export async function upsertSiteContent(data: SiteContentData): Promise<ActionRe
     }
 
     revalidatePath("/admin/settings");
-    revalidatePath("/");
+    // The footer lives in the root layout, so every public page shows these.
+    revalidatePath("/", "layout");
     revalidatePath("/about");
     revalidatePath("/contact");
     return { ok: true, message: "Content saved" };
@@ -162,7 +164,8 @@ export async function upsertManySiteContent(items: SiteContentData[]): Promise<A
     }
 
     revalidatePath("/admin/settings");
-    revalidatePath("/");
+    // The footer lives in the root layout, so every public page shows these.
+    revalidatePath("/", "layout");
     revalidatePath("/about");
     revalidatePath("/contact");
     return { ok: true, message: "Content saved" };
@@ -207,7 +210,8 @@ export async function upsertSocialLink(data: SocialLinkData): Promise<ActionResu
     }
 
     revalidatePath("/admin/settings");
-    revalidatePath("/");
+    // The footer lives in the root layout, so every public page shows these.
+    revalidatePath("/", "layout");
     return { ok: true, message: "Social link saved" };
   } catch (err) {
     console.error("[upsertSocialLink]", err);
@@ -223,7 +227,8 @@ export async function deleteSocialLink(id: string): Promise<ActionResult> {
   try {
     await prisma.socialLink.delete({ where: { id } });
     revalidatePath("/admin/settings");
-    revalidatePath("/");
+    // The footer lives in the root layout, so every public page shows these.
+    revalidatePath("/", "layout");
     return { ok: true, message: "Social link deleted" };
   } catch {
     return { ok: false, message: "Failed to delete social link" };
