@@ -12,6 +12,7 @@
     "@prisma/adapter-mariadb": "^7.10.1",
     "@prisma/client": "^7.10.1",
     "@supabase/ssr": "^0.12.7",
+    "@vercel/blob": "^2.9.0",
     "argon2": "^0.45.2",
     "mariadb": "^3.5.5",
     "next": "16.4.2",
@@ -27,6 +28,7 @@
     "eslint-config-next": "16.4.2",
     "prisma": "^7.10.1",
     "tailwindcss": "^4",
+    "tsx": "^4.23.15",
     "typescript": "^5"
   },
   "allowScripts": {

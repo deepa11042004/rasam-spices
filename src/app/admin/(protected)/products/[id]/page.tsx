@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import ProductForm from "@/components/admin/ProductForm";
 import { updateProduct, deleteProduct } from "@/lib/product-actions";
+import { dishes } from "@/data/dishes";
 
 export async function generateMetadata({
   params,
@@ -23,11 +24,16 @@ export default async function EditProductPage({
   const { id } = await params;
   const product = await prisma.product.findUnique({
     where: { id },
-    include: { dishPlatterItem: true },
+    
   });
   if (!product) notFound();
 
   const packSizesStr = product.packSizes ? JSON.stringify(product.packSizes) : "[]";
+
+  // A dish image is only rendered for products paired with a platter dish.
+  // dishes[].productId matches the database slug (both are kebab-case names).
+  const platterDishName =
+    dishes.find((dish) => dish.productId === product.slug)?.name ?? null;
 
   return (
     <div className="mx-auto w-full max-w-3xl px-4 py-8 sm:px-6 lg:py-10">
@@ -42,6 +48,7 @@ export default async function EditProductPage({
       </h1>
       <ProductForm
         mode="edit"
+        platterDishName={platterDishName}
         initialData={{
           id: product.id,
           name: product.name,
@@ -52,16 +59,12 @@ export default async function EditProductPage({
           imageAlt: product.imageAlt ?? "",
           backImageSrc: product.backImageSrc ?? "",
           backImageAlt: product.backImageAlt ?? "",
+          dishPhotoSrc: product.dishPhotoSrc ?? "",
           packSizes: packSizesStr,
           packFormat: product.packFormat ?? "",
           pendingNote: product.pendingNote ?? "",
           isVisible: product.isVisible,
           isFeatured: product.isFeatured,
-          sortOrder: product.sortOrder,
-          dishPhotoSrc: product.dishPhotoSrc ?? "",
-          dishPhotoAlt: product.dishPhotoAlt ?? "",
-          dishPhotoFocus: product.dishPhotoFocus ?? "",
-          dishPhotoZoom: product.dishPhotoZoom ?? 0,
         }}
         onSubmit={updateProduct}
         onDelete={deleteProduct}
