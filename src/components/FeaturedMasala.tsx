@@ -52,7 +52,7 @@ export default function FeaturedMasala({
           // Pack + name link to the product detail page, so clicking the matching masala on the
           // homepage dish platter takes the visitor straight to that specific spice's page.
           <Link
-            href={`/products/${product.id}`}
+            href={`/products/${product.slug ?? product.id}`}
             aria-label={`View ${name} product page`}
             className="group flex flex-col items-center rounded-2xl outline-none transition-transform duration-200 hover:scale-[1.02] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-turmeric"
           >

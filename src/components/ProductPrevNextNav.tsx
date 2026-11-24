@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getProductsByCategory, type Product } from "@/data/products";
+import type { Product } from "@/data/products";
 
 // z-10 lifts the desktop arrows above the PackagingGallery card edge they overlap; the ivory
 // ring makes the green button read as a distinct floating element against the gallery panel.
@@ -40,10 +40,10 @@ function ChevronRightIcon() {
   );
 }
 
-function useAdjacent(product: Product) {
-  const categoryProducts = getProductsByCategory(product.category);
+function useAdjacent(product: Product, categoryProducts: Product[]) {
   if (categoryProducts.length < 2) return null;
   const index = categoryProducts.findIndex((p) => p.id === product.id);
+  if (index === -1) return null;
   return {
     previous: categoryProducts[(index - 1 + categoryProducts.length) % categoryProducts.length],
     next: categoryProducts[(index + 1) % categoryProducts.length],
@@ -63,12 +63,14 @@ function useAdjacent(product: Product) {
  */
 export default function ProductPrevNextNav({
   product,
+  categoryProducts,
   variant,
 }: {
   product: Product;
+  categoryProducts: Product[];
   variant: "desktop" | "mobile";
 }) {
-  const adjacent = useAdjacent(product);
+  const adjacent = useAdjacent(product, categoryProducts);
   if (!adjacent) return null;
   const { previous, next } = adjacent;
 
@@ -76,14 +78,14 @@ export default function ProductPrevNextNav({
     return (
       <>
         <Link
-          href={`/products/${previous.id}`}
+          href={`/products/${previous.slug ?? previous.id}`}
           aria-label={`Previous product: ${previous.name}`}
           className={`${circleButton} absolute left-0 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 md:flex`}
         >
           <ChevronLeftIcon />
         </Link>
         <Link
-          href={`/products/${next.id}`}
+          href={`/products/${next.slug ?? next.id}`}
           aria-label={`Next product: ${next.name}`}
           className={`${circleButton} absolute right-0 top-1/2 hidden -translate-y-1/2 translate-x-1/2 md:flex`}
         >
@@ -95,10 +97,10 @@ export default function ProductPrevNextNav({
 
   return (
     <div className="mt-4 flex items-center justify-center gap-4 md:hidden">
-      <Link href={`/products/${previous.id}`} aria-label={`Previous product: ${previous.name}`} className={circleButton}>
+      <Link href={`/products/${previous.slug ?? previous.id}`} aria-label={`Previous product: ${previous.name}`} className={circleButton}>
         <ChevronLeftIcon />
       </Link>
-      <Link href={`/products/${next.id}`} aria-label={`Next product: ${next.name}`} className={circleButton}>
+      <Link href={`/products/${next.slug ?? next.id}`} aria-label={`Next product: ${next.name}`} className={circleButton}>
         <ChevronRightIcon />
       </Link>
     </div>

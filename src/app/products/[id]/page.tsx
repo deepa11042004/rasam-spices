@@ -1,22 +1,48 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import PackagingGallery from "@/components/PackagingGallery";
 import ProductPrevNextNav from "@/components/ProductPrevNextNav";
 import RelatedProducts from "@/components/RelatedProducts";
-import { getCategory, getProduct, products } from "@/data/products";
+import { getCategory } from "@/data/products";
+import {
+  getPublicProductBySlug,
+  getPublicProductById,
+  getProductSlugById,
+  getPublicProducts,
+} from "@/lib/public-products";
 
-/** Build one static page per product at build time. */
-export function generateStaticParams() {
-  return products.map((product) => ({ id: product.id }));
+export const dynamic = "force-dynamic";
+
+/**
+ * Resolve a product from the [id] route parameter.
+ * 1. Try slug lookup first (the new canonical URL form).
+ * 2. If not found by slug, check if it's an internal ID and redirect to the slug URL.
+ * 3. If the ID exists but has no slug yet, show the product (graceful fallback).
+ */
+async function resolveProduct(param: string) {
+
+  // 1. Try slug first
+  const bySlug = await getPublicProductBySlug(param);
+  if (bySlug) return { product: bySlug, shouldRedirect: false };
+
+  // 2. Try ID — if found and has a slug, redirect
+  const slug = await getProductSlugById(param);
+  if (slug) {
+    // The param was an ID, and the product has a slug → permanent redirect
+    return { product: null, shouldRedirect: true, redirectSlug: slug };
+  }
+
+  // 3. Try ID without slug (legacy/backfill-pending product)
+  const byId = await getPublicProductById(param);
+  if (byId) return { product: byId, shouldRedirect: false };
+
+  return { product: null, shouldRedirect: false };
 }
-
-/** Any id not in the product list shows the 404 page. */
-export const dynamicParams = false;
 
 export async function generateMetadata(props: PageProps<"/products/[id]">): Promise<Metadata> {
   const { id } = await props.params;
-  const product = getProduct(id);
+  const { product } = await resolveProduct(id);
   if (!product) return {};
   return {
     title: product.name,
@@ -26,14 +52,24 @@ export async function generateMetadata(props: PageProps<"/products/[id]">): Prom
 
 export default async function ProductPage(props: PageProps<"/products/[id]">) {
   const { id } = await props.params;
-  const product = getProduct(id);
+  const result = await resolveProduct(id);
+
+  if (result.shouldRedirect && result.redirectSlug) {
+    redirect(`/products/${result.redirectSlug}`);
+  }
+
+  const product = result.product;
   if (!product) notFound();
+
+  const allVisible = await getPublicProducts();
+  const categoryProducts = allVisible.filter((p) => p.category === product.category);
 
   const category = getCategory(product.category);
   const sizes = product.packSizes?.join(", ");
 
   // Deep-link straight into the matching Contact page form, with this product
   // already selected there (see ContactFormTabs.tsx's readInitialTab/readInitialSelection).
+  // Enquiry links always use the internal ID, not the slug.
   const businessEnquiryHref = `/contact?form=business&product=${product.id}`;
   const sampleRequestHref = `/contact?form=sample&product=${product.id}`;
 
@@ -71,12 +107,12 @@ export default async function ProductPage(props: PageProps<"/products/[id]">) {
         </nav>
 
         {/* Prev/next (mobile): under the breadcrumb, out of the way of the gallery and details. */}
-        <ProductPrevNextNav product={product} variant="mobile" />
+        <ProductPrevNextNav product={product} categoryProducts={categoryProducts} variant="mobile" />
 
         {/* B. Main product presentation */}
         <div className="relative mt-8 grid gap-8 md:grid-cols-[minmax(0,300px)_1fr] md:gap-10 lg:grid-cols-[minmax(0,480px)_1fr] lg:gap-16 xl:grid-cols-[minmax(0,560px)_1fr]">
           {/* Prev/next (desktop/tablet): outside both columns, vertically centred on this section. */}
-          <ProductPrevNextNav product={product} variant="desktop" />
+          <ProductPrevNextNav product={product} categoryProducts={categoryProducts} variant="desktop" />
 
           <PackagingGallery product={product} />
 
@@ -134,7 +170,7 @@ export default async function ProductPage(props: PageProps<"/products/[id]">) {
         </section>
 
         {/* D. Related products */}
-        <RelatedProducts product={product} />
+        <RelatedProducts product={product} categoryProducts={categoryProducts} />
 
         {/* E. Product enquiry section */}
         <section aria-labelledby="enquiry-heading" className="mt-20 lg:mt-28">

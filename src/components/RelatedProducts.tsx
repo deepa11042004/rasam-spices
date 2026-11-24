@@ -1,5 +1,5 @@
 import ProductCard from "@/components/ProductCard";
-import { getProductsByCategory, type Product } from "@/data/products";
+import type { Product } from "@/data/products";
 
 /**
  * Up to 3 other products from the same category as `product`, shown at the
@@ -7,8 +7,14 @@ import { getProductsByCategory, type Product } from "@/data/products";
  * and product data -- nothing new is introduced. Renders nothing when the
  * category has no other products.
  */
-export default function RelatedProducts({ product }: { product: Product }) {
-  const related = getProductsByCategory(product.category)
+export default function RelatedProducts({
+  product,
+  categoryProducts,
+}: {
+  product: Product;
+  categoryProducts: Product[];
+}) {
+  const related = categoryProducts
     .filter((p) => p.id !== product.id)
     .slice(0, 3);
 

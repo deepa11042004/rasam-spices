@@ -79,7 +79,8 @@ export default function ProductInventoryShowcase({ items, label }: ProductInvent
   // First activation pins; activating the already-pinned card opens its product page.
   const activate = (id: string) => {
     if (pinnedId === id) {
-      router.push(`/products/${id}`);
+      const slug = items.find((item) => item.product.id === id)?.product.slug;
+      router.push(`/products/${slug ?? id}`);
       return;
     }
     setHoveredId(null);
@@ -239,7 +240,7 @@ export default function ProductInventoryShowcase({ items, label }: ProductInvent
                     {isPinned ? (
                       <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2">
                         <Link
-                          href={`/products/${product.id}`}
+                          href={`/products/${product.slug ?? product.id}`}
                           onClick={(event) => event.stopPropagation()}
                           className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-parchment underline decoration-turmeric/50 underline-offset-4 transition-colors hover:text-turmeric hover:decoration-turmeric focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-turmeric"
                         >

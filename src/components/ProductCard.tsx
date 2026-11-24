@@ -36,7 +36,7 @@ export default function ProductCard({
   if (variant === "carousel") {
     return (
       <article className={`${card} ${className}`}>
-        <Link href={`/products/${product.id}`} className={`flex h-full flex-col focus-visible:rounded-card ${focusRing}`}>
+        <Link href={`/products/${product.slug ?? product.id}`} className={`flex h-full flex-col focus-visible:rounded-card ${focusRing}`}>
           <div className={`flex w-full items-center justify-center py-5 ${imagePanel}`}>
             <ProductImage
           onDark
@@ -98,7 +98,7 @@ export default function ProductCard({
 
         <div className="mt-auto flex flex-col items-start gap-3 border-t border-turmeric/30 pt-5">
           <Link
-            href={`/products/${product.id}`}
+            href={`/products/${product.slug ?? product.id}`}
             className={`btn btn-primary !min-h-10 !px-5 !text-xs ${focusRing}`}
           >
             View product details
