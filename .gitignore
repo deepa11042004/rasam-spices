@@ -47,3 +47,7 @@ next-env.d.ts
 # unset; in production point that env var outside the app directory so uploads
 # survive redeploys.
 /storage/
+
+# database dumps (contain customer data and admin credentials)
+/rasam_crm_dump.sql
+/supabase/rasam_crm_backup.sql
