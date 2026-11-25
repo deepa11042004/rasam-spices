@@ -1,7 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
+node_modules
 /.pnp
 .pnp.*
 .yarn/*
@@ -11,14 +11,14 @@
 !.yarn/versions
 
 # testing
-/coverage
+coverage
 
 # next.js
-/.next/
-/out/
+.next/
+out/
 
 # production
-/build
+build
 
 # misc
 .DS_Store
@@ -41,13 +41,12 @@ yarn-error.log*
 next-env.d.ts
 
 # original client assets (high-resolution source files; web copies live in public/images/products)
-/inventories/
+/frontend/inventories/
 
 # admin-uploaded media (dish images). Default location when DISH_UPLOAD_DIR is
 # unset; in production point that env var outside the app directory so uploads
 # survive redeploys.
-/storage/
+/backend/storage/
 
 # database dumps (contain customer data and admin credentials)
-/rasam_crm_dump.sql
-/supabase/rasam_crm_backup.sql
+/backend/supabase/rasam_crm_*.sql

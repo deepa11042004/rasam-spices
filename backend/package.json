@@ -1,0 +1,42 @@
+{
+  "name": "rasam-backend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "start": "tsx src/server.ts",
+    "typecheck": "tsc --noEmit",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate deploy",
+    "postinstall": "prisma generate",
+    "create-admin": "tsx scripts/create-admin.ts",
+    "test-db": "tsx scripts/test-db.ts"
+  },
+  "dependencies": {
+    "@prisma/adapter-mariadb": "^7.10.1",
+    "@prisma/client": "^7.10.1",
+    "@vercel/blob": "^2.9.0",
+    "argon2": "^0.45.2",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "helmet": "^8.1.0",
+    "mariadb": "^3.5.5",
+    "multer": "^2.0.2",
+    "tsx": "^4.23.15"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/multer": "^2.0.0",
+    "@types/node": "^20",
+    "prisma": "^7.10.1",
+    "typescript": "^5"
+  },
+  "allowScripts": {
+    "@prisma/engines@7.10.1": true,
+    "prisma@7.10.1": true,
+    "argon2@0.45.2": true
+  }
+}

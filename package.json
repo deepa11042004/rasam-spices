@@ -1,40 +1,12 @@
 {
-  "name": "masala-company",
-  "version": "0.1.0",
+  "name": "rasam",
   "private": true,
+  "description": "RASAM Spices: frontend (Next.js) and backend (Express API)",
   "scripts": {
-    "dev": "next dev",
-    "build": "prisma generate --config prisma7.config.ts && next build",
-    "start": "next start",
-    "lint": "eslint"
-  },
-  "dependencies": {
-    "@prisma/adapter-mariadb": "^7.10.1",
-    "@prisma/client": "^7.10.1",
-    "@supabase/ssr": "^0.12.7",
-    "@vercel/blob": "^2.9.0",
-    "argon2": "^0.45.2",
-    "mariadb": "^3.5.5",
-    "next": "16.4.6",
-    "react": "19.3.0",
-    "react-dom": "19.3.0"
-  },
-  "devDependencies": {
-    "@tailwindcss/turbopack": "^4",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "16.4.2",
-    "prisma": "^7.10.1",
-    "tailwindcss": "^4",
-    "tsx": "^4.23.15",
-    "typescript": "^5"
-  },
-  "allowScripts": {
-    "@prisma/engines@7.10.1": true,
-    "prisma@7.10.1": true,
-    "argon2@0.45.2": true,
-    "unrs-resolver@1.12.2": true
+    "install:all": "npm --prefix backend install && npm --prefix frontend install",
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "build:frontend": "npm --prefix frontend run build",
+    "typecheck": "npm --prefix backend run typecheck && npm --prefix frontend exec tsc -- --noEmit"
   }
 }
